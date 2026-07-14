@@ -569,14 +569,14 @@ body:not(.dark-mode) .icon-dark { display: block; }
 .card-id-badge {
     background: var(--primary);
     color: var(--bg-card);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     padding: 4px 8px;
     border-radius: 6px;
 }
 
 .card-author {
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -584,14 +584,14 @@ body:not(.dark-mode) .icon-dark { display: block; }
 }
 
 .card-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: var(--primary);
     line-height: 1.4;
 }
 
 .card-thesis-preview {
-    font-size: 13px;
+    font-size: 15px;
     font-style: italic;
     color: var(--text-main);
     border-left: 3px solid var(--accent);
@@ -600,7 +600,7 @@ body:not(.dark-mode) .icon-dark { display: block; }
 }
 
 .card-summary-preview {
-    font-size: 13px;
+    font-size: 14.5px;
     color: var(--text-muted);
     line-height: 1.5;
 }
@@ -615,7 +615,7 @@ body:not(.dark-mode) .icon-dark { display: block; }
 }
 
 .notion-tag {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     padding: 2px 8px;
     background: var(--badge-bg);
