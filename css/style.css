@@ -336,21 +336,67 @@ body:not(.dark-mode) .icon-dark { display: block; }
     }
 }
 
-/* ── Breakpoint 480px: search wraps to second row ── */
+/* ── Breakpoint 480px: compact header, search doesn't wrap ── */
 @media (max-width: 480px) {
     body {
         padding: 8px;
     }
     .app-header {
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 10px 12px;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 8px 10px;
+        top: 10px;
+    }
+    .header-left {
+        gap: 6px;
+    }
+    .logo-emoji {
+        font-size: 22px;
+    }
+    .app-header .back-btn {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
     }
     .search-form-header {
-        /* Naturally wraps below header-left + header-controls */
-        width: 100%;
-        min-width: 0;
         margin: 0;
+        flex: 1 1 auto;
+        min-width: 50px;
+    }
+    .search-box-header input {
+        padding: 8px 24px 8px 10px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+    .search-clear {
+        right: 8px;
+        font-size: 16px;
+    }
+    .header-controls {
+        gap: 6px;
+    }
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+    }
+    .app-header #pdf-download-link {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    .font-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+    .font-controls {
+        gap: 4px;
     }
 }
 

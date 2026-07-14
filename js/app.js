@@ -437,11 +437,21 @@ function loadPreferences() {
     document.body.classList.add('theme-mentor');
     
     // Dark mode
-    const savedDarkMode = localStorage.getItem('pref-dark-mode') === 'true';
-    if (savedDarkMode) {
-        document.body.classList.add('dark-mode');
+    const savedDarkMode = localStorage.getItem('pref-dark-mode');
+    if (savedDarkMode !== null) {
+        if (savedDarkMode === 'true') {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
     } else {
-        document.body.classList.remove('dark-mode');
+        // Default to system color scheme
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (systemPrefersDark) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
     }
 }
 
