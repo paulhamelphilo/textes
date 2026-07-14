@@ -378,10 +378,8 @@ body:not(.dark-mode) .icon-dark { display: block; }
     .header-controls {
         gap: 6px;
     }
-    .icon-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+    #dark-mode-toggle {
+        display: none !important;
     }
     .app-header #pdf-download-link {
         width: 32px;
