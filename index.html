@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textes d'Approfondissement</title>
+    <!-- Favicon owl -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🦉</text></svg>">
+
+    <!-- Google Fonts: UI font & Serif reading fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css?v=4">
+</head>
+
+<body class="theme-mentor">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="header-logo" id="header-logo">
+                    <span class="logo-emoji">🦉</span>
+                    <h1 class="logo-title-text">Textes d’approfondissement</h1>
+                </div>
+                <button class="btn btn-secondary back-btn" id="header-back-btn">
+                    <svg class="back-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="width: 1.2em; height: 1.2em; vertical-align: middle;">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg><span class="back-label">Retour aux textes</span>
+                </button>
+            </div>
+
+            <!-- Search Bar Form -->
+            <form id="search-form" class="search-form-header">
+                <div class="search-box-header">
+                    <input type="text" id="search-input"
+                        placeholder="Rechercher par numéro du texte, auteur, notion, mot-clé...">
+                    <span class="search-clear" id="search-clear">&times;</span>
+                </div>
+            </form>
+
+            <div class="header-controls">
+                <!-- Navigation des textes -->
+                <div class="nav-controls" id="header-nav-controls">
+                    <button id="nav-prev" class="nav-btn" title="Texte précédent">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            style="width: 1.2em; height: 1.2em; vertical-align: middle;">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button id="nav-next" class="nav-btn" title="Texte suivant">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            style="width: 1.2em; height: 1.2em; vertical-align: middle;">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Font size adjustment -->
+                <div class="font-controls" id="header-font-controls">
+                    <button id="font-dec" class="font-btn" title="Diminuer la police">A-</button>
+                    <button id="font-inc" class="font-btn" title="Agrandir la police">A+</button>
+                </div>
+
+                <!-- Original PDF Link -->
+                <a id="pdf-download-link" href="#" target="_blank" class="btn btn-secondary" download
+                    title="Ouvrir le PDF original">
+                    📂<span class="hide-mobile"> PDF</span>
+                </a>
+
+                <!-- Dark mode toggle -->
+                <button id="dark-mode-toggle" class="icon-btn" title="Changer le mode de couleur">
+                    <span class="icon-light">☀️</span>
+                    <span class="icon-dark">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace Layout -->
+        <main class="app-layout">
+
+            <!-- Central panel: Results List OR Reading view -->
+            <section class="content-panel">
+                <!-- Search stats & active filters banner -->
+                <div class="results-bar" id="results-bar">
+                    <div class="results-count" id="results-count">Initialisation...</div>
+                </div>
+
+                <!-- Card grid of results -->
+                <div class="cards-grid" id="cards-grid">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Chargement de la base de textes...</p>
+                    </div>
+                </div>
+
+                <!-- Reading View (hidden by default) -->
+                <article class="reader-view" id="reader-view" style="display: none;">
+
+                    <!-- Text Analysis Summary Box -->
+                    <header class="text-analysis-card" id="text-analysis-card">
+                        <div class="analysis-meta">
+                            <span class="text-id-badge" id="reader-text-id">N°</span>
+                            <span class="text-author" id="reader-author">Auteur</span>
+                            <div class="text-notions-badges" id="reader-notions-badges"></div>
+                        </div>
+                        <h2 class="text-title" id="reader-title">Titre du texte</h2>
+
+                        <div class="analysis-grid">
+                            <div class="analysis-block thesis-block">
+                                <h3>Thèse synthétique</h3>
+                                <p id="reader-thesis">Phrase de thèse...</p>
+                            </div>
+                            <div class="analysis-block summary-block">
+                                <h3>Résumé</h3>
+                                <p id="reader-summary">Résumé synthétique...</p>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Text body content -->
+                    <section class="text-body" id="reader-body">
+                        Chargement du texte...
+                    </section>
+                </article>
+            </section>
+        </main>
+
+        <div class="footer-credit">PH-2026</div>
+    </div>
+
+    <!-- Load marked library for safe markdown rendering (if any texts have basic markdown formatting) -->
+    <script src="js/app.js?v=5"></script>
+</body>
+
+</html>
