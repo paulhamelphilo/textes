@@ -135,6 +135,20 @@ def convert_to_html_mammoth(docx_path, html_path):
             result = mammoth.convert_to_html(docx_file, style_map="u => u")
             html_content = result.value
             
+        # Nettoyage typographique général
+        # 1. Supprimer les slashs et double-slashs parasites (suivis d'une majuscule ou d'un guillemet)
+        html_content = re.sub(r'\s*//+\s*([A-ZÀ-Ÿ«])', r' \1', html_content)
+        html_content = re.sub(r'\s*/+\s*([A-ZÀ-Ÿ«])', r' \1', html_content)
+        
+        # 2. Normaliser les espaces insécables et multiples
+        html_content = re.sub(r'[ \t\u00a0\u202f]+', ' ', html_content)
+        
+        # 3. Supprimer les paragraphes vides générés
+        html_content = re.sub(r'<p>\s*</p>', '', html_content)
+        
+        # 4. Nettoyer les espaces aux extrémités
+        html_content = html_content.strip()
+            
         with open(html_path, "w", encoding="utf-8") as out_file:
             out_file.write(html_content)
         print(f"-> HTML créé avec succès : {html_path}")
@@ -504,6 +518,17 @@ def main():
         if not html_success:
             print("❌ Erreur : La conversion HTML a échoué. Passage au fichier suivant.")
             continue
+            
+        # Enrich HTML with PDF formatting if PDF was successfully created
+        if pdf_success:
+            print("\n--- ÉTAPE 2.5 : ENRICHISSEMENT TYPOGRAPHIQUE DEPUIS LE PDF ---")
+            try:
+                enrich_script = os.path.join(SCRIPTS_DIR, "enrich_html_from_pdf.py")
+                cmd = [sys.executable, enrich_script, "--file", clean_filename]
+                subprocess.run(cmd, check=True)
+                print("-> HTML enrichi avec succès depuis le PDF !")
+            except Exception as e:
+                print(f"⚠️ Avertissement : Échec de l'enrichissement typographique : {e}")
             
         # 4. Extraction & Seeding/Analysis
         raw_text = extract_text_mammoth(docx_path)

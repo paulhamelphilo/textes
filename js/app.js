@@ -192,6 +192,10 @@ function processLoadedHTML(rawHtml, author) {
     const totalCount = elements.length;
     
     elements.forEach((el, idx) => {
+        // Nettoyage des styles en ligne parasites pour éviter d'écraser la charte graphique de l'application
+        el.removeAttribute('style');
+        el.querySelectorAll('[style]').forEach(child => child.removeAttribute('style'));
+
         // Ignorer les éléments des notes de bas de page
         if (el.closest('.footnotes') || el.closest('li[id^="footnote"]')) return;
 
@@ -234,8 +238,8 @@ function processLoadedHTML(rawHtml, author) {
             // Check if starts with a Roman numeral (e.g. I., XVII., XCII.)
             const isRomanRef = /^[ivxlcdm]+(?:\b|\.)/i.test(cleanPlain);
             
-            // Check if starts with "L." or "L. " (common in Alain's references for letters/propos)
-            const isLRef = /^l\b/i.test(cleanPlainLower);
+            // Check if starts with "L." or "L. " (common in Alain's references for letters/propos), excluding apostrophes
+            const isLRef = /^l\.(?:\s|\d|$)/i.test(cleanPlainLower) || /^l\s+\d/i.test(cleanPlainLower) || /^l\s+[ivxlcdm]+/i.test(cleanPlainLower);
             
             // Common publisher names or specific reference startings
             const commonPublishers = ['gallimard', 'éditions', 'editions', 'jean-françois', 'librairie', 'presses', 'minuit', 'seuil', 'flammarion', 'vrin', 'albin', 'grasset', 'fayard', 'hachette', 'nathan', 'hatier', 'belin', 'bordas'];
@@ -257,7 +261,24 @@ function processLoadedHTML(rawHtml, author) {
             
             // Si c'est une référence principale (avec flèche), on remplace la flèche par le SVG
             if (isArrowRef) {
-                el.innerHTML = arrowSVG + el.innerHTML.replace(/^\s*(?:&rarr;|&#8594;|[→🡪🡺\u2190-\u21FF\u2B00-\u2BFF\u{1F800}-\u{1F8FF}])\s*/u, '');
+                const removeLeadingArrow = (node) => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const original = node.textContent;
+                        const cleaned = original.replace(/^\s*(?:&rarr;|&#8594;|[→🡪🡺\u2190-\u21FF\u2B00-\u2BFF\u{1F800}-\u{1F8FF}])\s*/u, '');
+                        if (cleaned !== original) {
+                            node.textContent = cleaned;
+                            return true;
+                        }
+                    }
+                    if (node.childNodes) {
+                        for (let child of node.childNodes) {
+                            if (removeLeadingArrow(child)) return true;
+                        }
+                    }
+                    return false;
+                };
+                removeLeadingArrow(el);
+                el.innerHTML = arrowSVG + el.innerHTML;
             }
             
             afterReference = true;
@@ -272,7 +293,8 @@ function processLoadedHTML(rawHtml, author) {
             
             if (isTitleOrSub) {
                 el.className = '';
-                if (!firstTitleFound) {
+                const isAllUppercase = plainText === plainText.toUpperCase() && /[A-ZÀ-Ÿ]/.test(plainText);
+                if (!firstTitleFound || afterReference || isAllUppercase) {
                     el.classList.add('text-body-title');
                     firstTitleFound = true;
                 } else {

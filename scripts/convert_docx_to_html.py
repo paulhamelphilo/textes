@@ -52,6 +52,20 @@ def main():
                 result = mammoth.convert_to_html(docx_file, style_map="u => u")
                 html_content = result.value
                 
+            # Nettoyage typographique général
+            # 1. Supprimer les slashs et double-slashs parasites (suivis d'une majuscule ou d'un guillemet)
+            html_content = re.sub(r'\s*//+\s*([A-ZÀ-Ÿ«])', r' \1', html_content)
+            html_content = re.sub(r'\s*/+\s*([A-ZÀ-Ÿ«])', r' \1', html_content)
+            
+            # 2. Normaliser les espaces insécables et multiples
+            html_content = re.sub(r'[ \t\u00a0\u202f]+', ' ', html_content)
+            
+            # 3. Supprimer les paragraphes vides générés
+            html_content = re.sub(r'<p>\s*</p>', '', html_content)
+            
+            # 4. Nettoyer les espaces aux extrémités
+            html_content = html_content.strip()
+                
             with open(output_filepath, "w", encoding="utf-8") as out_file:
                 out_file.write(html_content)
             success_count += 1

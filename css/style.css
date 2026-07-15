@@ -896,8 +896,11 @@ body:not(.dark-mode) .icon-dark { display: block; }
     text-indent: 0 !important;
 }
 
+.text-body .text-body-reference, .text-body-reference,
+.text-body-reference * {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
 .text-body .text-body-reference, .text-body-reference {
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 1em; /* Same size as body text to stay close to main style */
     font-weight: 700; /* Bold style */
     font-style: normal; /* Straight style (non-italic) */
