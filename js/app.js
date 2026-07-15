@@ -1014,15 +1014,24 @@ function setupEventListeners() {
     let touchStartY = 0;
     let touchEndX = 0;
     let touchEndY = 0;
+    let isMultiTouch = false; // true if pinch or other multi-finger gesture
 
     document.addEventListener('touchstart', (e) => {
         if (state.activeTextId === null) return;
+        // If more than one finger, mark as multi-touch (pinch-to-zoom etc.)
+        if (e.touches.length > 1) {
+            isMultiTouch = true;
+            return;
+        }
+        isMultiTouch = false;
         touchStartX = e.changedTouches[0].clientX;
         touchStartY = e.changedTouches[0].clientY;
     }, { passive: true });
 
     document.addEventListener('touchend', (e) => {
         if (state.activeTextId === null) return;
+        // Ignore: this was part of a multi-touch gesture (e.g. pinch-to-zoom)
+        if (isMultiTouch) return;
         touchEndX = e.changedTouches[0].clientX;
         touchEndY = e.changedTouches[0].clientY;
         
