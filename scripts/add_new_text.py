@@ -164,12 +164,12 @@ FORMAT DE SORTIE ATTENDU :
 Titre: [Titre exact de l'en-tête du texte, recopié tel quel]
 Thèse: [La thèse soutenue par l'auteur dans ce texte, rédigée en UNE phrase de 10 mots maximum]
 Résumé: [Résumé synthétique des arguments principaux du texte, rédigé en 50 mots maximum]
-Notions: [Liste des notions du programme de philosophie directement liées au texte, séparées par des virgules, choisies EXCLUSIVEMENT parmi la liste suivante : L’art, Le bonheur, La conscience, Le devoir, L’État, L’inconscient, La justice, Le langage, La liberté, La nature, La raison, La religion, La science, La technique, Le temps, Le travail, La vérité]
+Notions: [Liste des notions du programme de philosophie directement liées au texte (5 notions maximum), séparées par des virgules, choisies EXCLUSIVEMENT parmi la liste suivante : L’art, Le bonheur, La conscience, Le devoir, L’État, L’inconscient, La justice, Le langage, La liberté, La nature, La raison, La religion, La science, La technique, Le temps, Le travail, La vérité]
 
 CONSIGNES CRUCIALES :
 - Ne mentionne AUCUNE source (pas de nom d'auteur, pas de nom d'œuvre, pas de siècle, pas de traduction dans le Titre, la Thèse ou le Résumé).
 - Respecte STRICTEMENT les limites de mots (max 10 mots pour la Thèse, max 50 mots pour le Résumé).
-- Choisis uniquement les notions pertinentes de la liste fournie.
+- Choisis uniquement les notions pertinentes de la liste fournie (maximum 5 notions).
 
 TEXTE A ANALYSER :
 {text_content[:6000]}
@@ -196,11 +196,12 @@ TEXTE A ANALYSER :
             if matched:
                 notions_list.append(matched)
                 
+        unique_notions = list(set(notions_list))
         return {
             "title": titre_val,
             "thesis": these_val,
             "summary": resume_val,
-            "notions": list(set(notions_list))
+            "notions": unique_notions[:5]
         }
     except Exception as e:
         print(f"Erreur API Gemini : {e}")
@@ -316,8 +317,27 @@ def update_database(text_id, filename_no_ext, title, thesis, summary, notions_li
         analysis_col = re.sub(r'\.+', '.', analysis_col)
         analysis_col = re.sub(r'\s+', ' ', analysis_col)
         
-        # Col 4
-        notions_str = ", ".join(notions_list) if notions_list else "La technique"
+        # Limit notions to 5 maximum
+        notions_list = notions_list[:5]
+        
+        # Fallback check: if notions_list contains "La technique" but "technique" does not appear in the filename, title, or summary,
+        # and we have other notions, remove "La technique"
+        if "La technique" in notions_list and len(notions_list) > 1:
+            tech_norm = normalize_text_for_match("La technique")
+            in_filename = tech_norm in normalize_text_for_match(filename_no_ext)
+            in_title = tech_norm in normalize_text_for_match(title)
+            in_summary = tech_norm in normalize_text_for_match(summary)
+            if not (in_filename or in_title or in_summary):
+                notions_list.remove("La technique")
+                
+        # If still empty, infer from filename
+        if not notions_list:
+            for official in OFFICIAL_NOTIONS:
+                o_norm = normalize_text_for_match(official)
+                if o_norm in normalize_text_for_match(filename_no_ext):
+                    notions_list.append(official)
+                    
+        notions_str = ", ".join(notions_list[:5])
         
         new_row = [str(text_id), filename_no_ext, analysis_col, notions_str]
         existing_idx = -1

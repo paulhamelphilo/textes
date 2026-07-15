@@ -30,16 +30,23 @@ function formatFrenchTypography(str) {
         // 1. Apostrophes droites → apostrophes typographiques
         let result = text.replace(/(?<=[a-zA-Z\u00C0-\u017F\d])'/g, '\u2019');
         
-        // 2. Deux-points : espace insécable avant (pas dans les URLs ni les heures)
+        // 2. Guillemets droits "..." → guillemets français «\u00A0...\u00A0»
+        result = result.replace(/"([^"]+)"/g, '\u00AB\u00A0$1\u00A0\u00BB');
+        
+        // 3. Guillemets français déjà présents : espace insécable après « et avant »
+        result = result.replace(/\u00AB\s*/g, '\u00AB\u00A0');
+        result = result.replace(/\s*\u00BB/g, '\u00A0\u00BB');
+        
+        // 4. Deux-points : espace insécable avant (pas dans les URLs ni les heures)
         result = result.replace(/(?<!\d)\s*:\s*(?!\d|\/)/g, '\u00A0: ');
         
-        // 3. Point-virgule : espace insécable avant
+        // 5. Point-virgule : espace insécable avant
         result = result.replace(/([a-zA-Z\u00C0-\u017F\d])\s*;+\s*/g, '$1\u00A0; ');
         
-        // 4. Point d'exclamation : espace insécable avant
+        // 6. Point d'exclamation : espace insécable avant
         result = result.replace(/([a-zA-Z\u00C0-\u017F\d])\s*(!+)/g, '$1\u00A0$2');
         
-        // 5. Point d'interrogation : espace insécable avant
+        // 7. Point d'interrogation : espace insécable avant
         result = result.replace(/([a-zA-Z\u00C0-\u017F\d])\s*(\?+)/g, '$1\u00A0$2');
         
         return result;
@@ -111,8 +118,15 @@ function isStrongTitle(el) {
 function isTitleLike(plainText, isLast) {
     if (isLast) return false;
     
-    // Nettoyer les guillemets et espaces
-    const plain = plainText.replace(/^[«»"“’\s\t]+|[«»"“’\s\t]+$/g, '').trim();
+    // Nettoyer les espaces de fin
+    let plain = plainText.trim();
+    if (!plain) return false;
+    
+    // Supprimer les numéros de page ou notes à la fin en crochets/parenthèses (ex: [494c], (494c))
+    plain = plain.replace(/\s*[\[\(]\d+[a-f]?[\]\)]\s*$/gi, '').trim();
+    
+    // Nettoyer les guillemets, crochets, parenthèses et espaces résiduels des deux côtés
+    plain = plain.replace(/^[«»"“’\s\t\(\)\[\]\{\}]+|[«»"“’\s\t\(\)\[\]\{\}]+$/g, '').trim();
     if (!plain) return false;
     
     // Doit commencer par une lettre ou un chiffre
@@ -122,8 +136,9 @@ function isTitleLike(plainText, isLast) {
     // Un titre est court (inférieur à 100 caractères)
     if (plain.length > 100) return false;
     
-    // Si c'est long et se termine par un point, c'est une phrase/paragraphe de corps
-    if (plain.endsWith('.') && plain.length > 30) return false;
+    // S'il se termine par un point, point d'exclamation, point d'interrogation, deux-points ou point-virgule, c'est une phrase de corps ou de dialogue, pas un titre
+    const endsWithPunctuation = /[.!?;:]$/.test(plain);
+    if (endsWithPunctuation) return false;
     
     // Mots-clés excluant le fait d'être un titre (on n'exclut plus 'chapitre', 'tome', 'vol')
     const titleExcludeKeywords = ['trad', 'traduction', 'éd', 'ed', 'p.', 'page', 'col.'];
@@ -149,6 +164,19 @@ function processLoadedHTML(rawHtml, author) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlWithTypo, 'text/html');
     
+    // Wrap ol elements containing footnote items in a div.footnotes
+    const olElements = doc.body.querySelectorAll('ol');
+    olElements.forEach(ol => {
+        if (ol.querySelector('li[id^="footnote"]')) {
+            if (!ol.parentElement.classList.contains('footnotes')) {
+                const wrapper = doc.createElement('div');
+                wrapper.className = 'footnotes';
+                ol.parentNode.insertBefore(wrapper, ol);
+                wrapper.appendChild(ol);
+            }
+        }
+    });
+
     // SVG pour l'icône flèche
     const arrowSVG = `<svg class="ref-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"
@@ -157,6 +185,7 @@ function processLoadedHTML(rawHtml, author) {
         <polyline points="13 5 20 12 13 19"></polyline></svg>`;
         
     let afterReference = false;
+    let firstTitleFound = false;
     const refKeywords = ['trad', 'traduction', 'tome', 'vol', 'éd', 'ed', 'p.', 'page', 'chapitre', 'col.'];
     
     const elements = doc.body.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
@@ -165,6 +194,13 @@ function processLoadedHTML(rawHtml, author) {
     elements.forEach((el, idx) => {
         // Ignorer les éléments des notes de bas de page
         if (el.closest('.footnotes') || el.closest('li[id^="footnote"]')) return;
+
+        // Ignorer les éléments dans les tables ou listes pour préserver leur structure
+        if (el.closest('table') || el.closest('ul') || el.closest('ol') || el.closest('li')) {
+            el.className = '';
+            el.classList.add('text-body-simple');
+            return;
+        }
 
         const plainText = el.textContent.trim();
         if (!plainText) return;
@@ -176,8 +212,42 @@ function processLoadedHTML(rawHtml, author) {
         // Détection de flèche (référence)
         const isArrowRef = /^\s*(?:[→🡪🡺\u2190-\u21FF\u2B00-\u2BFF\u{1F800}-\u{1F8FF}]|&rarr;|&#8594;)/u.test(plainText);
         
-        // Détection de continuation de référence : tout paragraphe suivant la référence principale est une continuation
-        const isRefCont = afterReference;
+        // Détection de continuation de référence : 
+        // L'élément doit suivre une référence, et commencer par une minuscule, un mot-clé de référence ou une année
+        let isRefCont = false;
+        if (afterReference) {
+            const cleanPlain = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}\-\+~≈]+/, ''); // strip quotes, parens, spaces, and indicators like ~
+            const firstChar = cleanPlain.charAt(0);
+            
+            // Check if first character is lowercase
+            const isLower = firstChar && firstChar === firstChar.toLowerCase() && firstChar !== firstChar.toUpperCase();
+            
+            // Check if starts with a reference keyword
+            const cleanPlainLower = cleanPlain.toLowerCase();
+            const isRefKeyword = refKeywords.some(kw => {
+                return cleanPlainLower.startsWith(kw);
+            });
+            
+            // Also check if it starts with a year or roman century expression (e.g. IVe s., ~IVème siècle)
+            const isYearOrParen = /^\d{4}/.test(cleanPlain) || /^[i|v|x|l|c|d|m]+(?:e|ème|°|er)?\s+(?:siècle|s\b)/i.test(cleanPlain);
+            
+            // Check if starts with a Roman numeral (e.g. I., XVII., XCII.)
+            const isRomanRef = /^[ivxlcdm]+(?:\b|\.)/i.test(cleanPlain);
+            
+            // Check if starts with "L." or "L. " (common in Alain's references for letters/propos)
+            const isLRef = /^l\b/i.test(cleanPlainLower);
+            
+            // Common publisher names or specific reference startings
+            const commonPublishers = ['gallimard', 'éditions', 'editions', 'jean-françois', 'librairie', 'presses', 'minuit', 'seuil', 'flammarion', 'vrin', 'albin', 'grasset', 'fayard', 'hachette', 'nathan', 'hatier', 'belin', 'bordas'];
+            const isPublisher = commonPublishers.some(pub => cleanPlainLower.startsWith(pub));
+            
+            // Book titles or other content in italics (starts with <em> in HTML)
+            const startsWithItalic = el.innerHTML.trim().startsWith('<em>');
+            
+            if (isLower || isRefKeyword || isYearOrParen || isRomanRef || isLRef || isPublisher || startsWithItalic) {
+                isRefCont = true;
+            }
+        }
         
         // Si c'est une flèche de référence ou une continuation de référence
         if (isArrowRef || isRefCont) {
@@ -192,12 +262,22 @@ function processLoadedHTML(rawHtml, author) {
             
             afterReference = true;
         } else {
-            // Détection de titre/sous-titre sans contraintes de état global
-            let isTitle = isHeading || isStrong || isTitleLike(plainText, isLast);
+            // Détection si c'est un titre (principal ou sous-titre)
+            // Le premier titre rencontré est considéré comme le titre principal de la page
+            // Les titres suivants peuvent être détectés heuristiquement, sauf s'ils introduisent immédiatement une liste
+            const nextEl = el.nextElementSibling;
+            const isListIntro = nextEl && (nextEl.tagName === 'OL' || nextEl.tagName === 'UL');
             
-            if (isTitle) {
+            let isTitleOrSub = isHeading || isStrong || (isTitleLike(plainText, isLast) && !isListIntro);
+            
+            if (isTitleOrSub) {
                 el.className = '';
-                el.classList.add('text-body-title');
+                if (!firstTitleFound) {
+                    el.classList.add('text-body-title');
+                    firstTitleFound = true;
+                } else {
+                    el.classList.add('text-body-subheading');
+                }
                 afterReference = false;
             } else {
                 el.className = '';
@@ -394,7 +474,7 @@ function findFirstCommaOrParenInHTML(html) {
 
 function normalizeForSearch(str) {
     if (!str) return '';
-    return str.toLowerCase().replace(/’/g, "'");
+    return removeAccents(str.toLowerCase().replace(/’/g, "'"));
 }
 
 // DOM elements
@@ -461,7 +541,7 @@ function loadPreferences() {
 
 async function fetchDatabase() {
     try {
-        const response = await fetch('data/database.tsv');
+        const response = await fetch('data/database.tsv?t=' + Date.now());
         if (!response.ok) {
             throw new Error(`Erreur de chargement TSV: ${response.status}`);
         }
@@ -603,8 +683,8 @@ function parseSearchQuery(queryStr) {
 function applyFilters() {
     const rawQuery = DOM.searchInput.value.trim();
     
-    // If the reader is active, close it to start a new search
-    if (state.activeTextId !== null) {
+    // If the reader is active and a query is entered, close it to start a new search
+    if (state.activeTextId !== null && rawQuery !== '') {
         closeReader();
     }
     
@@ -623,6 +703,11 @@ function applyFilters() {
         state.filteredTexts = state.texts.filter(t => t.id.toString().includes(rawQuery));
         DOM.resultsCount.textContent = `${state.filteredTexts.length} texte${state.filteredTexts.length > 1 ? 's' : ''} trouvé${state.filteredTexts.length > 1 ? 's' : ''}`;
         renderCards();
+        
+        // If only one text matches, open it directly
+        if (state.filteredTexts.length === 1 && state.activeTextId !== state.filteredTexts[0].id) {
+            openText(state.filteredTexts[0].id);
+        }
         return;
     }
 
@@ -691,6 +776,11 @@ function applyFilters() {
     
     // Render cards
     renderCards();
+
+    // If only one text matches, open it directly
+    if (count === 1 && state.activeTextId !== state.filteredTexts[0].id) {
+        openText(state.filteredTexts[0].id);
+    }
 }
 
 function renderCards() {
@@ -727,6 +817,11 @@ function renderCards() {
 // ==========================================
 
 function openText(id) {
+    // If already active and reader is displayed, do nothing
+    if (state.activeTextId === id && document.body.classList.contains('reader-active')) {
+        return;
+    }
+    
     const textData = state.texts.find(t => t.id === id);
     if (!textData) return;
     
@@ -852,7 +947,7 @@ function handleHashRoute() {
 // ==========================================
 
 function setupEventListeners() {
-    // Search form submission (direct access by number)
+    // Search form submission (direct access by number or unique search term)
     DOM.searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = DOM.searchInput.value.trim();
@@ -866,6 +961,13 @@ function setupEventListeners() {
             } else {
                 alert(`Le texte N° ${num} n'existe pas dans la base.`);
             }
+        } else {
+            // If not a number, but there is exactly 1 match
+            if (state.filteredTexts.length === 1) {
+                openText(state.filteredTexts[0].id);
+                DOM.searchInput.value = '';
+                applyFilters(); // Reset search input state
+            }
         }
     });
     
@@ -875,6 +977,9 @@ function setupEventListeners() {
     // Clear search
     DOM.searchClear.addEventListener('click', () => {
         DOM.searchInput.value = '';
+        if (state.activeTextId !== null) {
+            closeReader();
+        }
         applyFilters();
     });
     

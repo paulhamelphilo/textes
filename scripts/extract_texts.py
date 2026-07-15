@@ -233,12 +233,12 @@ FORMAT DE SORTIE ATTENDU :
 Titre: [Titre exact de l'en-tête du texte, recopié tel quel]
 Thèse: [La thèse soutenue par l'auteur dans ce texte, rédigée en UNE phrase de 10 mots maximum]
 Résumé: [Résumé synthétique des arguments principaux du texte, rédigé en 50 mots maximum]
-Notions: [Liste des notions du programme de philosophie directement liées au texte, séparées par des virgules, choisies EXCLUSIVEMENT parmi la liste suivante : L’art, Le bonheur, La conscience, Le devoir, L’État, L’inconscient, La justice, Le langage, La liberté, La nature, La raison, La religion, La science, La technique, Le temps, Le travail, La vérité]
+Notions: [Liste des notions du programme de philosophie directement liées au texte (5 notions maximum), séparées par des virgules, choisies EXCLUSIVEMENT parmi la liste suivante : L’art, Le bonheur, La conscience, Le devoir, L’État, L’inconscient, La justice, Le langage, La liberté, La nature, La raison, La religion, La science, La technique, Le temps, Le travail, La vérité]
 
 CONSIGNES CRUCIALES :
 - Ne mentionne AUCUNE source (pas de nom d'auteur, pas de nom d'œuvre, pas de siècle, pas de traduction dans le Titre, la Thèse ou le Résumé).
 - Respecte STRICTEMENT les limites de mots (max 10 mots pour la Thèse, max 50 mots pour le Résumé).
-- Choisis uniquement les notions pertinentes de la liste fournie.
+- Choisis uniquement les notions pertinentes de la liste fournie (maximum 5 notions).
 
 TEXTE A ANALYSER :
 {text_content[:4000]}  # Limit text to 4000 chars to fit context and keep it focused
@@ -292,11 +292,14 @@ TEXTE A ANALYSER :
                     if t_norm in normalize_text_for_match(official) or normalize_text_for_match(official) in t_norm:
                         notions_list.append(official)
                             
+        # Limit to 5 notions maximum
+        unique_notions = list(set(notions_list))
+        
         return {
             "title": titre_val,
             "thesis": these_val,
             "summary": resume_val,
-            "notions": list(set(notions_list))
+            "notions": unique_notions[:5]
         }
     except Exception as e:
         print(f"Error calling Gemini for {filename_no_ext}: {e}")
@@ -401,8 +404,27 @@ def main():
                     "notions": []
                 }
                 
-        # Format notions as comma-separated string
-        notions_str = ", ".join(analysis["notions"]) if analysis["notions"] else "La technique" # default fallback
+        # Limit notions to 5 maximum
+        notions_list = analysis["notions"][:5] if "notions" in analysis else []
+        
+        # Fallback check: if notions_list contains "La technique" but "technique" does not appear in the filename, title, or summary,
+        # and we have other notions, remove "La technique"
+        if "La technique" in notions_list and len(notions_list) > 1:
+            tech_norm = normalize_text_for_match("La technique")
+            in_filename = tech_norm in normalize_text_for_match(filename_no_ext)
+            in_title = tech_norm in normalize_text_for_match(analysis.get("title", ""))
+            in_summary = tech_norm in normalize_text_for_match(analysis.get("summary", ""))
+            if not (in_filename or in_title or in_summary):
+                notions_list.remove("La technique")
+                
+        # If still empty, infer from filename or use a better fallback
+        if not notions_list:
+            for official in OFFICIAL_NOTIONS:
+                o_norm = normalize_text_for_match(official)
+                if o_norm in normalize_text_for_match(filename_no_ext):
+                    notions_list.append(official)
+                    
+        notions_str = ", ".join(notions_list[:5])
         
         # Format Analysis column exactly: Titre: [title]. Thèse: [thesis]. Résumé: [summary].
         analysis_col = f"Titre: {analysis['title']}. Thèse: {analysis['thesis']}. Résumé: {analysis['summary']}."
@@ -410,13 +432,17 @@ def main():
         analysis_col = re.sub(r'\.+', '.', analysis_col)
         analysis_col = re.sub(r'\s+', ' ', analysis_col)
         
-        # Add to TSV rows: Col 1: Filename, Col 2: Analysis, Col 3: Notions
-        tsv_rows.append(f"{filename_no_ext}\t{analysis_col}\t{notions_str}")
+        # Extract ID from filename (e.g. 100 from "100.AFEISSA...")
+        file_num_m = re.match(r"^(\d+)\.", filename_no_ext)
+        file_num = file_num_m.group(1) if file_num_m else "999"
+        
+        # Add to TSV rows: Col 1: Identifiant, Col 2: Nom du fichier, Col 3: Analyse, Col 4: Notions
+        tsv_rows.append(f"{file_num}\t{filename_no_ext}\t{analysis_col}\t{notions_str}")
 
     # Write TSV database
     with open(DATABASE_TSV, "w", encoding="utf-8") as tsv_f:
         # Write header
-        tsv_f.write("Nom du fichier\tAnalyse du texte\tNotions du programme de philosophie\n")
+        tsv_f.write("Identifiant\tNom du fichier\tAnalyse du texte\tNotions du programme de philosophie\n")
         for row in tsv_rows:
             tsv_f.write(f"{row}\n")
             

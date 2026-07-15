@@ -592,7 +592,7 @@ body:not(.dark-mode) .icon-dark { display: block; }
 
 .card-thesis-preview {
     font-size: 15px;
-    font-style: italic;
+    font-style: normal;
     color: var(--text-main);
     border-left: 3px solid var(--accent);
     padding-left: 8px;
@@ -603,6 +603,7 @@ body:not(.dark-mode) .icon-dark { display: block; }
     font-size: 14.5px;
     color: var(--text-muted);
     line-height: 1.5;
+    text-align: justify;
 }
 
 .card-notions {
@@ -796,6 +797,8 @@ body:not(.dark-mode) .icon-dark { display: block; }
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 6px;
+    min-width: 3.5em;
+    text-align: center;
 }
 
 .text-author {
@@ -842,11 +845,12 @@ body:not(.dark-mode) .icon-dark { display: block; }
     font-size: 16px;
     line-height: 1.6;
     color: var(--text-main);
+    text-align: justify;
 }
 
 .thesis-block p {
     font-weight: 600;
-    font-style: italic;
+    font-style: normal;
     color: var(--primary);
 }
 
@@ -927,15 +931,16 @@ body:not(.dark-mode) .icon-dark { display: block; }
     margin-top: 2.5em;
     padding-top: 1.5em;
     border-top: 1px dashed var(--border);
-    font-size: 0.85em;
+    font-size: 0.82em;
     color: var(--text-muted);
     font-family: var(--reader-font);
     line-height: 1.6;
+    padding-left: 2em;
 }
 
 .footnote-item {
     margin-bottom: 0.8em;
-    text-indent: 0 !important;
+    text-indent: -1.5em;
     text-align: justify;
 }
 
@@ -950,14 +955,15 @@ body:not(.dark-mode) .icon-dark { display: block; }
     margin-top: 2.5em;
     padding-top: 1.5em;
     border-top: 1px dashed var(--border);
-    font-size: 0.85em;
+    font-size: 0.82em;
     color: var(--text-muted);
     font-family: var(--reader-font);
     line-height: 1.6;
+    padding-left: 2em;
 }
 
 .text-body .footnotes ol {
-    padding-left: 20px;
+    padding-left: 0;
 }
 
 .text-body .footnotes li {
@@ -1059,6 +1065,79 @@ body:not(.dark-mode) .icon-dark { display: block; }
 
 .pdf-only-notice a.notice-text-link:hover {
     color: var(--accent);
+}
+
+/* Décalage pour le ciblage par ancre avec l'en-tête collant */
+.text-body-title,
+.text-body-subheading,
+.text-analysis-card,
+[id] {
+    scroll-margin-top: 110px;
+}
+
+/* Styles pour les tableaux dans la zone de lecture */
+.text-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.8em 0;
+    font-family: var(--ui-font);
+    font-size: 0.92em;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.text-body th, 
+.text-body td {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    text-align: left;
+}
+
+.text-body th {
+    background-color: var(--badge-bg);
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.text-body tr:nth-child(even) {
+    background-color: rgba(var(--primary-rgb), 0.02);
+}
+
+/* Styles de texte simplifiés (sans alinéa ni justifier) pour tables et listes */
+.text-body-simple,
+.text-body td p,
+.text-body th p {
+    text-indent: 0 !important;
+    text-align: left !important;
+    margin-bottom: 0.4em !important;
+    font-family: var(--ui-font);
+}
+
+.text-body td p:last-child,
+.text-body th p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Styles pour les listes standard (ul, ol, li) du corps de texte */
+.text-body ul, 
+.text-body ol {
+    margin: 1.2em 0 1.5em 2.2em;
+    padding-left: 0;
+}
+
+.text-body li {
+    margin-bottom: 0.6em;
+    line-height: 1.65;
+    text-align: justify;
+}
+
+.text-body li p {
+    display: inline;
+    text-indent: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 
