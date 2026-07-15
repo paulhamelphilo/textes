@@ -1009,43 +1009,68 @@ function setupEventListeners() {
         }
     });
 
-    // Horizontal swipe navigation on mobile/portable devices
+    // ── Touch gestures ──────────────────────────────────────────────────────
+    // • 1 doigt  : swipe gauche/droite → texte suivant/précédent
+    // • 2 doigts : pinch → agrandir/réduire la police du lecteur
+    // ────────────────────────────────────────────────────────────────────────
     let touchStartX = 0;
     let touchStartY = 0;
-    let touchEndX = 0;
-    let touchEndY = 0;
-    let isMultiTouch = false; // true if pinch or other multi-finger gesture
+    let isMultiTouch = false;
+    let pinchStartDist = 0;
+    let pinchStartFontSize = 18;
+
+    function getTouchDist(e) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        return Math.hypot(dx, dy);
+    }
 
     document.addEventListener('touchstart', (e) => {
-        if (state.activeTextId === null) return;
-        // If more than one finger, mark as multi-touch (pinch-to-zoom etc.)
-        if (e.touches.length > 1) {
+        if (e.touches.length === 2) {
+            // Pinch start
             isMultiTouch = true;
-            return;
+            pinchStartDist = getTouchDist(e);
+            pinchStartFontSize = state.fontSize;
+        } else {
+            isMultiTouch = false;
+            if (state.activeTextId === null) return;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
         }
-        isMultiTouch = false;
-        touchStartX = e.changedTouches[0].clientX;
-        touchStartY = e.changedTouches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && pinchStartDist > 0) {
+            const currentDist = getTouchDist(e);
+            const ratio = currentDist / pinchStartDist;
+            // Compute new font size, clamped between 13 and 32px
+            const newSize = Math.min(32, Math.max(13, Math.round(pinchStartFontSize * ratio)));
+            if (newSize !== state.fontSize) {
+                state.fontSize = newSize;
+                DOM.readerBody.style.fontSize = `${state.fontSize}px`;
+            }
+        }
     }, { passive: true });
 
     document.addEventListener('touchend', (e) => {
+        if (isMultiTouch) {
+            // Reset when all fingers lift
+            if (e.touches.length === 0) {
+                isMultiTouch = false;
+                pinchStartDist = 0;
+            }
+            return;
+        }
         if (state.activeTextId === null) return;
-        // Ignore: this was part of a multi-touch gesture (e.g. pinch-to-zoom)
-        if (isMultiTouch) return;
-        touchEndX = e.changedTouches[0].clientX;
-        touchEndY = e.changedTouches[0].clientY;
-        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
         const deltaX = touchEndX - touchStartX;
         const deltaY = touchEndY - touchStartY;
-        const threshold = 60; // Minimum swipe distance in px
-        
-        // Ensure the gesture was mostly horizontal and meets the threshold
+        const threshold = 60;
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
             if (deltaX > 0) {
-                // Swipe right -> previous text
                 navigatePrev();
             } else {
-                // Swipe left -> next text
                 navigateNext();
             }
         }
