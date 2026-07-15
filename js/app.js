@@ -516,7 +516,7 @@ function loadPreferences() {
     // Force Mentor IA style theme
     document.body.classList.add('theme-mentor');
     
-    // Dark mode
+    // Dark mode (user preference only)
     const savedDarkMode = localStorage.getItem('pref-dark-mode');
     if (savedDarkMode !== null) {
         if (savedDarkMode === 'true') {
@@ -525,13 +525,8 @@ function loadPreferences() {
             document.body.classList.remove('dark-mode');
         }
     } else {
-        // Default to system color scheme
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (systemPrefersDark) {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
+        // No saved preference: default to light mode
+        document.body.classList.remove('dark-mode');
     }
 }
 
