@@ -111,11 +111,11 @@ body {
     align-items: center;
 }
 
-.logo-emoji svg {
-    width: 1em;
-    height: 1em;
-    transition: filter 0.3s ease;
-    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
+.logo-owl-img {
+    width: 1.1em;
+    height: 1.1em;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.55));
 }
 
 .logo-title-text {
