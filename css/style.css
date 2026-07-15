@@ -107,9 +107,15 @@ body {
 .logo-emoji {
     font-size: 36px;
     line-height: 1;
-    /* Option A — teinte ambrée-dorée pour distinguer Textes d'approfondissement */
-    filter: sepia(1) saturate(3) hue-rotate(10deg) brightness(1.05);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+}
+
+.logo-emoji svg {
+    width: 1em;
+    height: 1em;
+    transition: filter 0.3s ease;
+    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
 }
 
 .logo-title-text {

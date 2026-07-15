@@ -26,7 +26,49 @@
         <header class="app-header">
             <div class="header-left">
                 <div class="header-logo" id="header-logo">
-                    <span class="logo-emoji">🦉</span>
+                    <span class="logo-emoji">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="1em" height="1em" aria-hidden="true">
+                          <defs>
+                            <filter id="glow-gold">
+                              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                          </defs>
+                          <!-- Corps -->
+                          <ellipse cx="50" cy="62" rx="28" ry="32" fill="#b45309" filter="url(#glow-gold)"/>
+                          <!-- Ventre -->
+                          <ellipse cx="50" cy="70" rx="16" ry="20" fill="#fbbf24" opacity="0.9"/>
+                          <!-- Stries ventre -->
+                          <line x1="44" y1="62" x2="44" y2="84" stroke="#d97706" stroke-width="1.2" opacity="0.5"/>
+                          <line x1="50" y1="60" x2="50" y2="86" stroke="#d97706" stroke-width="1.2" opacity="0.5"/>
+                          <line x1="56" y1="62" x2="56" y2="84" stroke="#d97706" stroke-width="1.2" opacity="0.5"/>
+                          <!-- Tete -->
+                          <ellipse cx="50" cy="36" rx="22" ry="20" fill="#92400e" filter="url(#glow-gold)"/>
+                          <!-- Aigrettes -->
+                          <polygon points="36,20 32,8 40,18" fill="#92400e"/>
+                          <polygon points="64,20 68,8 60,18" fill="#92400e"/>
+                          <!-- Yeux -->
+                          <circle cx="40" cy="35" r="8" fill="#fef3c7" filter="url(#glow-gold)"/>
+                          <circle cx="60" cy="35" r="8" fill="#fef3c7" filter="url(#glow-gold)"/>
+                          <circle cx="40" cy="35" r="5" fill="#d97706"/>
+                          <circle cx="60" cy="35" r="5" fill="#d97706"/>
+                          <circle cx="41" cy="34" r="2" fill="#78350f"/>
+                          <circle cx="61" cy="34" r="2" fill="#78350f"/>
+                          <!-- Reflets yeux -->
+                          <circle cx="43" cy="32" r="1" fill="#fffbeb" opacity="0.9"/>
+                          <circle cx="63" cy="32" r="1" fill="#fffbeb" opacity="0.9"/>
+                          <!-- Bec -->
+                          <polygon points="50,42 45,48 55,48" fill="#d97706"/>
+                          <!-- Ailes -->
+                          <ellipse cx="25" cy="68" rx="10" ry="18" fill="#92400e" transform="rotate(-10,25,68)"/>
+                          <ellipse cx="75" cy="68" rx="10" ry="18" fill="#92400e" transform="rotate(10,75,68)"/>
+                          <!-- Pattes -->
+                          <line x1="43" y1="92" x2="38" y2="100" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+                          <line x1="43" y1="92" x2="43" y2="100" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+                          <line x1="57" y1="92" x2="57" y2="100" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+                          <line x1="57" y1="92" x2="62" y2="100" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </span>
                     <h1 class="logo-title-text">Textes d’approfondissement</h1>
                 </div>
                 <button class="btn btn-secondary back-btn" id="header-back-btn">
