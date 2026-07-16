@@ -901,6 +901,10 @@ body:not(.dark-mode) .icon-dark { display: block; }
     text-indent: 0 !important;
 }
 
+.text-body .text-body-subheading.centered, .text-body-subheading.centered {
+    text-align: center !important;
+}
+
 .text-body .text-body-reference, .text-body-reference,
 .text-body-reference * {
     font-family: Arial, Helvetica, sans-serif !important;

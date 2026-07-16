@@ -41,3 +41,8 @@ MANIFEST
 # Gemini/Antigravity config files
 .agents/
 .gemini/
+.env
+*.bak
+*.before_migration
+
+

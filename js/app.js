@@ -288,6 +288,7 @@ function processLoadedHTML(rawHtml, author) {
         <polyline points="13 5 20 12 13 19"></polyline></svg>`;
         
     let afterReference = false;
+    let lastRefEndedWithComma = false;
     let firstTitleFound = false;
     let inBody = false;
     const refKeywords = ['trad', 'traduction', 'tome', 'vol', 'éd', 'ed', 'p.', 'page', 'chapitre', 'col.'];
@@ -325,7 +326,7 @@ function processLoadedHTML(rawHtml, author) {
             isDirection = true;
         } else {
             const cleaned = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}]+|[«»"“’\s\t\(\)\[\]\{\}]+$/g, '').trim();
-            if (cleaned.length > 0 && cleaned.length < 35) {
+            if (cleaned.length > 0 && cleaned.length < 35 && !isStrong) {
                 const isAllUpper = cleaned === cleaned.toUpperCase() && /[A-ZÀ-Ÿ]/.test(cleaned);
                 const isLetterOnly = /^[\p{L}\s’'\-]+$/u.test(cleaned);
                 if (isAllUpper && isLetterOnly) {
@@ -349,22 +350,26 @@ function processLoadedHTML(rawHtml, author) {
         // Détection de continuation de référence
         let isRefCont = false;
         if (afterReference) {
-            const cleanPlain = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}\-\+~≈]+/, '');
-            const firstChar = cleanPlain.charAt(0);
-            const isLower = firstChar && firstChar === firstChar.toLowerCase() && firstChar !== firstChar.toUpperCase();
-            
-            const cleanPlainLower = cleanPlain.toLowerCase();
-            const isRefKeyword = refKeywords.some(kw => cleanPlainLower.startsWith(kw));
-            const isYearOrParen = /^\d{4}/.test(cleanPlain) || /^[i|v|x|l|c|d|m]+(?:e|ème|°|er)?\s+(?:siècle|s\b)/i.test(cleanPlain);
-            const isRomanRef = /^[ivxlcdm]+(?:\b|\.)/i.test(cleanPlain);
-            const isLRef = /^l\.(?:\s|\d|$)/i.test(cleanPlainLower) || /^l\s+\d/i.test(cleanPlainLower) || /^l\s+[ivxlcdm]+/i.test(cleanPlainLower);
-            
-            const commonPublishers = ['gallimard', 'éditions', 'editions', 'jean-françois', 'librairie', 'presses', 'minuit', 'seuil', 'flammarion', 'vrin', 'albin', 'grasset', 'fayard', 'hachette', 'nathan', 'hatier', 'belin', 'bordas'];
-            const isPublisher = commonPublishers.some(pub => cleanPlainLower.startsWith(pub));
-            const startsWithItalic = el.innerHTML.trim().startsWith('<em>');
-            
-            if (isLower || isRefKeyword || isYearOrParen || isRomanRef || isLRef || isPublisher || startsWithItalic) {
+            if (lastRefEndedWithComma) {
                 isRefCont = true;
+            } else {
+                const cleanPlain = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}\-\+~≈]+/, '');
+                const firstChar = cleanPlain.charAt(0);
+                const isLower = firstChar && firstChar === firstChar.toLowerCase() && firstChar !== firstChar.toUpperCase();
+                
+                const cleanPlainLower = cleanPlain.toLowerCase();
+                const isRefKeyword = refKeywords.some(kw => cleanPlainLower.startsWith(kw));
+                const isYearOrParen = /^\d{4}/.test(cleanPlain) || /^[i|v|x|l|c|d|m]+(?:e|ème|°|er)?\s+(?:siècle|s\b)/i.test(cleanPlain);
+                const isRomanRef = /^[ivxlcdm]+(?:\b|\.)/i.test(cleanPlain);
+                const isLRef = /^l\.(?:\s|\d|$)/i.test(cleanPlainLower) || /^l\s+\d/i.test(cleanPlainLower) || /^l\s+[ivxlcdm]+/i.test(cleanPlainLower);
+                
+                const commonPublishers = ['gallimard', 'éditions', 'editions', 'jean-françois', 'librairie', 'presses', 'minuit', 'seuil', 'flammarion', 'vrin', 'albin', 'grasset', 'fayard', 'hachette', 'nathan', 'hatier', 'belin', 'bordas'];
+                const isPublisher = commonPublishers.some(pub => cleanPlainLower.startsWith(pub));
+                const startsWithItalic = el.innerHTML.trim().startsWith('<em>');
+                
+                if (isLower || isRefKeyword || isYearOrParen || isRomanRef || isLRef || isPublisher || startsWithItalic) {
+                    isRefCont = true;
+                }
             }
         }
         
@@ -373,10 +378,12 @@ function processLoadedHTML(rawHtml, author) {
             el.className = '';
             el.classList.add('text-body-dialogue-speaker');
             afterReference = false;
+            lastRefEndedWithComma = false;
         } else if (isDirection) {
             el.className = '';
             el.classList.add('text-body-dialogue-direction');
             afterReference = false;
+            lastRefEndedWithComma = false;
         } else if (isArrowRef || isRefCont) {
             el.className = '';
             el.classList.add('text-body-reference');
@@ -402,12 +409,14 @@ function processLoadedHTML(rawHtml, author) {
                 el.innerHTML = arrowSVG + el.innerHTML;
             }
             afterReference = true;
+            lastRefEndedWithComma = plainText.endsWith(',');
         } else if (!inBody) {
             // Tout élément avant le début du corps est un titre
             el.className = '';
             el.classList.add('text-body-title');
             firstTitleFound = true;
             afterReference = false;
+            lastRefEndedWithComma = false;
         } else {
             // Éléments du corps du texte (paragraphes ou sous-titres)
             const nextEl = el.nextElementSibling;
@@ -417,10 +426,16 @@ function processLoadedHTML(rawHtml, author) {
             el.className = '';
             if (isTitleOrSub) {
                 el.classList.add('text-body-subheading');
+                const cleanedText = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}]+|[«»"“’\s\t\(\)\[\]\{\}]+$/g, '').trim();
+                const isAllUpper = cleanedText === cleanedText.toUpperCase() && /[A-ZÀ-Ÿ]/.test(cleanedText);
+                if (isAllUpper && cleanedText.length < 50) {
+                    el.classList.add('centered');
+                }
             } else {
                 el.classList.add('text-body-paragraph');
             }
             afterReference = false;
+            lastRefEndedWithComma = false;
         }
     });
     

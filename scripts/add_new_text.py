@@ -87,6 +87,17 @@ OFFICIAL_NOTIONS = [
 
 # API config
 API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    env_path = os.path.join(PROJECT_DIR, ".env")
+    if os.path.exists(env_path):
+        try:
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip().startswith("GEMINI_API_KEY="):
+                        API_KEY = line.strip().split("=", 1)[1].strip().strip('"').strip("'")
+                        break
+        except Exception:
+            pass
 
 def normalize_notion(notion_str):
     """Normalize apostrophes, accents, and spacing to match official notions list"""
