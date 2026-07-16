@@ -53,6 +53,83 @@ function formatFrenchTypography(str) {
     });
 }
 
+function formatTitleSentenceCase(str) {
+    if (!str) return '';
+    
+    // Check if the string is all uppercase (excluding punctuation, numbers, spaces)
+    const lettersOnly = str.replace(/[^a-zA-Z\u00C0-\u017F]/g, '');
+    if (lettersOnly.length === 0 || lettersOnly !== lettersOnly.toUpperCase()) {
+        return str; // Not all uppercase
+    }
+    
+    // Lowercase everything
+    let result = str.toLowerCase();
+    
+    // Capitalize the first letter (skipping leading symbols/quotes)
+    result = result.replace(/^([^a-zA-Z\u00C0-\u017F]*)([a-zA-Z\u00C0-\u017F])/, (m, p1, p2) => p1 + p2.toUpperCase());
+    
+    // Capitalize known proper nouns in the database to be clean
+    const properNouns = [
+        'alain', 'aristote', 'badiou', 'barthes', 'baudrillard', 'benjamin', 'bentham', 
+        'bergson', 'berkeley', 'bible', 'bourdieu', 'boëda', 'chalmers', 'charbonnier', 
+        'châtelet', 'chollet', 'cicéron', 'clastres', 'clément', 'cohen', 'comte-sponville', 
+        'corpus', 'crawford', 'daudet', 'daumal', 'de montaigne', 'descartes', 'de beauvoir', 
+        'de funès', 'diderot', 'ducros', 'duras', 'durkheim', 'ecclésiaste', 'einstein', 
+        'ellul', 'encinas', 'goyard-fabre', 'tap-pierre', 'encyclopédie', 'engels', 'épicure', 
+        'faye', 'ferry', 'filliozat', 'foucault', 'fraisse', 'frankfurt', 'freud', 'pages', 
+        'froideveaux-metterie', 'galluzzo', 'garcia', 'gide', 'girard', 'godin', 'gracian', 
+        'grimaldi', 'gros', 'hamilton', 'hefez', 'hegel', 'hempel', 'hersch', 'hobbes', 
+        'houellebecq', 'hugo', 'hume', 'huxley', 'hölderlin', 'illouz', 'benger', 'alaluf', 
+        'west', 'james', 'jankélévitch', 'jaspers', 'kant', 'klein', 'koyré', 'kundera', 
+        'la rochefoucauld', 'lacan', 'lafargue', 'lagasgnerie', 'lao-tseu', 'laplace', 'leibniz', 
+        'locke', 'lucrèce', 'léotard', 'lévi-strauss', 'machiavel', 'malherbe', 'marx', 'mauss', 
+        'mead', 'mill', 'mirbeau', 'montaigne', 'montesquieu', 'morice', 'mouy', 'nagel', 
+        'newton', 'nietzsche', 'nozick', 'nussbaum', 'ovide', 'pascal', 'pessoa', 'platon', 
+        'pline', 'popper', 'proust', 'prévost', 'putnam', 'rosenberg', 'rousseau', 'russell', 
+        'sartre', 'schopenhauer', 'sen', 'serres', 'sextus', 'smith', 'spinoza', 'testart', 
+        'thoreau', 'tocqueville', 'tournier', 'valéry', 'voltaire', 'weil', 'yourcenar', 
+        'zamiatine', 'zeniter', 'zeuxis'
+    ];
+    
+    properNouns.forEach(noun => {
+        const regex = new RegExp(`\\b${noun}\\b`, 'gi');
+        result = result.replace(regex, match => {
+            return match.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('-');
+        });
+    });
+    
+    // Also capitalize roman numerals
+    result = result.replace(/\b(i|ii|iii|iv|v|vi|vii|viii|ix|x|xi|xii|xiii|xiv|xv|xvi|xvii|xviii|xix|xx)\b/gi, m => m.toUpperCase());
+    
+    return result;
+}
+
+function formatTitleListSeparators(str, id) {
+    if (!str) return '';
+    
+    // Split by / or ;
+    if (str.includes('/') || str.includes(';')) {
+        const delimiter = str.includes('/') ? '/' : ';';
+        return str.split(delimiter)
+            .map(p => p.trim())
+            .filter(p => p.length > 0)
+            .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+            .join(' \u2013 '); // \u2013 is '–'
+    }
+    
+    // Split by comma for known concept list IDs
+    const knownListIds = [170, 261, 322, 582];
+    if (str.includes(',') && knownListIds.includes(Number(id))) {
+        return str.split(',')
+            .map(p => p.trim())
+            .filter(p => p.length > 0)
+            .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+            .join(' \u2013 ');
+    }
+    
+    return str;
+}
+
 function removeAccents(str) {
     if (!str) return '';
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -608,11 +685,81 @@ function parseTSV(tsvText) {
         
         // If the author name starts with 'DE' (e.g. DE_BEAUVOIR, DE_FUNES), merge it
         if (authorRaw.toUpperCase() === 'DE' && parts[1]) {
-            authorRaw = 'DE ' + parts[1].trim();
+            authorRaw = 'DE_' + parts[1].trim();
             rawThemes = parts.slice(2).join('_');
         }
         
-        const author = formatFrenchTypography(authorRaw);
+        // Special case for EN.UNIV.
+        if (authorRaw.toUpperCase() === 'EN.UNIV.' && parts[1]) {
+            authorRaw = parts[1].trim();
+            rawThemes = parts.slice(2).join('_');
+        }
+        
+        // Map raw author name to clean display name
+        const AUTHOR_MAPPING = {
+            "ALIZAHRA": "Zahra ALI",
+            "CHOLLET": "Mona CHOLLET",
+            "CLEMENTE": "Élisabeth CLÉMENT",
+            "COHEN": "Albert COHEN",
+            "CRAWFORD": "CRAWFORD",
+            "DAUDET": "Alphonse DAUDET",
+            "DAUMAL": "René DAUMAL",
+            "DEBEAUVOIR": "DE BEAUVOIR",
+            "DEFUNES": "Julia DE FUNÈS",
+            "DURAS": "Marguerite DURAS",
+            "FAYEGAEL": "Gaël FAYE",
+            "FILLIOZAT": "Isabelle FILLIOZAT",
+            "FRAISSE": "Paul FRAISSE",
+            "FREUDSARTRE": "FREUD – SARTRE",
+            "FREUDCLAIREPAGES": "Claire PAGÈS",
+            "FROIDEVEAUXMETTERIE": "FROIDEVEAUX–METTERIE",
+            "GALLUZZOANTHONY": "GALLUZZO",
+            "GARCIA": "GARCIA",
+            "GIDE": "André GIDE",
+            "GODINCHRISTIAN": "Christian GODIN",
+            "HOUELLEBECQ": "Michel HOUELLEBECQ",
+            "HUGO": "HUGO",
+            "HUXLEY": "HUXLEY",
+            "JAMESW": "JAMES",
+            "JANKELEVITCHV": "JANKÉLÉVITCH",
+            "KLEINNAOMI": "Naomi KLEIN",
+            "KUNDERA": "Milan KUNDERA",
+            "LAROCHEFOUCAULD": "LA ROCHEFOUCAULD",
+            "LAFARGUE": "LAFARGUE",
+            "LAGASGNERIE": "LAGASNERIE",
+            "LAOTSEU": "LAO TSEU",
+            "LEOTARD": "Marc-Antoine LÉOTARD",
+            "MEADMARGARETH": "Margaret MEAD",
+            "MIRBEAU": "Octave MIRBEAU",
+            "MORICEJULIETTE": "Juliette MORICE",
+            "MOUYPAUL": "Paul MOUY",
+            "PIGNOCCHI": "Alessandro PIGNOCCHI",
+            "PLINELANCIEN": "PLINE l’Ancien",
+            "PREVOST": "Abbé PRÉVOST",
+            "RELIGION": "MARX – KANT",
+            "SEP": "Stanford Encyc. of Phil.",
+            "SEXTUS": "SEXTUS Empiricus",
+            "TESTART": "Jacques TESTART",
+            "TOURNIER": "Michel TOURNIER",
+            "YOURCENAR": "Marguerite YOURCENAR",
+            "ZAMIATINE": "Evgueni ZAMIATINE",
+            "ZENITER": "Alice ZENITER",
+            "EPICURE": "ÉPICURE",
+            "TAPPIERRE": "Pierre TAP"
+        };
+        
+        // Normalize the raw author for lookup
+        const normKey = authorRaw.toUpperCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^A-Z0-9]/g, "");
+            
+        let authorClean = AUTHOR_MAPPING[normKey] || authorRaw;
+        
+        // Replace straight apostrophes with curly ones
+        authorClean = authorClean.replace(/'/g, '’');
+        
+        const author = formatFrenchTypography(authorClean);
         
         // Check version suffixes like _C, _Court, _Complet, _Intro
         let suffix = null;
@@ -635,7 +782,7 @@ function parseTSV(tsvText) {
         const theseMatch = analysisText.match(/Thèse:\s*(.*?)\s*\.\s*(?:Résumé:|$)/);
         const resumeMatch = analysisText.match(/Résumé:\s*(.*?)\s*\.?\s*$/);
         
-        const title = formatFrenchTypography(titreMatch ? titreMatch[1].trim() : themes);
+        const title = formatTitleListSeparators(formatTitleSentenceCase(formatFrenchTypography(titreMatch ? titreMatch[1].trim() : themes)), number);
         const thesis = formatFrenchTypography(theseMatch ? theseMatch[1].trim() : 'Thèse non spécifiée.');
         const summary = formatFrenchTypography(resumeMatch ? resumeMatch[1].trim() : 'Résumé non spécifié.');
         
