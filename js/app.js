@@ -11,6 +11,7 @@ const state = {
     selectedAuthor: null,
     selectedNotion: null,
     activeTextId: null,
+    preselectedTextId: null, // Track currently preselected card
     fontSize: 18,       // Default reader font size (px)
 };
 
@@ -133,6 +134,31 @@ function formatTitleListSeparators(str, id) {
 function removeAccents(str) {
     if (!str) return '';
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function isMobileDevice() {
+    return window.matchMedia("(max-width: 1024px)").matches || 
+           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           ('ontouchstart' in window) || 
+           (navigator.maxTouchPoints > 0);
+}
+
+function setPreselectedText(id) {
+    state.preselectedTextId = id;
+    
+    // Remove selected class from all cards
+    document.querySelectorAll('.text-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    if (id !== null) {
+        const cardEl = document.querySelector(`.text-card[data-id="${id}"]`);
+        if (cardEl) {
+            cardEl.classList.add('selected');
+            // Scroll into view if not fully visible
+            cardEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+    }
 }
 
 /**
@@ -263,6 +289,7 @@ function processLoadedHTML(rawHtml, author) {
         
     let afterReference = false;
     let firstTitleFound = false;
+    let inBody = false;
     const refKeywords = ['trad', 'traduction', 'tome', 'vol', 'éd', 'ed', 'p.', 'page', 'chapitre', 'col.'];
     
     const elements = doc.body.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
@@ -290,39 +317,50 @@ function processLoadedHTML(rawHtml, author) {
         const isHeading = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(el.tagName);
         const isStrong = isStrongTitle(el);
         
+        // Détection de dialogue (speakers et directions)
+        let isSpeaker = false;
+        let isDirection = false;
+        
+        if ((plainText.startsWith('[') && plainText.endsWith(']')) || (plainText.startsWith('(') && plainText.endsWith(')'))) {
+            isDirection = true;
+        } else {
+            const cleaned = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}]+|[«»"“’\s\t\(\)\[\]\{\}]+$/g, '').trim();
+            if (cleaned.length > 0 && cleaned.length < 35) {
+                const isAllUpper = cleaned === cleaned.toUpperCase() && /[A-ZÀ-Ÿ]/.test(cleaned);
+                const isLetterOnly = /^[\p{L}\s’'\-]+$/u.test(cleaned);
+                if (isAllUpper && isLetterOnly) {
+                    isSpeaker = true;
+                }
+            }
+        }
+        
+        // Détection si l'on entre dans le corps du texte
+        if (!inBody) {
+            const startsWithQuote = /^\s*«/u.test(plainText);
+            const isLongText = plainText.length > 150;
+            if (startsWithQuote || isLongText || isSpeaker || isDirection) {
+                inBody = true;
+            }
+        }
+        
         // Détection de flèche (référence)
         const isArrowRef = /^\s*(?:[→🡪🡺\u2190-\u21FF\u2B00-\u2BFF\u{1F800}-\u{1F8FF}]|&rarr;|&#8594;)/u.test(plainText);
         
-        // Détection de continuation de référence : 
-        // L'élément doit suivre une référence, et commencer par une minuscule, un mot-clé de référence ou une année
+        // Détection de continuation de référence
         let isRefCont = false;
         if (afterReference) {
-            const cleanPlain = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}\-\+~≈]+/, ''); // strip quotes, parens, spaces, and indicators like ~
+            const cleanPlain = plainText.replace(/^[«»"“’\s\t\(\)\[\]\{\}\-\+~≈]+/, '');
             const firstChar = cleanPlain.charAt(0);
-            
-            // Check if first character is lowercase
             const isLower = firstChar && firstChar === firstChar.toLowerCase() && firstChar !== firstChar.toUpperCase();
             
-            // Check if starts with a reference keyword
             const cleanPlainLower = cleanPlain.toLowerCase();
-            const isRefKeyword = refKeywords.some(kw => {
-                return cleanPlainLower.startsWith(kw);
-            });
-            
-            // Also check if it starts with a year or roman century expression (e.g. IVe s., ~IVème siècle)
+            const isRefKeyword = refKeywords.some(kw => cleanPlainLower.startsWith(kw));
             const isYearOrParen = /^\d{4}/.test(cleanPlain) || /^[i|v|x|l|c|d|m]+(?:e|ème|°|er)?\s+(?:siècle|s\b)/i.test(cleanPlain);
-            
-            // Check if starts with a Roman numeral (e.g. I., XVII., XCII.)
             const isRomanRef = /^[ivxlcdm]+(?:\b|\.)/i.test(cleanPlain);
-            
-            // Check if starts with "L." or "L. " (common in Alain's references for letters/propos), excluding apostrophes
             const isLRef = /^l\.(?:\s|\d|$)/i.test(cleanPlainLower) || /^l\s+\d/i.test(cleanPlainLower) || /^l\s+[ivxlcdm]+/i.test(cleanPlainLower);
             
-            // Common publisher names or specific reference startings
             const commonPublishers = ['gallimard', 'éditions', 'editions', 'jean-françois', 'librairie', 'presses', 'minuit', 'seuil', 'flammarion', 'vrin', 'albin', 'grasset', 'fayard', 'hachette', 'nathan', 'hatier', 'belin', 'bordas'];
             const isPublisher = commonPublishers.some(pub => cleanPlainLower.startsWith(pub));
-            
-            // Book titles or other content in italics (starts with <em> in HTML)
             const startsWithItalic = el.innerHTML.trim().startsWith('<em>');
             
             if (isLower || isRefKeyword || isYearOrParen || isRomanRef || isLRef || isPublisher || startsWithItalic) {
@@ -330,13 +368,19 @@ function processLoadedHTML(rawHtml, author) {
             }
         }
         
-        // Si c'est une flèche de référence ou une continuation de référence
-        if (isArrowRef || isRefCont) {
-            // Nettoyer les classes et appliquer celle des références
+        // Attribution des classes
+        if (isSpeaker) {
+            el.className = '';
+            el.classList.add('text-body-dialogue-speaker');
+            afterReference = false;
+        } else if (isDirection) {
+            el.className = '';
+            el.classList.add('text-body-dialogue-direction');
+            afterReference = false;
+        } else if (isArrowRef || isRefCont) {
             el.className = '';
             el.classList.add('text-body-reference');
             
-            // Si c'est une référence principale (avec flèche), on remplace la flèche par le SVG
             if (isArrowRef) {
                 const removeLeadingArrow = (node) => {
                     if (node.nodeType === Node.TEXT_NODE) {
@@ -357,32 +401,26 @@ function processLoadedHTML(rawHtml, author) {
                 removeLeadingArrow(el);
                 el.innerHTML = arrowSVG + el.innerHTML;
             }
-            
             afterReference = true;
+        } else if (!inBody) {
+            // Tout élément avant le début du corps est un titre
+            el.className = '';
+            el.classList.add('text-body-title');
+            firstTitleFound = true;
+            afterReference = false;
         } else {
-            // Détection si c'est un titre (principal ou sous-titre)
-            // Le premier titre rencontré est considéré comme le titre principal de la page
-            // Les titres suivants peuvent être détectés heuristiquement, sauf s'ils introduisent immédiatement une liste
+            // Éléments du corps du texte (paragraphes ou sous-titres)
             const nextEl = el.nextElementSibling;
             const isListIntro = nextEl && (nextEl.tagName === 'OL' || nextEl.tagName === 'UL');
-            
             let isTitleOrSub = isHeading || isStrong || (isTitleLike(plainText, isLast) && !isListIntro);
             
+            el.className = '';
             if (isTitleOrSub) {
-                el.className = '';
-                const isAllUppercase = plainText === plainText.toUpperCase() && /[A-ZÀ-Ÿ]/.test(plainText);
-                if (!firstTitleFound || afterReference || isAllUppercase) {
-                    el.classList.add('text-body-title');
-                    firstTitleFound = true;
-                } else {
-                    el.classList.add('text-body-subheading');
-                }
-                afterReference = false;
+                el.classList.add('text-body-subheading');
             } else {
-                el.className = '';
                 el.classList.add('text-body-paragraph');
-                afterReference = false;
             }
+            afterReference = false;
         }
     });
     
@@ -647,6 +685,11 @@ async function fetchDatabase() {
         
         // Check hash on load
         handleHashRoute();
+
+        // Focus search input by default on PC when grid is visible
+        if (!isMobileDevice() && state.activeTextId === null) {
+            DOM.searchInput.focus();
+        }
     } catch (error) {
         console.error("Erreur d'initialisation:", error);
         DOM.cardsGrid.innerHTML = `
@@ -656,6 +699,15 @@ async function fetchDatabase() {
             </div>
         `;
     }
+}
+
+function cleanTSVField(field) {
+    if (!field) return '';
+    let str = field.trim();
+    if (str.startsWith('"') && str.endsWith('"')) {
+        str = str.slice(1, -1);
+    }
+    return str.replace(/""/g, '"').trim();
 }
 
 function parseTSV(tsvText) {
@@ -673,9 +725,9 @@ function parseTSV(tsvText) {
         if (cols.length < 3) continue;
         
         const number = parseInt(cols[0].trim()) || 999;
-        const filename = cols[1].trim();
-        const analysisText = cols[2].trim();
-        const notionsText = cols[3] || '';
+        const filename = cleanTSVField(cols[1]);
+        const analysisText = cleanTSVField(cols[2]);
+        const notionsText = cleanTSVField(cols[3]);
         
         // Parse filename metadata
         const parts = filename.split('_');
@@ -705,6 +757,7 @@ function parseTSV(tsvText) {
             "DAUDET": "Alphonse DAUDET",
             "DAUMAL": "René DAUMAL",
             "DEBEAUVOIR": "DE BEAUVOIR",
+            "DEMONTAIGNE": "Tania DE MONTAIGNE",
             "DEFUNES": "Julia DE FUNÈS",
             "DURAS": "Marguerite DURAS",
             "FAYEGAEL": "Gaël FAYE",
@@ -748,13 +801,24 @@ function parseTSV(tsvText) {
             "TAPPIERRE": "Pierre TAP"
         };
         
-        // Normalize the raw author for lookup
-        const normKey = authorRaw.toUpperCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^A-Z0-9]/g, "");
-            
-        let authorClean = AUTHOR_MAPPING[normKey] || authorRaw;
+        // ID-specific overrides
+        const ID_AUTHOR_OVERRIDES = {
+            383: "BIBLE – LOCKE – DDHC 1789",
+            508: "HÉSIODE – PLATON"
+        };
+        
+        let authorClean;
+        if (ID_AUTHOR_OVERRIDES[number]) {
+            authorClean = ID_AUTHOR_OVERRIDES[number];
+        } else {
+            // Normalize the raw author for lookup
+            const normKey = authorRaw.toUpperCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^A-Z0-9]/g, "");
+                
+            authorClean = AUTHOR_MAPPING[normKey] || authorRaw;
+        }
         
         // Replace straight apostrophes with curly ones
         authorClean = authorClean.replace(/'/g, '’');
@@ -782,7 +846,13 @@ function parseTSV(tsvText) {
         const theseMatch = analysisText.match(/Thèse:\s*(.*?)\s*\.\s*(?:Résumé:|$)/);
         const resumeMatch = analysisText.match(/Résumé:\s*(.*?)\s*\.?\s*$/);
         
-        const title = formatTitleListSeparators(formatTitleSentenceCase(formatFrenchTypography(titreMatch ? titreMatch[1].trim() : themes)), number);
+        const rawTitle = titreMatch ? titreMatch[1].trim() : themes;
+        const cleanTitle = rawTitle
+            .replace(/\s*\((?:version\s+)?courte?\)\s*/gi, '')
+            .replace(/\s*\((?:version\s+)?complète?\)\s*/gi, '')
+            .replace(/\s*\(introduction\)\s*/gi, '')
+            .trim();
+        const title = formatTitleListSeparators(formatTitleSentenceCase(formatFrenchTypography(cleanTitle)), number);
         const thesis = formatFrenchTypography(theseMatch ? theseMatch[1].trim() : 'Thèse non spécifiée.');
         const summary = formatFrenchTypography(resumeMatch ? resumeMatch[1].trim() : 'Résumé non spécifié.');
         
@@ -846,6 +916,9 @@ function parseSearchQuery(queryStr) {
 
 function applyFilters() {
     const rawQuery = DOM.searchInput.value.trim();
+    
+    // Reset card preselection when search filter changes
+    setPreselectedText(null);
     
     // If the reader is active and a query is entered, close it to start a new search
     if (state.activeTextId !== null && rawQuery !== '') {
@@ -957,23 +1030,26 @@ function renderCards() {
         return;
     }
     
-    DOM.cardsGrid.innerHTML = state.filteredTexts.map(t => `
-        <div class="text-card" onclick="openText(${t.id})">
-            <div class="card-meta">
-                <span class="card-id-badge">${t.id}</span>
-                <span class="card-author">${t.author}</span>
+    DOM.cardsGrid.innerHTML = state.filteredTexts.map(t => {
+        const isPreselected = t.id === state.preselectedTextId;
+        return `
+            <div class="text-card${isPreselected ? ' selected' : ''}" data-id="${t.id}" onclick="openText(${t.id})">
+                <div class="card-meta">
+                    <span class="card-id-badge">${t.id}</span>
+                    <span class="card-author">${t.author}</span>
+                </div>
+                <h3 class="card-title">
+                    ${t.title}
+                    ${t.suffix ? `<span class="notion-tag" style="margin-left: 6px; font-weight: 500;">${t.suffix}</span>` : ''}
+                </h3>
+                <p class="card-thesis-preview">${t.thesis}</p>
+                <p class="card-summary-preview">${t.summary}</p>
+                <div class="card-notions">
+                    ${t.notions.map(n => `<span class="notion-tag">${n}</span>`).join('')}
+                </div>
             </div>
-            <h3 class="card-title">
-                ${t.title}
-                ${t.suffix ? `<span class="notion-tag" style="margin-left: 6px; font-weight: 500;">${t.suffix}</span>` : ''}
-            </h3>
-            <p class="card-thesis-preview">${t.thesis}</p>
-            <p class="card-summary-preview">${t.summary}</p>
-            <div class="card-notions">
-                ${t.notions.map(n => `<span class="notion-tag">${n}</span>`).join('')}
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // ==========================================
@@ -991,6 +1067,7 @@ function openText(id) {
     
     // Set active state
     state.activeTextId = id;
+    state.preselectedTextId = id;
     
     // Update hash route quietly to allow sharing links
     window.location.hash = `#${id}`;
@@ -998,12 +1075,16 @@ function openText(id) {
     // Populate reader metadata
     DOM.readerTextId.textContent = textData.id;
     DOM.readerAuthor.textContent = textData.author;
-    DOM.readerTitle.textContent = textData.title + (textData.suffix ? ` (${textData.suffix})` : '');
+    DOM.readerTitle.textContent = textData.title;
     DOM.readerThesis.textContent = textData.thesis;
     DOM.readerSummary.textContent = textData.summary;
     
-    // Notions badges
-    DOM.readerNotionsBadges.innerHTML = textData.notions.map(n => `<span class="notion-tag">${n}</span>`).join('');
+    // Notions badges + Version suffix badge if present
+    let badgesHTML = textData.notions.map(n => `<span class="notion-tag">${n}</span>`).join('');
+    if (textData.suffix) {
+        badgesHTML += `<span class="notion-tag" style="background: var(--accent); color: white; font-weight: 600; margin-left: 6px;">${textData.suffix}</span>`;
+    }
+    DOM.readerNotionsBadges.innerHTML = badgesHTML;
     
     // Set PDF download link
     DOM.pdfDownloadLink.href = `pdf/${textData.filename}.pdf`;
@@ -1037,6 +1118,7 @@ function openText(id) {
         })
         .then(html => {
             DOM.readerBody.innerHTML = processLoadedHTML(html, textData.author);
+            setupFootnoteListeners();
         })
         .catch(err => {
             console.error(err);
@@ -1049,6 +1131,40 @@ function openText(id) {
                 </div>
             `;
         });
+}
+
+function setupFootnoteListeners() {
+    const refLinks = DOM.readerBody.querySelectorAll('a[id^="footnote-ref-"]');
+    refLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').replace('#', '');
+            const targetEl = DOM.readerBody.querySelector(`[id="${targetId}"]`);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetEl.classList.add('highlight-note');
+                setTimeout(() => {
+                    targetEl.classList.remove('highlight-note');
+                }, 2000);
+            }
+        });
+    });
+
+    const backLinks = DOM.readerBody.querySelectorAll('.footnotes a[href^="#footnote-ref-"]');
+    backLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').replace('#', '');
+            const targetEl = DOM.readerBody.querySelector(`[id="${targetId}"]`);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetEl.classList.add('highlight-ref');
+                setTimeout(() => {
+                    targetEl.classList.remove('highlight-ref');
+                }, 2000);
+            }
+        });
+    });
 }
 
 function updateNavigationButtons() {
@@ -1080,6 +1196,7 @@ function navigateNext() {
 }
 
 function closeReader() {
+    const closedId = state.activeTextId;
     state.activeTextId = null;
     window.location.hash = '';
     
@@ -1088,6 +1205,11 @@ function closeReader() {
     DOM.readerView.style.display = 'none';
     DOM.cardsGrid.style.display = 'grid';
     DOM.resultsBar.style.display = 'flex';
+    
+    // Auto-preselect closed text card on PC
+    if (closedId !== null && !isMobileDevice()) {
+        setPreselectedText(closedId);
+    }
 }
 
 function handleHashRoute() {
@@ -1115,22 +1237,34 @@ function setupEventListeners() {
     DOM.searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = DOM.searchInput.value.trim();
-        if (/^\d+$/.test(query)) {
-            const num = parseInt(query, 10);
-            const hasText = state.texts.some(t => t.id === num);
-            if (hasText) {
-                openText(num);
-                DOM.searchInput.value = '';
-                applyFilters(); // Reset search input state
+        const isMobile = isMobileDevice();
+        
+        // Remove focus from input to hide keyboard on mobile / exit search on PC
+        DOM.searchInput.blur();
+        
+        if (isMobile) {
+            if (/^\d+$/.test(query)) {
+                const num = parseInt(query, 10);
+                const hasText = state.texts.some(t => t.id === num);
+                if (hasText) {
+                    openText(num);
+                    DOM.searchInput.value = '';
+                    applyFilters(); // Reset search input state
+                } else {
+                    alert(`Le texte N° ${num} n'existe pas dans la base.`);
+                }
             } else {
-                alert(`Le texte N° ${num} n'existe pas dans la base.`);
+                // If not a number, but there is exactly 1 match
+                if (state.filteredTexts.length === 1) {
+                    openText(state.filteredTexts[0].id);
+                    DOM.searchInput.value = '';
+                    applyFilters(); // Reset search input state
+                }
             }
         } else {
-            // If not a number, but there is exactly 1 match
-            if (state.filteredTexts.length === 1) {
-                openText(state.filteredTexts[0].id);
-                DOM.searchInput.value = '';
-                applyFilters(); // Reset search input state
+            // On PC: preselect the first text card without opening it yet
+            if (state.filteredTexts.length > 0) {
+                setPreselectedText(state.filteredTexts[0].id);
             }
         }
     });
@@ -1156,25 +1290,69 @@ function setupEventListeners() {
     DOM.navPrev.addEventListener('click', navigatePrev);
     DOM.navNext.addEventListener('click', navigateNext);
 
-    // Keyboard navigation on PC (ArrowLeft/ArrowRight/Escape)
+    // Keyboard navigation on PC (ArrowLeft/ArrowRight/Escape/Enter/ArrowUp/ArrowDown)
     document.addEventListener('keydown', (e) => {
-        // Only run if the reader is active
-        if (state.activeTextId === null) return;
+        const isMobile = isMobileDevice();
+        if (isMobile) return;
         
-        if (e.key === 'Escape' || e.key === 'Esc') {
-            closeReader();
+        // --- Scenario A: Reader is active ---
+        if (state.activeTextId !== null) {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                closeReader();
+                return;
+            }
+            
+            // Ignore if user is currently typing in an input element
+            if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                return;
+            }
+            
+            if (e.key === 'ArrowLeft') {
+                navigatePrev();
+            } else if (e.key === 'ArrowRight') {
+                navigateNext();
+            }
             return;
         }
         
+        // --- Scenario B: Reader is NOT active (Viewing grid) ---
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            e.preventDefault();
+            DOM.searchInput.value = '';
+            applyFilters();
+            DOM.searchInput.focus();
+            return;
+        }
+
         // Ignore if user is currently typing in an input element
         if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
             return;
         }
         
-        if (e.key === 'ArrowLeft') {
-            navigatePrev();
-        } else if (e.key === 'ArrowRight') {
-            navigateNext();
+        if (state.preselectedTextId !== null) {
+            const currentIndex = state.filteredTexts.findIndex(t => t.id === state.preselectedTextId);
+            
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                openText(state.preselectedTextId);
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (currentIndex !== -1 && currentIndex < state.filteredTexts.length - 1) {
+                    setPreselectedText(state.filteredTexts[currentIndex + 1].id);
+                }
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentIndex !== -1 && currentIndex > 0) {
+                    setPreselectedText(state.filteredTexts[currentIndex - 1].id);
+                }
+            }
+        } else {
+            // If no card is preselected but the user presses an arrow key on the document,
+            // preselect the first card.
+            if (state.filteredTexts.length > 0 && (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp')) {
+                e.preventDefault();
+                setPreselectedText(state.filteredTexts[0].id);
+            }
         }
     });
 

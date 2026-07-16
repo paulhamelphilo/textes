@@ -552,12 +552,19 @@ body:not(.dark-mode) .icon-dark { display: block; }
     gap: 16px;
     cursor: pointer;
     text-align: left;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .text-card:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
     border-color: var(--border-hover, var(--border));
+}
+
+.text-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3), var(--shadow-hover);
+    transform: translateY(-2px);
 }
 
 .card-meta {
@@ -579,7 +586,6 @@ body:not(.dark-mode) .icon-dark { display: block; }
     font-size: 14.5px;
     font-weight: 700;
     color: var(--text-muted);
-    text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
@@ -805,7 +811,6 @@ body:not(.dark-mode) .icon-dark { display: block; }
     font-size: 14px;
     font-weight: 700;
     color: var(--text-muted);
-    text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
@@ -1074,8 +1079,9 @@ body:not(.dark-mode) .icon-dark { display: block; }
 .text-body-title,
 .text-body-subheading,
 .text-analysis-card,
+.text-card,
 [id] {
-    scroll-margin-top: 110px;
+    scroll-margin-top: 120px;
 }
 
 /* Styles pour les tableaux dans la zone de lecture */
@@ -1142,5 +1148,55 @@ body:not(.dark-mode) .icon-dark { display: block; }
     text-indent: 0 !important;
     margin-bottom: 0 !important;
 }
+
+/* Styles pour le théâtre / dialogues */
+.text-body-dialogue-speaker {
+    font-family: var(--ui-font) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+    text-indent: 0 !important;
+    text-align: left !important;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+
+.text-body-dialogue-direction {
+    font-family: var(--reader-font);
+    font-style: italic;
+    color: var(--text-muted);
+    text-indent: 0 !important;
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+    text-align: left !important;
+    padding-left: 1em;
+    border-left: 2px solid var(--border);
+}
+
+/* Animations et styles pour la mise en valeur des notes et références cliquées */
+@keyframes footnoteHighlight {
+    0% {
+        background-color: rgba(52, 152, 219, 0.25);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.highlight-note {
+    animation: footnoteHighlight 2s ease-out;
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: inline-block;
+}
+
+.highlight-ref {
+    animation: footnoteHighlight 2s ease-out;
+    border-radius: 4px;
+    padding: 0 4px;
+    display: inline-block;
+}
+
 
 
