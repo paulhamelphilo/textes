@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revue et Nettoyage des Auteurs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            padding: 40px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 15.5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background-color: var(--bg-page);
+            border-color: var(--primary-light);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .actions-sticky {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--bg-page);
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        tr:hover td {
+            background-color: #fafbfd;
+        }
+
+        .col-check {
+            width: 60px;
+            text-align: center;
+        }
+
+        /* Custom Checkbox */
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            width: 0;
+            height: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 24px;
+            width: 24px;
+            background-color: #e2e8f0;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--success);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 6px;
+            height: 11px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .author-raw {
+            font-family: monospace;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .author-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--primary);
+            outline: none;
+        }
+
+        .author-input:focus {
+            border-color: var(--accent);
+            background: #f8fafc;
+        }
+
+        .count-badge {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #1e40af;
+            padding: 3px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            outline: none;
+            resize: none;
+            font-size: 12.5px;
+            margin-bottom: 15px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-weight: 600;
+            font-size: 14px;
+            display: none;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Nettoyage des Noms d'Auteurs</h1>
+                <p class="subtitle">Sélectionnez et éditez les propositions de noms des auteurs. Vous pouvez écrire en minuscules (ex: Prénom NOM) pour les auteurs littéraires ou moins connus.</p>
+            </div>
+            <div class="button-group">
+                <button class="btn-action" onclick="downloadBackup()">📥 Télécharger la sauvegarde</button>
+                <button class="btn-action" onclick="document.getElementById('import-file').click()">📤 Importer la sauvegarde</button>
+                <input type="file" id="import-file" style="display: none;" accept=".json" onchange="uploadBackup(event)">
+            </div>
+        </header>
+
+        <input type="text" class="search-bar" id="search-input" placeholder="Rechercher par auteur brut ou proposé..." oninput="filterData()">
+
+        <div class="actions-sticky">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-action" onclick="toggleAll(true)">Tout cocher</button>
+                <button class="btn-action" onclick="toggleAll(false)">Tout décocher</button>
+            </div>
+            <button class="btn-primary" onclick="exportData()">Copier les choix pour l'IA</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-check">Choix</th>
+                    <th>Auteur brut</th>
+                    <th>Nom proposé</th>
+                    <th>Exemple de fichier</th>
+                    <th>Textes impactés</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Rows injected here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="export-modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 10px; font-weight: 700; color: var(--primary);">Copiez ces choix pour l'IA</h3>
+            <p style="margin-bottom: 15px; font-size: 14px; color: var(--text-muted);">
+                Collez ce JSON directement dans notre discussion. J'appliquerai le nettoyage des auteurs dans le code et la base de données.
+            </p>
+            <textarea id="export-output" readonly onclick="this.select()"></textarea>
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="copyOutputText()">Copier dans le presse-papiers</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast-msg">Copié !</div>
+
+    <script>
+        const localStorageKey = 'author_reviewer_state_v3';
+        const defaultRawData = [
+    {
+        "id": "100,101",
+        "raw_author": "AFEISSA",
+        "filename": "AFEISSA_\u00c9thique environnementale",
+        "suggested": "AFEISSA",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "102,103,104,105,106,107,108,109",
+        "raw_author": "ALAIN",
+        "filename": "ALAIN_Angoisse&Dissipation&Habitude",
+        "suggested": "ALAIN",
+        "count": 8,
+        "is_row_specific": false
+    },
+    {
+        "id": "110",
+        "raw_author": "ALI-Zahra",
+        "filename": "ALI-Zahra_F\u00e9minisme-islamique_Introduction",
+        "suggested": "Zahra ALI",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "111",
+        "raw_author": "ARENDT",
+        "filename": "ARENDT_Homme&Machine&Asservissement",
+        "suggested": "ARENDT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "112,113,114,115,116,117,118,119,120,121,122,123,124,125,126",
+        "raw_author": "ARISTOTE",
+        "filename": "ARISTOTE_Amiti\u00e9",
+        "suggested": "ARISTOTE",
+        "count": 15,
+        "is_row_specific": false
+    },
+    {
+        "id": "127",
+        "raw_author": "BADIOU",
+        "filename": "BADIOU_Amour&Jalousie",
+        "suggested": "BADIOU",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "128,129",
+        "raw_author": "BARTHES",
+        "filename": "BARTHES_FDA_Attente&sc\u00e9nographie",
+        "suggested": "BARTHES",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "130,131,132,133,134,135,136,137,138,139,140,141",
+        "raw_author": "BAUDRILLARD",
+        "filename": "BAUDRILLARD_112-113_Imp\u00e9ratif&jouissance",
+        "suggested": "BAUDRILLARD",
+        "count": 12,
+        "is_row_specific": false
+    },
+    {
+        "id": "142",
+        "raw_author": "BENJAMIN",
+        "filename": "BENJAMIN_Le-jeu",
+        "suggested": "BENJAMIN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "143",
+        "raw_author": "BENTHAM",
+        "filename": "BENTHAM_Calcul-f\u00e9licifique",
+        "suggested": "BENTHAM",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "144,145,146",
+        "raw_author": "BERGSON",
+        "filename": "BERGSON_Conscience&m\u00e9moire&attente&choix",
+        "suggested": "BERGSON",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "147",
+        "raw_author": "BERKELEY",
+        "filename": "BERKELEY_Cerise",
+        "suggested": "BERKELEY",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "148",
+        "raw_author": "BIBLE",
+        "filename": "BIBLE_Homme&Nature",
+        "suggested": "BIBLE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "150,151,152,153,154,155,156,157,158",
+        "raw_author": "BOURDIEU",
+        "filename": "BOURDIEU_Don&Intervalle",
+        "suggested": "BOURDIEU",
+        "count": 9,
+        "is_row_specific": false
+    },
+    {
+        "id": "149",
+        "raw_author": "BO\u00cbDA",
+        "filename": "BO\u00cbDA_Objet&Lign\u00e9e&Fonction",
+        "suggested": "BO\u00cbDA",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "159",
+        "raw_author": "CHALMERS",
+        "filename": "CHALMERS_Perception&subjectivit\u00e9",
+        "suggested": "CHALMERS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "50,160,161,162",
+        "raw_author": "CHARBONNIER",
+        "filename": "CHARBONNIER_Pudeur",
+        "suggested": "CHARBONNIER",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "164,165",
+        "raw_author": "CHOLLET",
+        "filename": "CHOLLET_Id\u00e9al-f\u00e9minin",
+        "suggested": "Mona CHOLLET",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "163",
+        "raw_author": "CH\u00c2TELET",
+        "filename": "CH\u00c2TELET_Illusion&Bonheur",
+        "suggested": "CH\u00c2TELET",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "166",
+        "raw_author": "CICERON",
+        "filename": "CICERON_Sagesse&eloquence",
+        "suggested": "CICERON",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "167",
+        "raw_author": "CLASTRES",
+        "filename": "CLASTRES_Travail&Hache&Surplus&Temps-libre",
+        "suggested": "CLASTRES",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "168",
+        "raw_author": "CLEMENT.\u00c9",
+        "filename": "CLEMENT.\u00c9_Justice&Introduction",
+        "suggested": "\u00c9lisabeth CL\u00c9MENT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "169",
+        "raw_author": "COHEN",
+        "filename": "COHEN_Procrastination&D\u00e9fauts",
+        "suggested": "COHEN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198",
+        "raw_author": "COMTE-SPONVILLE",
+        "filename": "COMTE-SPONVILLE_Altruisme&\u00c9go\u00efsme",
+        "suggested": "COMTE-SPONVILLE",
+        "count": 29,
+        "is_row_specific": false
+    },
+    {
+        "id": "199,200",
+        "raw_author": "CORPUS",
+        "filename": "CORPUS_Philosophie",
+        "suggested": "CORPUS",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "201",
+        "raw_author": "CRAWFORD",
+        "filename": "CRAWFORD_Travail&Art-m\u00e9canique&Sens&Valeur",
+        "suggested": "Matthew CRAWFORD",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "202",
+        "raw_author": "DAUDET",
+        "filename": "DAUDET_La-derni\u00e8re-classe",
+        "suggested": "Alphonse DAUDET",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "203,204",
+        "raw_author": "DAUMAL",
+        "filename": "DAUMAL_Effort&\u00c9veil",
+        "suggested": "Ren\u00e9 DAUMAL",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "208",
+        "raw_author": "DE-MONTAIGNE",
+        "filename": "DE-MONTAIGNE_Race&Origine",
+        "suggested": "MONTAIGNE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "205,206",
+        "raw_author": "DE_BEAUVOIR",
+        "filename": "DE_BEAUVOIR_Feminite_I",
+        "suggested": "BEAUVOIR",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "207",
+        "raw_author": "DE_FUNES",
+        "filename": "DE_FUNES_Developpement-(im)personnel_Extraits",
+        "suggested": "Julia DE FUN\u00c8S",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "209,210,211,212,213,214,215,216",
+        "raw_author": "DESCARTES",
+        "filename": "DESCARTES_Cogito-(MM)",
+        "suggested": "DESCARTES",
+        "count": 8,
+        "is_row_specific": false
+    },
+    {
+        "id": "217",
+        "raw_author": "DIDEROT",
+        "filename": "DIDEROT_Exp\u00e9rimentation&richesse",
+        "suggested": "DIDEROT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "218,219,220",
+        "raw_author": "DUCROS",
+        "filename": "DUCROS_1-Penser-le-sport",
+        "suggested": "DUCROS",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "221",
+        "raw_author": "DURAS",
+        "filename": "DURAS_\u00c9crire",
+        "suggested": "Marguerite DURAS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "222,223,224",
+        "raw_author": "DURKHEIM",
+        "filename": "DURKHEIM_Bonheur&Plaisir",
+        "suggested": "DURKHEIM",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "225",
+        "raw_author": "ECCLESIASTE",
+        "filename": "ECCLESIASTE_Vanit\u00e9s",
+        "suggested": "ECCLESIASTE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "226",
+        "raw_author": "EINSTEIN",
+        "filename": "EINSTEIN_M\u00e9canisme&monde",
+        "suggested": "EINSTEIN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "227",
+        "raw_author": "ELLUL",
+        "filename": "ELLUL_Technique&sacrilege&sacr\u00e9",
+        "suggested": "ELLUL",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "231",
+        "raw_author": "ENCYCLOP\u00c9DIE",
+        "filename": "ENCYCLOP\u00c9DIE_Attention",
+        "suggested": "ENCYCLOP\u00c9DIE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "232",
+        "raw_author": "ENGELS",
+        "filename": "ENGELS_\u00c9tat&domination",
+        "suggested": "ENGELS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "237",
+        "raw_author": "EPICURE",
+        "filename": "EPICURE_Trois-types-de-d\u00e9sir",
+        "suggested": "EPICURE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "238",
+        "raw_author": "FAYE-Ga\u00ebl",
+        "filename": "FAYE-Ga\u00ebl_Diff\u00e9rence",
+        "suggested": "Ga\u00ebl FAYE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "239,240,241,242,243",
+        "raw_author": "FERRY",
+        "filename": "FERRY_Illettrisme",
+        "suggested": "FERRY",
+        "count": 5,
+        "is_row_specific": false
+    },
+    {
+        "id": "244",
+        "raw_author": "FILLIOZAT",
+        "filename": "FILLIOZAT_\u00c9ducation&Limites",
+        "suggested": "Isabelle FILLIOZAT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "245",
+        "raw_author": "FOUCAULT",
+        "filename": "FOUCAULT_Prison&Discipline",
+        "suggested": "FOUCAULT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "246,247,248",
+        "raw_author": "FRAISSE",
+        "filename": "FRAISSE_Rythme_Intro",
+        "suggested": "FRAISSE",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "249",
+        "raw_author": "FRANKFURT",
+        "filename": "FRANKFURT_Bullshit",
+        "suggested": "FRANKFURT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "252,253,254",
+        "raw_author": "FREUD",
+        "filename": "FREUD_Homme&Agressivit\u00e9",
+        "suggested": "FREUD",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "250",
+        "raw_author": "FREUD&SARTRE",
+        "filename": "FREUD&SARTRE_Inconscient",
+        "suggested": "FREUD \u2013 SARTRE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "251",
+        "raw_author": "FREUD(Claire Pag\u00e8s)",
+        "filename": "FREUD(Claire Pag\u00e8s)_Psychanalyse&patient&activit\u00e9",
+        "suggested": "FREUD(CLAIRE PAG\u00c8S)",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "255",
+        "raw_author": "FROIDEVEAUX-METTERIE",
+        "filename": "FROIDEVEAUX-METTERIE_F\u00e9minisme",
+        "suggested": "FROIDEVEAUX METTERIE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "256",
+        "raw_author": "GALLUZZO-Anthony",
+        "filename": "GALLUZZO-Anthony_G\u00e9nie&Mythe&Entrepreneur",
+        "suggested": "Anthony GALLUZZO",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "257,258,259,260",
+        "raw_author": "GARCIA",
+        "filename": "GARCIA_1_Situation",
+        "suggested": "GARCIA",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "261",
+        "raw_author": "GIDE",
+        "filename": "GIDE_DESCARTES_Libert\u00e9&Libre-arbitre",
+        "suggested": "GIDE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "262,263,264",
+        "raw_author": "GIRARD",
+        "filename": "GIRARD_Bouc-\u00e9missaire",
+        "suggested": "GIRARD",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "265",
+        "raw_author": "GODIN-Christian",
+        "filename": "GODIN-Christian_Enc._Sport",
+        "suggested": "Christian GODIN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "266,267",
+        "raw_author": "GRACIAN",
+        "filename": "GRACIAN_Homme-de-cours_Extraits",
+        "suggested": "GRACIAN",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "268,269,270,271,272,273",
+        "raw_author": "GRIMALDI",
+        "filename": "GRIMALDI_All\u00e9gresse",
+        "suggested": "GRIMALDI",
+        "count": 6,
+        "is_row_specific": false
+    },
+    {
+        "id": "274",
+        "raw_author": "GROS",
+        "filename": "GROS_Fl\u00e2neur",
+        "suggested": "GROS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "275",
+        "raw_author": "HAMILTON",
+        "filename": "HAMILTON_Hybris&Pha\u00ebton",
+        "suggested": "HAMILTON",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "276,277",
+        "raw_author": "HEFEZ",
+        "filename": "HEFEZ_Alt\u00e9risation&Assignation",
+        "suggested": "HEFEZ",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "278,279,280,281,282,283",
+        "raw_author": "HEGEL",
+        "filename": "HEGEL_Art&Simplicit\u00e9",
+        "suggested": "HEGEL",
+        "count": 6,
+        "is_row_specific": false
+    },
+    {
+        "id": "284",
+        "raw_author": "HEMPEL",
+        "filename": "HEMPEL_Semmelweis&Test",
+        "suggested": "HEMPEL",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "285",
+        "raw_author": "HERSCH",
+        "filename": "HERSCH_Empirisme-anglais",
+        "suggested": "HERSCH",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "286,287,288,289,290",
+        "raw_author": "HOBBES",
+        "filename": "HOBBES_Animaux&Domination",
+        "suggested": "HOBBES",
+        "count": 5,
+        "is_row_specific": false
+    },
+    {
+        "id": "292",
+        "raw_author": "HOUELLEBECQ",
+        "filename": "HOUELLEBECQ_Voyage&tourisme",
+        "suggested": "Michel HOUELLEBECQ",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "293,294,295,296",
+        "raw_author": "HUGO",
+        "filename": "HUGO_\u00c9ducation&Humanit\u00e9&Crime",
+        "suggested": "Victor HUGO",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "297,298,299,300,301,302,303,304,305,306,307",
+        "raw_author": "HUME",
+        "filename": "HUME_Animaux&douceur",
+        "suggested": "HUME",
+        "count": 11,
+        "is_row_specific": false
+    },
+    {
+        "id": "308,309,310",
+        "raw_author": "HUXLEY",
+        "filename": "HUXLEY_MM_Ch1_Eug\u00e9nisme&embryons",
+        "suggested": "Aldous HUXLEY",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "291",
+        "raw_author": "H\u00d6LDERLIN",
+        "filename": "H\u00d6LDERLIN_Courage&poete",
+        "suggested": "H\u00d6LDERLIN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "311",
+        "raw_author": "ILLOUZ-BENGER-ALALUF",
+        "filename": "ILLOUZ-BENGER-ALALUF_Marchandises-\u00e9motionnellesChap1_Clubmed&Voyage&Relaxation",
+        "suggested": "Eva ILLOUZ \u2013 Albert BENGER \u2013 Daniel ALALUF",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "312,313",
+        "raw_author": "ILLOUZ-WEST",
+        "filename": "ILLOUZ-WEST_Marchandises-\u00e9motionnelles_Chap5_Carte-de-voeux&Marchandisation&\u00c9motions",
+        "suggested": "Eva ILLOUZ \u2013 WEST",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "314",
+        "raw_author": "JAMES.W",
+        "filename": "JAMES.W_3_Pragmatisme&Libre-arbitre",
+        "suggested": "JAMES.W",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "315,316,317,318,319",
+        "raw_author": "JANK\u00c9L\u00c9VITCH.V",
+        "filename": "JANK\u00c9L\u00c9VITCH.V_Mort",
+        "suggested": "JANK\u00c9L\u00c9VITCH.V",
+        "count": 5,
+        "is_row_specific": false
+    },
+    {
+        "id": "320",
+        "raw_author": "JASPERS",
+        "filename": "JASPERS_Menace-atomique",
+        "suggested": "JASPERS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359",
+        "raw_author": "KANT",
+        "filename": "KANT_Analytique-du-beau",
+        "suggested": "KANT",
+        "count": 39,
+        "is_row_specific": false
+    },
+    {
+        "id": "360",
+        "raw_author": "KLEIN-Naomi",
+        "filename": "KLEIN-Naomi_Capitalisme&Climat",
+        "suggested": "Naomi KLEIN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "361",
+        "raw_author": "KOYR\u00c9",
+        "filename": "KOYR\u00c9_Cosmos&Univers",
+        "suggested": "KOYR\u00c9",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "362",
+        "raw_author": "KUNDERA",
+        "filename": "KUNDERA_L'oubli",
+        "suggested": "Milan KUNDERA",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "371,372",
+        "raw_author": "LA-ROCHEFOUCAULD",
+        "filename": "LA-ROCHEFOUCAULD_Maximes",
+        "suggested": "LA ROCHEFOUCAULD",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "363",
+        "raw_author": "LACAN",
+        "filename": "LACAN_Inconscient&histoire",
+        "suggested": "LACAN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "364",
+        "raw_author": "LAFARGUE",
+        "filename": "LAFARGUE_Travail&Paresse",
+        "suggested": "Paul LAFARGUE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "365,366,367,368",
+        "raw_author": "LAGASGNERIE",
+        "filename": "LAGASGNERIE_PMM_I_Fonctionnel&dysfonctionnel",
+        "suggested": "Geoffroy de LAGASNERIE",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "369",
+        "raw_author": "LAO-TSEU",
+        "filename": "LAO-TSEU_Souplesse",
+        "suggested": "LAO TSEU",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "370",
+        "raw_author": "LAPLACE",
+        "filename": "LAPLACE_D\u00e9terminisme",
+        "suggested": "LAPLACE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "373",
+        "raw_author": "LEIBNIZ",
+        "filename": "LEIBNIZ_Penser-Calculer",
+        "suggested": "LEIBNIZ",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "380,381,382,384,385",
+        "raw_author": "LOCKE",
+        "filename": "LOCKE_131_Bien-commun",
+        "suggested": "LOCKE",
+        "count": 5,
+        "is_row_specific": false
+    },
+    {
+        "id": "383",
+        "raw_author": "LOCKE",
+        "filename": "LOCKE_BIBLE_DDHC_Propriété&sacralisation",
+        "suggested": "BIBLE – LOCKE – DDHC 1789",
+        "count": 1,
+        "is_row_specific": true
+    },
+    {
+        "id": "386",
+        "raw_author": "LUCR\u00c8CE",
+        "filename": "LUCR\u00c8CE_Clinamen&Libert\u00e9",
+        "suggested": "LUCR\u00c8CE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "374",
+        "raw_author": "L\u00c9OTARD",
+        "filename": "L\u00c9OTARD_\u00c9ducation&Conspirationnisme",
+        "suggested": "L\u00c9OTARD",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "375",
+        "raw_author": "L\u00c9PINARD-MAZOUZ",
+        "filename": "L\u00c9PINARD-MAZOUZ_Pour l'intersectionnalit\u00e9",
+        "suggested": "\u00c9l\u00e9onore L\u00c9PINARD \u2013 Sarah MAZOUZ",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "376,377,378,379",
+        "raw_author": "L\u00c9VI-STRAUSS",
+        "filename": "L\u00c9VI-STRAUSS_AS_XV_syst\u00e8mes-de-culture",
+        "suggested": "L\u00c9VI-STRAUSS",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "387",
+        "raw_author": "MACHIAVEL",
+        "filename": "MACHIAVEL_Crainte&Haine",
+        "suggested": "MACHIAVEL",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "388",
+        "raw_author": "MALHERBE",
+        "filename": "MALHERBE_Alzheimer",
+        "suggested": "MALHERBE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "389,390,391,392,393,394",
+        "raw_author": "MARX",
+        "filename": "MARX_Argent&Acheter",
+        "suggested": "MARX",
+        "count": 6,
+        "is_row_specific": false
+    },
+    {
+        "id": "395",
+        "raw_author": "MAUSS",
+        "filename": "MAUSS_Don",
+        "suggested": "MAUSS",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "396",
+        "raw_author": "MEAD-Margareth",
+        "filename": "MEAD-Margareth_Conditionnement-social",
+        "suggested": "Margaret MEAD",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "397,398,399,400,401,402",
+        "raw_author": "MILL",
+        "filename": "MILL_Bonheur&Recherche",
+        "suggested": "MILL",
+        "count": 6,
+        "is_row_specific": false
+    },
+    {
+        "id": "403",
+        "raw_author": "MIRBEAU",
+        "filename": "MIRBEAU_Artiste&Honneurs",
+        "suggested": "Octave MIRBEAU",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "404,405",
+        "raw_author": "MONTAIGNE",
+        "filename": "MONTAIGNE_Animaux&Orgueil",
+        "suggested": "MONTAIGNE",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "406",
+        "raw_author": "MONTESQUIEU",
+        "filename": "MONTESQUIEU_Doux-Commerce",
+        "suggested": "MONTESQUIEU",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "407,408",
+        "raw_author": "MORICE-Juliette",
+        "filename": "MORICE-Juliette_Chap10_Voyage&Tourisme",
+        "suggested": "Juliette MORICE",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "409",
+        "raw_author": "MOUY-Paul",
+        "filename": "MOUY-Paul_D\u00e9monstration&N\u00e9cessit\u00e9&V\u00e9rit\u00e9",
+        "suggested": "Paul MOUY",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "410,411,412",
+        "raw_author": "NAGEL",
+        "filename": "NAGEL_Justice-sociale_F",
+        "suggested": "NAGEL",
+        "count": 3,
+        "is_row_specific": false
+    },
+    {
+        "id": "413",
+        "raw_author": "NEWTON",
+        "filename": "NEWTON_Preuve&physico-th\u00e9ologique",
+        "suggested": "NEWTON",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468",
+        "raw_author": "NIETZSCHE",
+        "filename": "NIETZSCHE_A_102_Intention&erreur",
+        "suggested": "NIETZSCHE",
+        "count": 55,
+        "is_row_specific": false
+    },
+    {
+        "id": "469",
+        "raw_author": "NOZICK",
+        "filename": "NOZICK_Machine&Exp\u00e9rience",
+        "suggested": "NOZICK",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "470",
+        "raw_author": "NUSSBAUM",
+        "filename": "NUSSBAUM_Affects&Imagination&\u00e9ducation&d\u00e9mocratie",
+        "suggested": "NUSSBAUM",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "471,472",
+        "raw_author": "OVIDE",
+        "filename": "OVIDE_Narcisse",
+        "suggested": "OVIDE",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "473,474,475,476",
+        "raw_author": "PASCAL",
+        "filename": "PASCAL_Bonheur&suicide",
+        "suggested": "PASCAL",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492",
+        "raw_author": "PESSOA",
+        "filename": "PESSOA_I.1_Impossible_biographie",
+        "suggested": "PESSOA",
+        "count": 16,
+        "is_row_specific": false
+    },
+    {
+        "id": "493,494,495,496",
+        "raw_author": "PIGNOCCHI",
+        "filename": "PIGNOCCHI_Ecologie-sauvage_0_Extraits",
+        "suggested": "Alessandro PIGNOCCHI",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "497,498,499,500,501,502,503,504,505,506,507,509,510,511",
+        "raw_author": "PLATON",
+        "filename": "PLATON_Androgyne",
+        "suggested": "PLATON",
+        "count": 14,
+        "is_row_specific": false
+    },
+    {
+        "id": "508",
+        "raw_author": "PLATON",
+        "filename": "PLATON_Prométhée",
+        "suggested": "HÉSIODE – PLATON",
+        "count": 1,
+        "is_row_specific": true
+    },
+    {
+        "id": "512",
+        "raw_author": "PLINE L'ANCIEN",
+        "filename": "PLINE L'ANCIEN_Raisins&Zeuxis",
+        "suggested": "PLINE L'ANCIEN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "513",
+        "raw_author": "POPPER",
+        "filename": "POPPER_Hypoth\u00e8ses&Falsifier",
+        "suggested": "POPPER",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "516,517,518,519,520,521,522",
+        "raw_author": "PROUST",
+        "filename": "PROUST_Arbres&Hudimesnil",
+        "suggested": "PROUST",
+        "count": 7,
+        "is_row_specific": false
+    },
+    {
+        "id": "514,515",
+        "raw_author": "PR\u00c9VOST",
+        "filename": "PR\u00c9VOST_Enseigner",
+        "suggested": "Abb\u00e9 PR\u00c9VOST",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "523",
+        "raw_author": "PUTNAM",
+        "filename": "PUTNAM_Objets&pi\u00e8ce",
+        "suggested": "PUTNAM",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "524",
+        "raw_author": "Religion",
+        "filename": "Religion_Textes compl\u00e9mentaires-Marx&Kant",
+        "suggested": "MARX \u2013 KANT",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "525,526",
+        "raw_author": "ROSENBERG",
+        "filename": "ROSENBERG_Agument&pr\u00e9misses",
+        "suggested": "ROSENBERG",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "527,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558",
+        "raw_author": "ROUSSEAU",
+        "filename": "ROUSSEAU_Bonheur&Promesse-du-d\u00e9sir",
+        "suggested": "ROUSSEAU",
+        "count": 32,
+        "is_row_specific": false
+    },
+    {
+        "id": "559",
+        "raw_author": "RUSSELL",
+        "filename": "RUSSELL_\u00c9loge-oisivet\u00e9",
+        "suggested": "RUSSELL",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "560",
+        "raw_author": "SARTRE",
+        "filename": "SARTRE_Mort",
+        "suggested": "SARTRE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "561,562,563,564,565,566,567,568,569,570,571,572,573,574,575",
+        "raw_author": "SCHOPENHAUER",
+        "filename": "SCHOPENHAUER_Argumentation&Ordre",
+        "suggested": "SCHOPENHAUER",
+        "count": 15,
+        "is_row_specific": false
+    },
+    {
+        "id": "576",
+        "raw_author": "SEN",
+        "filename": "SEN_(Bonvin-Farvaque)_Ressource&Capabilit\u00e9s",
+        "suggested": "SEN",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "577",
+        "raw_author": "SEP",
+        "filename": "SEP_Volontary Euthanasia",
+        "suggested": "SEP",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "578",
+        "raw_author": "SERRES",
+        "filename": "SERRES_Nature&Parasite&Symbiote",
+        "suggested": "SERRES",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "579,580",
+        "raw_author": "SEXTUS",
+        "filename": "SEXTUS_Modes-Agrippa",
+        "suggested": "SEXTUS",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "581,582,583,584,585",
+        "raw_author": "SMITH",
+        "filename": "SMITH_\u00c9change&\u00e9go\u00efsme",
+        "suggested": "SMITH",
+        "count": 5,
+        "is_row_specific": false
+    },
+    {
+        "id": "586,587,588,589",
+        "raw_author": "SPINOZA",
+        "filename": "SPINOZA_Ethique_D\u00e9finition&Affects(Appuhn)",
+        "suggested": "SPINOZA",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "590",
+        "raw_author": "TESTART",
+        "filename": "TESTART_\u00c9thique&procr\u00e9ation",
+        "suggested": "TESTART",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "591,592",
+        "raw_author": "THOREAU",
+        "filename": "THOREAU_Desobeissance-civile",
+        "suggested": "THOREAU",
+        "count": 2,
+        "is_row_specific": false
+    },
+    {
+        "id": "593",
+        "raw_author": "TOCQUEVILLE",
+        "filename": "TOCQUEVILLE_Monarchie&D\u00e9mocratie-Despotisme",
+        "suggested": "TOCQUEVILLE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "594",
+        "raw_author": "TOURNIER",
+        "filename": "TOURNIER_Autrui",
+        "suggested": "Michel TOURNIER",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "595",
+        "raw_author": "VAL\u00c9RY",
+        "filename": "VAL\u00c9RY_Mort",
+        "suggested": "VAL\u00c9RY",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "596",
+        "raw_author": "VOLTAIRE",
+        "filename": "VOLTAIRE_Folie",
+        "suggested": "VOLTAIRE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "597",
+        "raw_author": "WEIL",
+        "filename": "WEIL_Condition-ouvriere",
+        "suggested": "WEIL",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "598",
+        "raw_author": "YOURCENAR",
+        "filename": "YOURCENAR_Idiosyncrasie",
+        "suggested": "Marguerite YOURCENAR",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "599",
+        "raw_author": "ZAMIATINE",
+        "filename": "ZAMIATINE_Nous_Extrait",
+        "suggested": "Ievgueni ZAMIATINE",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "600",
+        "raw_author": "ZENITER",
+        "filename": "ZENITER_Affect&Politique",
+        "suggested": "Alice ZENITER",
+        "count": 1,
+        "is_row_specific": false
+    },
+    {
+        "id": "233,234,235,236",
+        "raw_author": "\u00c9PICURE",
+        "filename": "\u00c9PICURE_Justice&Utilit\u00e9",
+        "suggested": "\u00c9PICURE",
+        "count": 4,
+        "is_row_specific": false
+    },
+    {
+        "id": "228",
+        "raw_author": "EN.UNIV.",
+        "filename": "EN.UNIV._ENCINAS_Th\u00e9orie&source-droit",
+        "suggested": "Jos\u00e9 Maria ENCINAS",
+        "count": 1,
+        "is_row_specific": true
+    },
+    {
+        "id": "229",
+        "raw_author": "EN.UNIV.",
+        "filename": "EN.UNIV._GOYARD-FABRE_Jusnaturalisme",
+        "suggested": "Simone GOYARD-FABRE",
+        "count": 1,
+        "is_row_specific": true
+    },
+    {
+        "id": "230",
+        "raw_author": "EN.UNIV.",
+        "filename": "EN.UNIV._TAP-Pierre_Adolescence",
+        "suggested": "Pierre TAP",
+        "count": 1,
+        "is_row_specific": true
+    }
+];
+        
+        let initialData = [];
+        
+        try {
+            const saved = localStorage.getItem(localStorageKey);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length === defaultRawData.length) {
+                    initialData = parsed;
+                }
+            }
+        } catch (e) {}
+        
+        if (initialData.length === 0) {
+            initialData = defaultRawData;
+            // Checked by default if suggested is different from raw or if it needs normalization
+            initialData.forEach(item => {
+                item.checked = (item.raw_author !== item.suggested);
+            });
+            saveState();
+        }
+        
+        function saveState() {
+            try {
+                localStorage.setItem(localStorageKey, JSON.stringify(initialData));
+            } catch(e) {}
+        }
+        
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            const search = document.getElementById('search-input').value.toLowerCase();
+            
+            initialData.forEach((row, idx) => {
+                if (search && !row.raw_author.toLowerCase().includes(search) && !row.suggested.toLowerCase().includes(search)) {
+                    return;
+                }
+                
+                const tr = document.createElement('tr');
+                const rowSpecificLabel = row.is_row_specific ? ' <span style="font-size: 10px; color: var(--danger); font-weight: bold;">(Spécifique à la ligne ' + row.id + ')</span>' : '';
+                
+                tr.innerHTML = `
+                    <td class="col-check">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="check-${idx}" ${row.checked ? 'checked' : ''} onchange="updateRowState(${idx})">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <span class="author-raw">${escapeHtml(row.raw_author)}</span>${rowSpecificLabel}
+                    </td>
+                    <td>
+                        <input type="text" class="author-input" id="suggested-${idx}" value="${escapeHtml(row.suggested)}" oninput="updateProposedText(${idx})">
+                    </td>
+                    <td style="font-size: 13px; color: var(--text-muted); font-family: monospace;">${escapeHtml(row.filename)}</td>
+                    <td>
+                        <span class="count-badge">${row.count} texte(s)</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        function updateRowState(idx) {
+            const checkbox = document.getElementById(`check-${idx}`);
+            initialData[idx].checked = checkbox.checked;
+            saveState();
+        }
+        
+        function updateProposedText(idx) {
+            const input = document.getElementById(`suggested-${idx}`);
+            initialData[idx].suggested = input.value;
+            initialData[idx].checked = true;
+            const checkbox = document.getElementById(`check-${idx}`);
+            if (checkbox) checkbox.checked = true;
+            saveState();
+        }
+        
+        function toggleAll(check) {
+            initialData.forEach((row, idx) => {
+                row.checked = check;
+                const checkbox = document.getElementById(`check-${idx}`);
+                if (checkbox) checkbox.checked = check;
+            });
+            saveState();
+        }
+        
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(initialData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "sauvegarde_auteurs.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function uploadBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const uploadedData = JSON.parse(e.target.result);
+                    if (Array.isArray(uploadedData) && uploadedData.length === defaultRawData.length) {
+                        initialData = uploadedData;
+                        saveState();
+                        renderTable();
+                        showToast();
+                    } else {
+                        alert("Le format de fichier est incorrect.");
+                    }
+                } catch (err) {
+                    alert("Erreur de lecture.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function exportData() {
+            const results = initialData.filter(item => item.checked).map(item => ({
+                raw_author: item.raw_author,
+                suggested: item.suggested,
+                is_row_specific: item.is_row_specific,
+                id: item.id
+            }));
+            
+            document.getElementById('export-output').value = JSON.stringify(results, null, 2);
+            document.getElementById('export-modal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('export-modal').style.display = 'none';
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('export-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function copyOutputText() {
+            const textarea = document.getElementById('export-output');
+            textarea.select();
+            document.execCommand('copy');
+            showToast();
+            closeModal();
+        }
+        
+        function showToast() {
+            const toast = document.getElementById('toast-msg');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+        
+        function filterData() {
+            renderTable();
+        }
+        
+        renderTable();
+    </script>
+</body>
+</html>

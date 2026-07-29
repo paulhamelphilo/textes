@@ -1,0 +1,4860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revue et Harmonisation des Titres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            padding: 40px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 15.5px;
+            margin-bottom: 15px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: var(--bg-page);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-light);
+            border: 1px solid var(--border);
+        }
+
+        .save-banner {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .actions-sticky {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: var(--bg-page);
+            color: var(--primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background-color: var(--bg-page);
+            border-color: var(--primary-light);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-danger {
+            background: none;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #fef2f2;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--bg-page);
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover td {
+            background-color: #fafbfd;
+        }
+
+        .col-check {
+            width: 60px;
+            text-align: center;
+        }
+
+        .col-id {
+            width: 70px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .col-author {
+            width: 120px;
+            font-weight: 600;
+        }
+
+        /* Custom Checkbox */
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            font-size: 22px;
+            user-select: none;
+            width: 24px;
+            height: 24px;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 24px;
+            width: 24px;
+            background-color: #e2e8f0;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            background-color: #cbd5e1;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--success);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 6px;
+            height: 11px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .title-original {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .title-proposed-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            outline: none;
+        }
+
+        .title-proposed-input:focus {
+            border-color: var(--accent);
+            background: #f8fafc;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13.5px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .reason-tag {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            outline: none;
+            resize: none;
+            font-size: 12.5px;
+            margin-bottom: 15px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-weight: 600;
+            font-size: 14px;
+            display: none;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div>
+                    <h1>Revue et Harmonisation des Titres</h1>
+                    <p class="subtitle">Sélectionnez les titres à modifier en cochant la case. Les titres en majuscules (catégorie 5) sont cochés par défaut.</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-action" onclick="downloadBackup()">📥 Télécharger la sauvegarde</button>
+                    <button class="btn-action" onclick="document.getElementById('import-file').click()">📤 Importer une sauvegarde</button>
+                    <input type="file" id="import-file" style="display: none;" accept=".json" onchange="uploadBackup(event)">
+                    <button class="btn-danger" onclick="resetState()">⚠️ Réinitialiser</button>
+                </div>
+            </div>
+            
+            <div class="stats-bar">
+                <span class="stat-badge" id="stat-total">Total base : 0</span>
+                <span class="stat-badge" id="stat-tab-total">Dans cet onglet : 0</span>
+                <span class="stat-badge" id="stat-approved" style="color: var(--success); background-color: var(--success-light); border-color: #a7f3d0;">Modifications cochées : 0</span>
+            </div>
+
+            <div class="save-banner" id="save-banner">
+                <span style="font-size: 16px;">💾</span> Sauvegarde automatique activée (sauvegardé en temps réel dans votre cache navigateur)
+            </div>
+        </header>
+
+        <input type="text" class="search-bar" id="search-input" placeholder="Rechercher par auteur, titre actuel ou proposé..." oninput="filterData()">
+
+        <div class="actions-sticky">
+            <div class="tabs">
+                <button class="tab-btn active" id="tab-0" onclick="switchTab(0)">Tous (502)</button>
+                <button class="tab-btn" id="tab-1" onclick="switchTab(1)">1. Trop longs</button>
+                <button class="tab-btn" id="tab-2" onclick="switchTab(2)">2. Non représentatifs</button>
+                <button class="tab-btn" id="tab-3" onclick="switchTab(3)">3. À affiner</button>
+                <button class="tab-btn" id="tab-5" onclick="switchTab(5)">5. En majuscules</button>
+                <button class="tab-btn" id="tab-4" onclick="switchTab(4)">4. Sans modification</button>
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button class="tab-btn" onclick="toggleAll(true)" style="border-color: var(--success); color: var(--success);">Tout cocher</button>
+                <button class="tab-btn" onclick="toggleAll(false)">Tout décocher</button>
+                <button class="btn-primary" onclick="exportData()">Copier les choix pour l'IA</button>
+            </div>
+        </div>
+
+        <table id="titles-table">
+            <thead>
+                <tr>
+                    <th class="col-check">Choix</th>
+                    <th class="col-id">ID</th>
+                    <th class="col-author">Auteur</th>
+                    <th>Titre actuel & Proposition (Modifiable)</th>
+                    <th>Commentaire / Alternative</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Rows will be injected here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="export-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Copiez ces choix pour l'IA</span>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-muted);">
+                Copiez le texte ci-dessous et collez-le directement dans notre discussion Gemini. Je m'occuperai de mettre à jour la base de données.
+            </p>
+            <textarea id="export-output" readonly onclick="this.select()"></textarea>
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="copyOutputText()">Copier dans le presse-papiers</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast-msg">Copié dans le presse-papiers !</div>
+
+    <script>
+        const localStorageKey = 'title_reviewer_state_v4';
+        const defaultRawData = [
+    {
+        "id": "50",
+        "author": "CHARBONNIER",
+        "current": "La pudeur",
+        "suggested": "La pudeur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "100",
+        "author": "AFEISSA",
+        "current": "L'\u00c9thique environnementale / Trois positions majeures pour r\u00e9pondre au probl\u00e8me de l'\u00e9thique environnementale",
+        "suggested": "Les trois courants de l'\u00e9thique environnementale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "101",
+        "author": "AFEISSA",
+        "current": "L'\u00c9thique environnementale / Trois positions majeures pour r\u00e9pondre au probl\u00e8me de l'\u00e9thique environnementale",
+        "suggested": "Les trois courants de l'\u00e9thique environnementale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "102",
+        "author": "ALAIN",
+        "current": "Angoisse / Dissipation / Habitude",
+        "suggested": "Angoisse \u2013 Dissipation \u2013 Habitude",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "103",
+        "author": "ALAIN",
+        "current": "L'artisan et l'artiste",
+        "suggested": "L'artisan et l'artiste",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "104",
+        "author": "ALAIN",
+        "current": "Le devoir d'\u00eatre heureux, ne serait-ce que pour les autres",
+        "suggested": "Le devoir d'\u00eatre heureux, ne serait-ce que pour les autres",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "105",
+        "author": "ALAIN",
+        "current": "B\u00e9atitude et f\u00e9licit\u00e9",
+        "suggested": "B\u00e9atitude et f\u00e9licit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "106",
+        "author": "ALAIN",
+        "current": "L'ATTENTION CHEZ ALAIN",
+        "suggested": "L'attention chez Alain",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "107",
+        "author": "ALAIN",
+        "current": "L'inconscient",
+        "suggested": "L'inconscient",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "108",
+        "author": "ALAIN",
+        "current": "D\u00e9terminer la cause des passions",
+        "suggested": "D\u00e9terminer la cause des passions",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "109",
+        "author": "ALAIN",
+        "current": "Plus que la raison, c'est l'action qui est susceptible de lib\u00e9rer de l'emprise des passions",
+        "suggested": "L'action comme lib\u00e9ration des passions",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "110",
+        "author": "ALI-Zahra",
+        "current": "Introduction au f\u00e9minisme islamique",
+        "suggested": "Introduction au f\u00e9minisme islamique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "111",
+        "author": "ARENDT",
+        "current": "La mise au pas de l'Homme par la machine",
+        "suggested": "La mise au pas de l'Homme par la machine",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "112",
+        "author": "ARISTOTE",
+        "current": "L'amiti\u00e9",
+        "suggested": "L'amiti\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "113",
+        "author": "ARISTOTE",
+        "current": "Les animaux existent pour l'homme",
+        "suggested": "Les animaux existent pour l'homme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "114",
+        "author": "ARISTOTE",
+        "current": "L'usure",
+        "suggested": "L'usure",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "115",
+        "author": "ARISTOTE",
+        "current": "Aristote - La bienveillance",
+        "suggested": "La bienveillance",
+        "reason": "Retrait du nom d'auteur redondant au d\u00e9but du titre.",
+        "problem_type": 3
+    },
+    {
+        "id": "116",
+        "author": "ARISTOTE",
+        "current": "Le bonheur de l'homme est dans la r\u00e9alisation de sa fonction propre",
+        "suggested": "Le bonheur comme r\u00e9alisation de la fonction propre",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "117",
+        "author": "ARISTOTE",
+        "current": "La douceur",
+        "suggested": "La douceur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "118",
+        "author": "ARISTOTE",
+        "current": "L'origine de la monnaie",
+        "suggested": "L'origine de la monnaie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "119",
+        "author": "ARISTOTE",
+        "current": "L'Homme v\u00e9ridique",
+        "suggested": "L'Homme v\u00e9ridique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "120",
+        "author": "ARISTOTE",
+        "current": "L'\u00e9quit\u00e9 est la vertu de celui qui est en mesure d'adapter de mani\u00e8re juste la g\u00e9n\u00e9ralit\u00e9 d'une r\u00e8gle \u00e0 la singularit\u00e9 de la situation",
+        "suggested": "L'\u00e9quit\u00e9 : correction de la justice l\u00e9gale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "121",
+        "author": "ARISTOTE",
+        "current": "La main: l'instrument des instruments",
+        "suggested": "La main: l'instrument des instruments",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "122",
+        "author": "ARISTOTE",
+        "current": "L'origine de la pens\u00e9e philosophique",
+        "suggested": "L'origine de la pens\u00e9e philosophique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "123",
+        "author": "ARISTOTE",
+        "current": "Prendre le temps de poser les probl\u00e8mes",
+        "suggested": "Prendre le temps de poser les probl\u00e8mes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "124",
+        "author": "ARISTOTE",
+        "current": "L'\u00eatre naturel est auto-moteur \u00e0 la diff\u00e9rence de l'objet artificiel",
+        "suggested": "Le mouvement interne de l'\u00eatre naturel",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "125",
+        "author": "ARISTOTE",
+        "current": "Le temps et le changement",
+        "suggested": "Le temps et le changement",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "126",
+        "author": "ARISTOTE",
+        "current": "Qu'il \u00e9tait en notre pouvoir de n'\u00eatre pas devenu mauvais",
+        "suggested": "Qu'il \u00e9tait en notre pouvoir de n'\u00eatre pas devenu mauvais",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "127",
+        "author": "BADIOU",
+        "current": "\u00c0 la diff\u00e9rence de la politique, l'amour n'int\u00e8gre pas constitutivement un rival tiers",
+        "suggested": "L'\u00e9go\u00efsme comme ennemi interne de l'amour",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "128",
+        "author": "BARTHES",
+        "current": "Sc\u00e9nographie de l'attente",
+        "suggested": "Sc\u00e9nographie de l'attente",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "129",
+        "author": "BARTHES",
+        "current": "Le temps de l'attente",
+        "suggested": "Le temps de l'attente",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "130",
+        "author": "BAUDRILLARD",
+        "current": "Imp\u00e9ratif et vanit\u00e9 de l'impossible \u00e9puisement des jouissances possibles",
+        "suggested": "Le devoir de consommation et de jouissance",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "131",
+        "author": "BAUDRILLARD",
+        "current": "Contradiction de la promesse de devenir soi-m\u00eame en consommant",
+        "suggested": "L'illusion de la personnalisation marchande",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "132",
+        "author": "BAUDRILLARD",
+        "current": "Le sujet moderne perdu dans jungle des objets",
+        "suggested": "Le sujet moderne perdu dans jungle des objets",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "133",
+        "author": "BAUDRILLARD",
+        "current": "La panoplie",
+        "suggested": "La panoplie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "134",
+        "author": "BAUDRILLARD",
+        "current": "Attendre que le bonheur se pose",
+        "suggested": "Attendre que le bonheur se pose",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "135",
+        "author": "BAUDRILLARD",
+        "current": "L'omnipr\u00e9sence du fait divers comme miracle permanent",
+        "suggested": "L'omnipr\u00e9sence du fait divers comme miracle permanent",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "136",
+        "author": "BAUDRILLARD",
+        "current": "Le lieu de la consommation est la vie quotidienne",
+        "suggested": "Le lieu de la consommation est la vie quotidienne",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "137",
+        "author": "BAUDRILLARD",
+        "current": "Les nuisances",
+        "suggested": "Les nuisances",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "138",
+        "author": "BAUDRILLARD",
+        "current": "La comptabilisation de la croissance ou la mystique du P. N. B",
+        "suggested": "La mystique du P.N.B. et de la croissance",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "139",
+        "author": "BAUDRILLARD",
+        "current": "Le gaspillage dans les soci\u00e9t\u00e9s d'abondance",
+        "suggested": "Le gaspillage dans les soci\u00e9t\u00e9s d'abondance",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "140",
+        "author": "BAUDRILLARD",
+        "current": "Id\u00e9ologie du bonheur \u00e9galitaire",
+        "suggested": "Id\u00e9ologie du bonheur \u00e9galitaire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "141",
+        "author": "BAUDRILLARD",
+        "current": "LE DRAME DES LOISIRS OU L'IMPOSSIBILIT\u00c9 DE PERDRE SON TEMPS",
+        "suggested": "Le drame des loisirs ou l'impossibilit\u00e9 de perdre son temps",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "142",
+        "author": "BENJAMIN",
+        "current": "Le jeu",
+        "suggested": "Le jeu",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "143",
+        "author": "BENTHAM",
+        "current": "Le calcul f\u00e9licifique",
+        "suggested": "Le calcul f\u00e9licifique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "144",
+        "author": "BERGSON",
+        "current": "La conscience comme m\u00e9moire et attente",
+        "suggested": "La conscience comme m\u00e9moire et attente",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "145",
+        "author": "BERGSON",
+        "current": "Le langage ne peut refl\u00e9ter la singularit\u00e9 de nos \u00e9tats d'\u00e2mes",
+        "suggested": "L'incapacit\u00e9 du langage \u00e0 saisir la singularit\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "146",
+        "author": "BERGSON",
+        "current": "Le rire: la raideur m\u00e9canique plaqu\u00e9e sur le vivant",
+        "suggested": "Le rire: la raideur m\u00e9canique plaqu\u00e9e sur le vivant",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "147",
+        "author": "BERKELEY",
+        "current": "L'exemple de la cerise : la remise en cause de l'existence du monde ext\u00e9rieur",
+        "suggested": "L'existence des choses : l'exemple de la cerise",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "148",
+        "author": "BIBLE",
+        "current": "La Gen\u00e8se: sixi\u00e8me jour La place de l'Homme dans la nature",
+        "suggested": "La Gen\u00e8se: sixi\u00e8me jour La place de l'Homme dans la nature",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "149",
+        "author": "BO\u00cbDA",
+        "current": "La connaissance de la lign\u00e9e des objets comme aide \u00e0 la compr\u00e9hension de leur fonction",
+        "suggested": "L'\u00e9volution des objets et leur fonction",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "150",
+        "author": "BOURDIEU",
+        "current": "L'importance de l'intervalle de temps entre don et contre-don",
+        "suggested": "L'intervalle temporel entre don et contre-don",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "151",
+        "author": "BOURDIEU",
+        "current": "Milieu familial et r\u00e9ussite scolaire, Origine sociale et aspirations, La clandestinit\u00e9 de l'h\u00e9ritage culturel, L'adh\u00e9sion \u00e0 la culture de l'\u00e9lite comme accomplissement social",
+        "suggested": "Origine sociale et h\u00e9ritage culturel \u00e0 l'\u00e9cole",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "152",
+        "author": "BOURDIEU",
+        "current": "La recherche d'un ma\u00eetre \u00e0 penser, Les choix du professeur et la passivit\u00e9 des \u00e9tudiants, L'Universit\u00e9 pr\u00eache des convertis, La dissertation comme travail essentialisant qui se dit jeu, Paris et la province",
+        "suggested": "Prestige professoral et passivit\u00e9 \u00e9tudiante \u00e0 l'universit\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "153",
+        "author": "BOURDIEU",
+        "current": "La condition \u00e9tudiante comme pr\u00e9paration d'un avenir professionnel, Le cours magistral comme rencontre entre \u00e9lus, Le rapport des \u00e9tudiants \u00e0 leur avenir en fonction de leur sexe et de leur classe sociale, Le rejet de l'apprentissage de techniques d'apprentissage, La magie des techniques",
+        "suggested": "La condition \u00e9tudiante et sa pr\u00e9paration professionnelle",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "154",
+        "author": "BOURDIEU",
+        "current": "La perception des in\u00e9galit\u00e9s sociales comme in\u00e9galit\u00e9s naturelles, L'adh\u00e9sion \u00e0 la hi\u00e9rarchie universitaire, La naturalisation des in\u00e9galit\u00e9s sociales par l'id\u00e9ologie charismatique, L'int\u00e9gration par l'\u00e9l\u00e8ve de son incapacit\u00e9 \u00e0 exceller comme proph\u00e9tie autor\u00e9alisatrice de son \u00e9chec",
+        "suggested": "La naturalisation des in\u00e9galit\u00e9s par l'id\u00e9ologie scolaire",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "155",
+        "author": "BOURDIEU",
+        "current": "Hypercorrection et hypocorrection",
+        "suggested": "Hypercorrection et hypocorrection",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "156",
+        "author": "BOURDIEU",
+        "current": "La reproduction des in\u00e9galit\u00e9s sociales",
+        "suggested": "La reproduction des in\u00e9galit\u00e9s sociales",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "157",
+        "author": "BOURDIEU",
+        "current": "Le pouvoir de la parole l\u00e9gitime",
+        "suggested": "Le pouvoir de la parole l\u00e9gitime",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "158",
+        "author": "BOURDIEU",
+        "current": "La sociologie lib\u00e8re par la connaissance du d\u00e9terminisme",
+        "suggested": "La sociologie lib\u00e8re par la connaissance du d\u00e9terminisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "159",
+        "author": "CHALMERS",
+        "current": "La perception est structur\u00e9e par la subjectivit\u00e9 qui per\u00e7oit",
+        "suggested": "La perception est structur\u00e9e par la subjectivit\u00e9 qui per\u00e7oit",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "160",
+        "author": "CHARBONNIER",
+        "current": "L'incons\u00e9quence : l'ennemi traqu\u00e9 par l'apprentissage de la philosophie",
+        "suggested": "L'\u00e9mancipation critique contre l'\u00e9litisme philosophique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "161",
+        "author": "CHARBONNIER",
+        "current": "L'\u00e9galit\u00e9 \u00e9pist\u00e9mique comme condition de l'\u00e9mancipation",
+        "suggested": "L'\u00e9galit\u00e9 \u00e9pist\u00e9mique comme condition de l'\u00e9mancipation",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "162",
+        "author": "CHARBONNIER",
+        "current": "R\u00c9SOLUTION 12",
+        "suggested": "R\u00e9solution 12",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "163",
+        "author": "CH\u00c2TELET",
+        "current": "Le bonheur de l'illusion artistique",
+        "suggested": "Le bonheur de l'illusion artistique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "164",
+        "author": "CHOLLET",
+        "current": "L'id\u00e9al f\u00e9minin comme couteau sans lame",
+        "suggested": "L'id\u00e9al f\u00e9minin comme couteau sans lame",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "165",
+        "author": "CHOLLET",
+        "current": "Le complexit\u00e9 du rapport \u00e0 la propri\u00e9t\u00e9",
+        "suggested": "Le complexit\u00e9 du rapport \u00e0 la propri\u00e9t\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "166",
+        "author": "CICERON",
+        "current": "La saine articulation de la sagesse et de l'\u00e9loquence",
+        "suggested": "La saine articulation de la sagesse et de l'\u00e9loquence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "167",
+        "author": "CLASTRES",
+        "current": "Le refus du surtravail chez certaines soci\u00e9t\u00e9s dites primitives",
+        "suggested": "Le refus du surtravail dans les soci\u00e9t\u00e9s primitives",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "168",
+        "author": "CLEMENT.\u00c9",
+        "current": "La justice: introduction \u00e0 la notion",
+        "suggested": "La justice: introduction \u00e0 la notion",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "169",
+        "author": "COHEN",
+        "current": "Adrien Deume, fonctionnaire procrastinateur, paresseux, incomp\u00e9tent, suffisant, calculateur et imb\u00e9cile",
+        "suggested": "La procrastination et la m\u00e9diocrit\u00e9 chez le fonctionnaire",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "170",
+        "author": "COMTE-SPONVILLE",
+        "current": "\u00c9GO\u00cfSME, \u00c9GO\u00cfSTE, G\u00c9N\u00c9ROSIT\u00c9, ALTRUISME",
+        "suggested": "\u00c9go\u00efsme \u2013 \u00c9go\u00efste \u2013 G\u00e9n\u00e9rosit\u00e9 \u2013 Altruisme",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse) et formatage de la liste.",
+        "problem_type": 5
+    },
+    {
+        "id": "171",
+        "author": "COMTE-SPONVILLE",
+        "current": "BIO\u00c9THIQUE",
+        "suggested": "Bio\u00e9thique",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "172",
+        "author": "COMTE-SPONVILLE",
+        "current": "Le clonage",
+        "suggested": "Le clonage",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "173",
+        "author": "COMTE-SPONVILLE",
+        "current": "CR\u00c9ATIONNISME",
+        "suggested": "Cr\u00e9ationnisme",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "174",
+        "author": "COMTE-SPONVILLE",
+        "current": "\u00c9CONOMIE",
+        "suggested": "\u00c9conomie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "175",
+        "author": "COMTE-SPONVILLE",
+        "current": "\u00c9DUCATION",
+        "suggested": "\u00c9ducation",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "176",
+        "author": "COMTE-SPONVILLE",
+        "current": "EMPATHIE",
+        "suggested": "Empathie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "177",
+        "author": "COMTE-SPONVILLE",
+        "current": "EUTHANASIE",
+        "suggested": "Euthanasie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "178",
+        "author": "COMTE-SPONVILLE",
+        "current": "FOLIE",
+        "suggested": "Folie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "179",
+        "author": "COMTE-SPONVILLE",
+        "current": "HISTOIRE",
+        "suggested": "Histoire",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "180",
+        "author": "COMTE-SPONVILLE",
+        "current": "MATH\u00c9MATIQUE(S)",
+        "suggested": "Math\u00e9matique(s)",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "181",
+        "author": "COMTE-SPONVILLE",
+        "current": "M\u00e9decine et civilisation",
+        "suggested": "M\u00e9decine et civilisation",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "182",
+        "author": "COMTE-SPONVILLE",
+        "current": "MEDITATION",
+        "suggested": "Meditation",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "183",
+        "author": "COMTE-SPONVILLE",
+        "current": "PEUR",
+        "suggested": "Peur",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "184",
+        "author": "COMTE-SPONVILLE",
+        "current": "Qu'est-ce que la philosophie ?",
+        "suggested": "Qu'est-ce que la philosophie ?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "185",
+        "author": "COMTE-SPONVILLE",
+        "current": "PHILOSOPHIE",
+        "suggested": "Philosophie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "186",
+        "author": "COMTE-SPONVILLE",
+        "current": "D\u00c9MOCRATIE",
+        "suggested": "D\u00e9mocratie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "187",
+        "author": "COMTE-SPONVILLE",
+        "current": "La politique",
+        "suggested": "La politique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "188",
+        "author": "COMTE-SPONVILLE",
+        "current": "L'amour",
+        "suggested": "L'amour",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "189",
+        "author": "COMTE-SPONVILLE",
+        "current": "La mort",
+        "suggested": "La mort",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "190",
+        "author": "COMTE-SPONVILLE",
+        "current": "Conqu\u00eate d'une d\u00e9finition du sport",
+        "suggested": "Conqu\u00eate d'une d\u00e9finition du sport",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "191",
+        "author": "COMTE-SPONVILLE",
+        "current": "Le skopos et le t\u00e9los",
+        "suggested": "Le skopos et le t\u00e9los",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "192",
+        "author": "COMTE-SPONVILLE",
+        "current": "Le skopos et le t\u00e9los",
+        "suggested": "Le skopos et le t\u00e9los",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "193",
+        "author": "COMTE-SPONVILLE",
+        "current": "Le football, populaire car imparfait",
+        "suggested": "Le football, populaire car imparfait",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "194",
+        "author": "COMTE-SPONVILLE",
+        "current": "L'\u00e9cueil du dolorisme : la sant\u00e9 est plus importante que le sport",
+        "suggested": "La sup\u00e9riorit\u00e9 de la sant\u00e9 sur le sport",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "195",
+        "author": "COMTE-SPONVILLE",
+        "current": "STRUCTURE",
+        "suggested": "Structure",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "196",
+        "author": "COMTE-SPONVILLE",
+        "current": "TIMIDIT\u00c9",
+        "suggested": "Timidit\u00e9",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "197",
+        "author": "COMTE-SPONVILLE",
+        "current": "TRAVAIL",
+        "suggested": "Travail",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "198",
+        "author": "COMTE-SPONVILLE",
+        "current": "VIE",
+        "suggested": "Vie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "199",
+        "author": "CORPUS",
+        "current": "La philosophie",
+        "suggested": "La philosophie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "200",
+        "author": "CORPUS",
+        "current": "La place de la femme dans la soci\u00e9t\u00e9 au cours des derniers si\u00e8cles",
+        "suggested": "La condition f\u00e9minine et la soumission sociale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "201",
+        "author": "CRAWFORD",
+        "current": "La production de l'estime de soi par la pratique des arts m\u00e9caniques",
+        "suggested": "L'estime de soi par la pratique des arts m\u00e9caniques",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "202",
+        "author": "DAUDET",
+        "current": "LA DERNI\u00c8RE CLASSE",
+        "suggested": "La derni\u00e8re classe",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "203",
+        "author": "DAUMAL",
+        "current": "Tu t'es toujours tromp\u00e9",
+        "suggested": "Tu t'es toujours tromp\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "204",
+        "author": "DAUMAL",
+        "current": "Tu t'es toujours tromp\u00e9",
+        "suggested": "Tu t'es toujours tromp\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "205",
+        "author": "DE BEAUVOIR",
+        "current": "La femme n'a jamais eu ses chances",
+        "suggested": "La femme n'a jamais eu ses chances",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "206",
+        "author": "DE BEAUVOIR",
+        "current": "Le mythe de la f\u00e9minit\u00e9 passive",
+        "suggested": "Le mythe de la f\u00e9minit\u00e9 passive",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "207",
+        "author": "DE FUNES",
+        "current": "Le d\u00e9veloppement (im)personnel. Le succ\u00e8s d'une imposture. S\u00e9lection d'extraits",
+        "suggested": "L'imposture et l'ali\u00e9nation du d\u00e9veloppement personnel",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "208",
+        "author": "DE-MONTAIGNE",
+        "current": "La Race. L'Origine comme succ\u00e9dan\u00e9 de la Race",
+        "suggested": "La Race. L'Origine comme succ\u00e9dan\u00e9 de la Race",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "209",
+        "author": "DESCARTES",
+        "current": "Le cogito dans les M\u00e9ditations m\u00e9taphysiques",
+        "suggested": "Le cogito dans les M\u00e9ditations m\u00e9taphysiques",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "210",
+        "author": "DESCARTES",
+        "current": "Descartes - Versions du cogito",
+        "suggested": "Versions du cogito",
+        "reason": "Retrait du nom d'auteur redondant au d\u00e9but du titre.",
+        "problem_type": 3
+    },
+    {
+        "id": "211",
+        "author": "DESCARTES",
+        "current": "Descartes: la diff\u00e9rence entre les hommes et les b\u00eates",
+        "suggested": "Descartes: la diff\u00e9rence entre les hommes et les b\u00eates",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "212",
+        "author": "DESCARTES",
+        "current": "Le bon sens",
+        "suggested": "Le bon sens",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "213",
+        "author": "DESCARTES",
+        "current": "Le langage est le propre de l'homme",
+        "suggested": "Le langage est le propre de l'homme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "214",
+        "author": "DESCARTES",
+        "current": "Le libre arbitre comme fondement de l'imputabilit\u00e9",
+        "suggested": "Le libre arbitre comme fondement de l'imputabilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "215",
+        "author": "DESCARTES",
+        "current": "L'exp\u00e9rience du libre arbitre",
+        "suggested": "L'exp\u00e9rience du libre arbitre",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "216",
+        "author": "DESCARTES",
+        "current": "Descartes, M\u00e9ditations m\u00e9taphysiques (1641). Texte int\u00e9gral des deux premi\u00e8res m\u00e9ditations",
+        "suggested": "Le \u00ab Je suis, j'existe \u00bb comme v\u00e9rit\u00e9 premi\u00e8re",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "217",
+        "author": "DIDEROT",
+        "current": "L'exp\u00e9rimentation comme source de richesse",
+        "suggested": "L'exp\u00e9rimentation comme source de richesse",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "218",
+        "author": "DUCROS",
+        "current": "L'impossibilit\u00e9 de penser le Sport comme totalit\u00e9 unifi\u00e9e",
+        "suggested": "L'impossibilit\u00e9 de penser le Sport comme totalit\u00e9 unifi\u00e9e",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "219",
+        "author": "DUCROS",
+        "current": "Citius, altius, fortius",
+        "suggested": "Citius, altius, fortius",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "220",
+        "author": "DUCROS",
+        "current": "Le smash: entre prise et choc",
+        "suggested": "Le smash: entre prise et choc",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "221",
+        "author": "DURAS",
+        "current": "Marguerite Duras : \u00ab \u00c9crire \u00bb Extraits",
+        "suggested": "Marguerite Duras : \u00ab \u00c9crire \u00bb Extraits",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "222",
+        "author": "DURKHEIM",
+        "current": "Le bonheur favorise la capacit\u00e9 \u00e0 \u00e9prouver du plaisir",
+        "suggested": "Le bonheur favorise la capacit\u00e9 \u00e0 \u00e9prouver du plaisir",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "223",
+        "author": "DURKHEIM",
+        "current": "Le crime est un ph\u00e9nom\u00e8ne normal",
+        "suggested": "Le crime est un ph\u00e9nom\u00e8ne normal",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "224",
+        "author": "DURKHEIM",
+        "current": "C'est la voix de la soci\u00e9t\u00e9 que la conscience morale fait entendre",
+        "suggested": "La conscience morale comme produit de la soci\u00e9t\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "225",
+        "author": "ECCLESIASTE",
+        "current": "Vanit\u00e9 des vanit\u00e9s",
+        "suggested": "Vanit\u00e9 des vanit\u00e9s",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "226",
+        "author": "EINSTEIN",
+        "current": "Le m\u00e9canisme interne du monde",
+        "suggested": "Le m\u00e9canisme interne du monde",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "227",
+        "author": "ELLUL",
+        "current": "Technique et sacr\u00e9",
+        "suggested": "Technique et sacr\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "228",
+        "author": "EN.UNIV.",
+        "current": "Article \u00ab Th\u00e9orie des sources du droit \u00bb par Rafael Encinas de Munagorri dans l'Encyclop\u00e6dia Universalis",
+        "suggested": "La th\u00e9orie des sources du droit",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "229",
+        "author": "EN.UNIV.",
+        "current": "Article \u00ab Jusnaturalisme, droit \u00bb par Simone Goyard-Fabre dans l'Encyclop\u00e6dia Universalis",
+        "suggested": "Le fondement rationnel du jusnaturalisme moderne",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "230",
+        "author": "EN.UNIV.",
+        "current": "La difficult\u00e9 de savoir qui on est \u00e0 l'adolescence",
+        "suggested": "La difficult\u00e9 de savoir qui on est \u00e0 l'adolescence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "231",
+        "author": "ENCYCLOP\u00c9DIE",
+        "current": "L'\u00ab attention \u00bb",
+        "suggested": "L'\u00ab attention \u00bb",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "232",
+        "author": "ENGELS",
+        "current": "L'\u00c9tat est l'instrument de domination de la classe dominante",
+        "suggested": "L'\u00c9tat est l'instrument de domination de la classe dominante",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "233",
+        "author": "\u00c9PICURE",
+        "current": "Le rapport entre la justice et l'utilit\u00e9",
+        "suggested": "Le rapport entre la justice et l'utilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "234",
+        "author": "\u00c9PICURE",
+        "current": "La Lettre \u00e0 M\u00e9n\u00e9c\u00e9e",
+        "suggested": "La Lettre \u00e0 M\u00e9n\u00e9c\u00e9e",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "235",
+        "author": "\u00c9PICURE",
+        "current": "La mort n'est rien pour nous",
+        "suggested": "La mort n'est rien pour nous",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "236",
+        "author": "\u00c9PICURE",
+        "current": "Philosophie et bonheur",
+        "suggested": "Philosophie et bonheur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "237",
+        "author": "EPICURE",
+        "current": "Les trois types de d\u00e9sir",
+        "suggested": "Les trois types de d\u00e9sir",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "238",
+        "author": "FAYE-Ga\u00ebl",
+        "current": "G\u00e9nocide des Tutsi: l'absolutisation de la diff\u00e9rence",
+        "suggested": "G\u00e9nocide des Tutsi: l'absolutisation de la diff\u00e9rence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "239",
+        "author": "FERRY",
+        "current": "La progression de l'illettrisme en France: argumentaire",
+        "suggested": "La progression de l'illettrisme en France: argumentaire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "240",
+        "author": "FERRY",
+        "current": "La libert\u00e9 comme principe m\u00e9thodologique ind\u00e9finiment applicable",
+        "suggested": "Le d\u00e9terminisme comme postulat m\u00e9thodologique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "241",
+        "author": "FERRY",
+        "current": "La naissance des dieux et du monde",
+        "suggested": "La naissance des dieux et du monde",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "242",
+        "author": "FERRY",
+        "current": "Prom\u00e9th\u00e9e et la bo\u00eete de Pandore",
+        "suggested": "Prom\u00e9th\u00e9e et la bo\u00eete de Pandore",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "243",
+        "author": "FERRY",
+        "current": "Les sept visages de l'\u00e9cologie politique contemporaine",
+        "suggested": "Les sept visages de l'\u00e9cologie politique contemporaine",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "244",
+        "author": "FILLIOZAT",
+        "current": "Poser des limites",
+        "suggested": "Poser des limites",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "245",
+        "author": "FOUCAULT",
+        "current": "La prison comme appareil disciplinaire exhaustif",
+        "suggested": "La prison comme appareil disciplinaire exhaustif",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "246",
+        "author": "FRAISSE",
+        "current": "La difficult\u00e9 de d\u00e9finir le rythme",
+        "suggested": "La co\u00efncidence de l'action et de la perception dans le rythme",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "247",
+        "author": "FRAISSE",
+        "current": "La r\u00e9sonance affective du rythme dans la co\u00efncidence harmonique du mouvement objectif et de sa perception",
+        "suggested": "La co\u00efncidence de l'action et de la perception dans le rythme",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "248",
+        "author": "FRAISSE",
+        "current": "Synchronisation et r\u00e9action, La synchronisation sensori-motrice",
+        "suggested": "L'anticipation dans la synchronisation sensori-motrice",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "249",
+        "author": "FRANKFURT",
+        "current": "Le mensonge et le bullshit (baratin/connerie)",
+        "suggested": "Le mensonge et le bullshit (baratin \u2013 Connerie)",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "250",
+        "author": "FREUD&SARTRE",
+        "current": "Freud: Les trois blessures narcissiques",
+        "suggested": "Freud: Les trois blessures narcissiques",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "251",
+        "author": "FREUD(Claire Pag\u00e8s)",
+        "current": "Activit\u00e9 du patient dans la psychanalyse",
+        "suggested": "Activit\u00e9 du patient dans la psychanalyse",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "252",
+        "author": "FREUD",
+        "current": "L'agressivit\u00e9 irr\u00e9ductible de l'homme",
+        "suggested": "L'agressivit\u00e9 irr\u00e9ductible de l'homme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "253",
+        "author": "FREUD",
+        "current": "Les r\u00eaves les plus anodins en apparence dissimulent un contenu latent",
+        "suggested": "La r\u00e9alisation du d\u00e9sir dans le r\u00eave",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "254",
+        "author": "FREUD",
+        "current": "Nature et civilisation",
+        "suggested": "Nature et civilisation",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "255",
+        "author": "FROIDEVEAUX-METTERIE",
+        "current": "De l'Antiquit\u00e9 \u00e0 la d\u00e9mocratie moderne : la permanence de la domination masculine",
+        "suggested": "La persistance historique de la domination masculine",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "256",
+        "author": "GALLUZZO-Anthony",
+        "current": "La construction du mythe de l'entrepreneur h\u00e9ro\u00efque",
+        "suggested": "La construction du mythe de l'entrepreneur h\u00e9ro\u00efque",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "257",
+        "author": "GARCIA",
+        "current": "Le concept de situation beauvoirien : Originalit\u00e9 de la position de Beauvoir vis-\u00e0-vis de Sartre et dans le d\u00e9bat f\u00e9ministe",
+        "suggested": "Le concept de situation chez Simone de Beauvoir",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "258",
+        "author": "GARCIA",
+        "current": "Sexisme, soumission et sens de la vie",
+        "suggested": "Sexisme, soumission et sens de la vie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "259",
+        "author": "GARCIA",
+        "current": "La d\u00e9mission de la libert\u00e9 et l'acceptation de la soumission",
+        "suggested": "La d\u00e9mission de la libert\u00e9 et l'acceptation de la soumission",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "260",
+        "author": "GARCIA",
+        "current": "F\u00e9minisme et philosophie f\u00e9ministe",
+        "suggested": "Le concept de situation chez Simone de Beauvoir",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "261",
+        "author": "GIDE",
+        "current": "L'acte gratuit, La libert\u00e9 d'indiff\u00e9rence",
+        "suggested": "L'acte gratuit \u2013 La libert\u00e9 d'indiff\u00e9rence",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "262",
+        "author": "GIRARD",
+        "current": "Le bouc \u00e9missaire",
+        "suggested": "Le bouc \u00e9missaire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "263",
+        "author": "GIRARD",
+        "current": "Le d\u00e9sir mim\u00e9tique",
+        "suggested": "Le d\u00e9sir mim\u00e9tique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "264",
+        "author": "GIRARD",
+        "current": "La rivalit\u00e9 mim\u00e9tique",
+        "suggested": "La rivalit\u00e9 mim\u00e9tique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "265",
+        "author": "GODIN-Christian",
+        "current": "LE SPORT",
+        "suggested": "Le sport",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "266",
+        "author": "GRACIAN",
+        "current": "Baltasar Graci\u00e1n, L'homme de cour",
+        "suggested": "Baltasar Graci\u00e1n, L'homme de cour",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "267",
+        "author": "GRACIAN",
+        "current": "Baltasar Graci\u00e1n, L'homme de cour",
+        "suggested": "Baltasar Graci\u00e1n, L'homme de cour",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "268",
+        "author": "GRIMALDI",
+        "current": "L'all\u00e9gresse",
+        "suggested": "L'all\u00e9gresse",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "269",
+        "author": "GRIMALDI",
+        "current": "La technique, la religion et l'art comme signes d'humanit\u00e9",
+        "suggested": "La technique, la religion et l'art comme signes d'humanit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "270",
+        "author": "GRIMALDI",
+        "current": "L'attention",
+        "suggested": "L'attention",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "271",
+        "author": "GRIMALDI",
+        "current": "Paradoxe de l'amour: \u00e9preuve de la n\u00e9cessit\u00e9 du contingent",
+        "suggested": "Paradoxe de l'amour: \u00e9preuve de la n\u00e9cessit\u00e9 du contingent",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "272",
+        "author": "GRIMALDI",
+        "current": "L'\u00e9nigme de l'amour",
+        "suggested": "L'\u00e9nigme de l'amour",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "273",
+        "author": "GRIMALDI",
+        "current": "Aimer l'autre sans pouvoir jamais le conna\u00eetre vraiment",
+        "suggested": "Aimer l'autre sans pouvoir jamais le conna\u00eetre vraiment",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "274",
+        "author": "GROS",
+        "current": "Le fl\u00e2neur",
+        "suggested": "Le fl\u00e2neur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "275",
+        "author": "HAMILTON",
+        "current": "Pha\u00ebton",
+        "suggested": "Pha\u00ebton",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "276",
+        "author": "HEFEZ",
+        "current": "L'alt\u00e9risation de l'atypique",
+        "suggested": "L'alt\u00e9risation de l'atypique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "277",
+        "author": "HEFEZ",
+        "current": "La PMA: r\u00e9flexion et enjeux",
+        "suggested": "La PMA: r\u00e9flexion et enjeux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "278",
+        "author": "HEGEL",
+        "current": "La simplicit\u00e9 au terme du perfectionnement",
+        "suggested": "La simplicit\u00e9 au terme du perfectionnement",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "279",
+        "author": "HEGEL",
+        "current": "La pens\u00e9e est indissociable des mots",
+        "suggested": "La pens\u00e9e est indissociable des mots",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "280",
+        "author": "HEGEL",
+        "current": "Que l'on est libre de ce qu'on fait",
+        "suggested": "La libert\u00e9 de l'esprit face aux mobiles",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "281",
+        "author": "HEGEL",
+        "current": "Vouloir th\u00e9orique et vouloir pratique",
+        "suggested": "Vouloir th\u00e9orique et vouloir pratique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "282",
+        "author": "HEGEL",
+        "current": "Vengeance / Punition",
+        "suggested": "Vengeance \u2013 Punition",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "283",
+        "author": "HEGEL",
+        "current": "La v\u00e9rit\u00e9 n'est pas au terme du parcours mais elle est le parcours lui-m\u00eame, dont on \u00e9prouve la richesse en le faisant et le refaisant",
+        "suggested": "La v\u00e9rit\u00e9 comme d\u00e9ploiement et parcours dynamique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "284",
+        "author": "HEMPEL",
+        "current": "L'invention du test",
+        "suggested": "L'invention du test",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "285",
+        "author": "HERSCH",
+        "current": "Courte introduction \u00e0 l'empirisme anglais: Locke, Berkeley, Hume",
+        "suggested": "L'empirisme de Locke, Berkeley et Hume",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "286",
+        "author": "HOBBES",
+        "current": "La domination des animaux",
+        "suggested": "La domination des animaux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "287",
+        "author": "HOBBES",
+        "current": "Sans autorit\u00e9 souveraine, la guerre de tous contre tous",
+        "suggested": "Sans autorit\u00e9 souveraine, la guerre de tous contre tous",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "288",
+        "author": "HOBBES",
+        "current": "La libert\u00e9 est absence de contrainte",
+        "suggested": "La libert\u00e9 est absence de contrainte",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "289",
+        "author": "HOBBES",
+        "current": "La constitution d'une multitude en peuple par le souverain",
+        "suggested": "La constitution d'une multitude en peuple par le souverain",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "290",
+        "author": "HOBBES",
+        "current": "Le vie comme une course",
+        "suggested": "Le vie comme une course",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "291",
+        "author": "H\u00d6LDERLIN",
+        "current": "Courage du po\u00e8te",
+        "suggested": "Courage du po\u00e8te",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "292",
+        "author": "HOUELLEBECQ",
+        "current": "Voyage et tourisme",
+        "suggested": "Voyage et tourisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "293",
+        "author": "HUGO",
+        "current": "L'\u00e9ducation, m\u00e8re de l'insertion sociale",
+        "suggested": "L'\u00e9ducation, m\u00e8re de l'insertion sociale",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "294",
+        "author": "HUGO",
+        "current": "Il n'y a ni mauvaises herbes ni mauvais hommes",
+        "suggested": "Il n'y a ni mauvaises herbes ni mauvais hommes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "295",
+        "author": "HUGO",
+        "current": "Le mensonge de soeur Simplice",
+        "suggested": "Le mensonge de soeur Simplice",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "296",
+        "author": "HUGO",
+        "current": "Frollo. (introduction historique)",
+        "suggested": "Frollo. (introduction historique)",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "297",
+        "author": "HUME",
+        "current": "Traiter les animaux avec douceur",
+        "suggested": "Traiter les animaux avec douceur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "298",
+        "author": "HUME",
+        "current": "De la raison des animaux",
+        "suggested": "De la raison des animaux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "299",
+        "author": "HUME",
+        "current": "Les inconv\u00e9nients de la vie solitaire",
+        "suggested": "Les inconv\u00e9nients de la vie solitaire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "300",
+        "author": "HUME",
+        "current": "La crise sceptique",
+        "suggested": "La crise sceptique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "301",
+        "author": "HUME",
+        "current": "V\u00e9rit\u00e9 de raison et v\u00e9rit\u00e9 de fait",
+        "suggested": "V\u00e9rit\u00e9 de raison et v\u00e9rit\u00e9 de fait",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "302",
+        "author": "HUME",
+        "current": "Le miracle comme violation ponctuelle des lois de la nature",
+        "suggested": "Le miracle comme violation ponctuelle des lois de la nature",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "303",
+        "author": "HUME",
+        "current": "Contre l'aveuglement dogmatique",
+        "suggested": "Contre l'aveuglement dogmatique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "304",
+        "author": "HUME",
+        "current": "Les contradictions pratiques de l'espoir d'une parfaite \u00e9galit\u00e9 entre les individus",
+        "suggested": "Les contradictions pratiques de l'espoir d'une parfaite \u00e9galit\u00e9 entre les individus",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "305",
+        "author": "HUME",
+        "current": "La guillotine de Hume",
+        "suggested": "La guillotine de Hume",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "306",
+        "author": "HUME",
+        "current": "M\u00e9moire et imagination",
+        "suggested": "M\u00e9moire et imagination",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "307",
+        "author": "HUME",
+        "current": "La connaissance est insuffisante pour d\u00e9clencher une action morale",
+        "suggested": "L'impuissance de l'entendement sur la conduite morale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "308",
+        "author": "HUXLEY",
+        "current": "L'eug\u00e9nisme dans Le Meilleur des mondes: Extraits du chapitre 1: les embryons",
+        "suggested": "Le Meilleur des mondes : fabrication et conditionnement",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "309",
+        "author": "HUXLEY",
+        "current": "L'eug\u00e9nisme dans Le Meilleur des mondes: Extraits du chapitre 2: les enfants",
+        "suggested": "Le Meilleur des mondes : haine conditionn\u00e9e du non-marchand",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "310",
+        "author": "HUXLEY",
+        "current": "Pr\u00e9face nouvelle au Meilleur des mondes lors de sa r\u00e9\u00e9dition en 1946 (premi\u00e8re publication en 1932)",
+        "suggested": "La servitude volontaire par la technologie",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "311",
+        "author": "ILLOUZ-BENGER-ALALUF",
+        "current": "<<< S\u00e9jour tout compris - sauf le stress >> : comment les villages du Club Med produisent de la relaxation",
+        "suggested": "La marchandisation \u00e9motionnelle du Club Med",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "312",
+        "author": "ILLOUZ-WEST",
+        "current": "La carte de voeux comme moyen d'expression autoris\u00e9 des \u00e9motions",
+        "suggested": "L'authenticit\u00e9 et la commercialisation des sentiments",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "313",
+        "author": "ILLOUZ-WEST",
+        "current": "Comprendre l'authenticit\u00e9 \u00e0 l'heure de la commercialisation des sentiments : le cas de la carte de voeux",
+        "suggested": "La carte de v\u0153ux et la marchandisation des \u00e9motions",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "314",
+        "author": "JAMES.W",
+        "current": "Le libre arbitre du point de vue pragmatique: la promesse d'un monde meilleur",
+        "suggested": "Le libre arbitre du point de vue pragmatique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "315",
+        "author": "JANK\u00c9L\u00c9VITCH.V",
+        "current": "Les trois personnes de la mort",
+        "suggested": "Les trois personnes de la mort",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "316",
+        "author": "JANK\u00c9L\u00c9VITCH.V",
+        "current": "Le pardon",
+        "suggested": "Le pardon",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "317",
+        "author": "JANK\u00c9L\u00c9VITCH.V",
+        "current": "La cl\u00e9mence n'est pas le pardon",
+        "suggested": "La cl\u00e9mence n'est pas le pardon",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "318",
+        "author": "JANK\u00c9L\u00c9VITCH.V",
+        "current": "Pas de pardon sans gr\u00e2ce",
+        "suggested": "Pas de pardon sans gr\u00e2ce",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "319",
+        "author": "JANK\u00c9L\u00c9VITCH.V",
+        "current": "Le probl\u00e8me de la r\u00e9cidive",
+        "suggested": "Le probl\u00e8me de la r\u00e9cidive",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "320",
+        "author": "JASPERS",
+        "current": "La menace atomique",
+        "suggested": "La menace atomique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "321",
+        "author": "KANT",
+        "current": "ANALYTIQUE DU BEAU",
+        "suggested": "Analytique du beau",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "322",
+        "author": "KANT",
+        "current": "L'ivresse, le sommeil, la mort. DE L'INHIBITION, DE L'AFFAIBLISSEMENT ET DE LA PERTE TOTALE DE LA FACULTE DE SENTIR",
+        "suggested": "L'ivresse, le sommeil et la mort : pertes de la sensibilit\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "323",
+        "author": "KANT",
+        "current": "DU BIEN PHYSIQUE ET MORAL SUPREME",
+        "suggested": "Du bien physique et moral supreme",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "324",
+        "author": "KANT",
+        "current": "DU BIEN PHYSIQUE ET MORAL SUPREME",
+        "suggested": "Du bien physique et moral supreme",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "325",
+        "author": "KANT",
+        "current": "L'importance et l'utilit\u00e9 de l'anthropologie",
+        "suggested": "L'importance et l'utilit\u00e9 de l'anthropologie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "326",
+        "author": "KANT",
+        "current": "L'importance pr\u00eater son attention et d'apprendre \u00e0 faire abstraction",
+        "suggested": "L'importance de l'abstraction face \u00e0 l'attention",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "327",
+        "author": "KANT",
+        "current": "La mystique des nombres",
+        "suggested": "La mystique des nombres",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "328",
+        "author": "KANT",
+        "current": "Paragraphe 54 Remarque",
+        "suggested": "Le rire et l'attente r\u00e9solue en n\u00e9ant",
+        "reason": "Ne constituait pas un titre repr\u00e9sentatif (chapitre/remarque/placeholder).",
+        "problem_type": 2
+    },
+    {
+        "id": "329",
+        "author": "KANT",
+        "current": "La po\u00e9sie et l'\u00e9loquence",
+        "suggested": "La po\u00e9sie et l'\u00e9loquence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "330",
+        "author": "KANT",
+        "current": "Les maximes du sens commun",
+        "suggested": "Les maximes du sens commun",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "331",
+        "author": "KANT",
+        "current": "Les maximes du sens commun",
+        "suggested": "Les maximes du sens commun",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "332",
+        "author": "KANT",
+        "current": "L'in\u00e9vitable impossibilit\u00e9 des questionnements m\u00e9taphysiques",
+        "suggested": "L'in\u00e9vitable impossibilit\u00e9 des questionnements m\u00e9taphysiques",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "333",
+        "author": "KANT",
+        "current": "Dernier regard sur le pays de l'entendement pur",
+        "suggested": "Dernier regard sur le pays de l'entendement pur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "334",
+        "author": "KANT",
+        "current": "L'accomplissement du devoir ne doit pas \u00eatre objet d'admiration",
+        "suggested": "Le devoir comme norme ordinaire sans admiration",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "335",
+        "author": "KANT",
+        "current": "Rechercher son propre bonheur non comme une fin en soi, mais comme un moyen en vue de permettre \u00e0 autrui d'atteindre le sien",
+        "suggested": "Le bonheur d'autrui comme fin morale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "336",
+        "author": "KANT",
+        "current": "Les devoirs indirects de l'homme envers les beaut\u00e9s de la nature et les animaux",
+        "suggested": "Nos devoirs indirects envers les animaux",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "337",
+        "author": "KANT",
+        "current": "La diff\u00e9rence entre la libre habitude et l'accoutumance en mati\u00e8re de vertu",
+        "suggested": "La moralit\u00e9 sans motif pur de bienveillance",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "338",
+        "author": "KANT",
+        "current": "Le devoir de se perfectionner",
+        "suggested": "Le devoir de perfectionnement personnel",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "339",
+        "author": "KANT",
+        "current": "Le suicide comme transgression du devoir de conservation",
+        "suggested": "Le suicide comme transgression du devoir de conservation",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "340",
+        "author": "KANT",
+        "current": "La volont\u00e9 bonne",
+        "suggested": "La volont\u00e9 bonne",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "341",
+        "author": "KANT",
+        "current": "La bienfaisance et le devoir",
+        "suggested": "La bienfaisance et le devoir",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "342",
+        "author": "KANT",
+        "current": "Le bonheur est un id\u00e9al non de la raison mais de l'imagination",
+        "suggested": "Le bonheur comme id\u00e9al de l'imagination",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "343",
+        "author": "KANT",
+        "current": "Le prix et la dignit\u00e9",
+        "suggested": "Le prix et la dignit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "344",
+        "author": "KANT",
+        "current": "L'insociable sociabilit\u00e9",
+        "suggested": "L'insociable sociabilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "345",
+        "author": "KANT",
+        "current": "L'opinion est un jugement provisionnel",
+        "suggested": "L'opinion est un jugement provisionnel",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "346",
+        "author": "KANT",
+        "current": "Les jugements provisoires et la d\u00e9couverte",
+        "suggested": "Les jugements provisoires et la d\u00e9couverte",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "347",
+        "author": "KANT",
+        "current": "Les plus communs pr\u00e9jug\u00e9s: en particulier ceux relevant de l'imitation",
+        "suggested": "Les pr\u00e9jug\u00e9s relevant de l'imitation",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "348",
+        "author": "KANT",
+        "current": "Les principales sources de pr\u00e9jug\u00e9s",
+        "suggested": "Les principales sources de pr\u00e9jug\u00e9s",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "349",
+        "author": "KANT",
+        "current": "LES CONCEPTS",
+        "suggested": "Les concepts",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "350",
+        "author": "KANT",
+        "current": "La connaissance \u00e0 l'\u00e9preuve de sa communicabilit\u00e9",
+        "suggested": "La connaissance \u00e0 l'\u00e9preuve de sa communicabilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "351",
+        "author": "KANT",
+        "current": "La diff\u00e9rence entre connaissance subtile et subtilit\u00e9",
+        "suggested": "La diff\u00e9rence entre connaissance subtile et subtilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "352",
+        "author": "KANT",
+        "current": "La d\u00e9termination de son horizon, c'est-\u00e0-dire l'\u00e9valuation de notre aspiration individuelle relativement \u00e0 la perfection quantitative de nos connaissances",
+        "suggested": "La d\u00e9termination de l'horizon de nos connaissances",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "353",
+        "author": "KANT",
+        "current": "Le d\u00e9passement kantien de l'aporie de la v\u00e9rit\u00e9 ad\u00e9quation par les principes de contradiction et de raison suffisante",
+        "suggested": "Le d\u00e9passement kantien de l'aporie de la v\u00e9rit\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "354",
+        "author": "KANT",
+        "current": "L'accession \u00e0 la majorit\u00e9",
+        "suggested": "L'accession \u00e0 la majorit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "355",
+        "author": "KANT",
+        "current": "L'impossibilit\u00e9 d'avoir la certitude d'agir par moralit\u00e9 n'est pas un motif pour renoncer \u00e0 l'action morale",
+        "suggested": "L'impossibilit\u00e9 d'\u00eatre certain d'agir par devoir",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "356",
+        "author": "KANT",
+        "current": "Contre le paternalisme",
+        "suggested": "Contre le paternalisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "357",
+        "author": "KANT",
+        "current": "La participation au progr\u00e8s de l'humanit\u00e9 comme devoir moral",
+        "suggested": "La participation au progr\u00e8s de l'humanit\u00e9 comme devoir moral",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "358",
+        "author": "KANT",
+        "current": "Le progr\u00e8s moral nous rend plus s\u00e9v\u00e8re vis-\u00e0-vis de nous-m\u00eames",
+        "suggested": "Le progr\u00e8s moral et la rigueur envers soi-m\u00eame",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "359",
+        "author": "KANT",
+        "current": "Kant, Trait\u00e9 de p\u00e9dagogie (1803) Extraits de l'Introduction",
+        "suggested": "Kant, Trait\u00e9 de p\u00e9dagogie (1803) Extraits de l'Introduction",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "360",
+        "author": "KLEIN-Naomi",
+        "current": "La contradiction entre le capitalisme et le climat",
+        "suggested": "La contradiction entre le capitalisme et le climat",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "361",
+        "author": "KOYR\u00c9",
+        "current": "La destruction du Cosmos et la g\u00e9om\u00e9trisation de l'espace",
+        "suggested": "La destruction du Cosmos et la g\u00e9om\u00e9trisation de l'espace",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "362",
+        "author": "KUNDERA",
+        "current": "La toque de Clementis",
+        "suggested": "La toque de Clementis",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "363",
+        "author": "LACAN",
+        "current": "L'inconscient est le chapitre censur\u00e9 de mon histoire",
+        "suggested": "L'inconscient est le chapitre censur\u00e9 de mon histoire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "364",
+        "author": "LAFARGUE",
+        "current": "L'\u00e9loge de la paresse contre le culte du travail",
+        "suggested": "L'\u00e9loge de la paresse contre le culte du travail",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "365",
+        "author": "LAGASGNERIE",
+        "current": "Pratiques <<< fonctionnelles >> et <<< dysfonctionnelles (ou oppositionnelles )",
+        "suggested": "Pratiques <<< fonctionnelles >> et <<< dysfonctionnelles (ou oppositionnelles )",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "366",
+        "author": "LAGASGNERIE",
+        "current": "Toute pratique des sciences sociales n'est pas oppositionnelle",
+        "suggested": "Sciences sociales et pratiques d'opposition",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "367",
+        "author": "LAGASGNERIE",
+        "current": "Toute critique n'est pas oppositionnelle",
+        "suggested": "Toute critique n'est pas oppositionnelle",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "368",
+        "author": "LAGASGNERIE",
+        "current": "La n\u00e9cessit\u00e9 pour les sciences sociales de passer d'une pens\u00e9e par objet \u00e0 une pens\u00e9e par syst\u00e8me",
+        "suggested": "La n\u00e9cessit\u00e9 pour les sciences sociales de passer d'une pens\u00e9e par objet \u00e0 une pens\u00e9e par syst\u00e8me",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "369",
+        "author": "LAO-TSEU",
+        "current": "LXXVI / LXXVIII",
+        "suggested": "Lxxvi \u2013 Lxxviii",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse) et formatage de la liste.",
+        "problem_type": 5
+    },
+    {
+        "id": "370",
+        "author": "LAPLACE",
+        "current": "Le d\u00e9terminisme",
+        "suggested": "Le d\u00e9terminisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "371",
+        "author": "LA-ROCHEFOUCAULD",
+        "current": "(Non sp\u00e9cifi\u00e9, regroupement th\u00e9matique)",
+        "suggested": "(Non sp\u00e9cifi\u00e9, regroupement th\u00e9matique)",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "372",
+        "author": "LA-ROCHEFOUCAULD",
+        "current": "(Non sp\u00e9cifi\u00e9, regroupement th\u00e9matique)",
+        "suggested": "La fausset\u00e9 de l'amour-propre et des vertus",
+        "reason": "Ne constituait pas un titre repr\u00e9sentatif (chapitre/remarque/placeholder).",
+        "problem_type": 2
+    },
+    {
+        "id": "373",
+        "author": "LEIBNIZ",
+        "current": "L'erreur humaine",
+        "suggested": "L'erreur humaine",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "374",
+        "author": "L\u00c9OTARD",
+        "current": "L'enseignant et le th\u00e9oricien du complot",
+        "suggested": "L'enseignant et le th\u00e9oricien du complot",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "375",
+        "author": "L\u00c9PINARD-MAZOUZ",
+        "current": "Pour l'intersectionnalit\u00e9",
+        "suggested": "Pour l'intersectionnalit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "376",
+        "author": "L\u00c9VI-STRAUSS",
+        "current": "L'appartenance de l'individu \u00e0 de multiples syst\u00e8mes de culture",
+        "suggested": "L'appartenance de l'individu \u00e0 de multiples syst\u00e8mes de culture",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "377",
+        "author": "L\u00c9VI-STRAUSS",
+        "current": "L'anthropologie comme tentative de formulation de la diversit\u00e9 de l'humanit\u00e9",
+        "suggested": "L'anthropologie comme tentative de formulation de la diversit\u00e9 de l'humanit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "378",
+        "author": "L\u00c9VI-STRAUSS",
+        "current": "L'ethnocentrisme",
+        "suggested": "L'ethnocentrisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "379",
+        "author": "L\u00c9VI-STRAUSS",
+        "current": "L'impossibilit\u00e9 de saisir pleinement l'alt\u00e9rit\u00e9 culturelle",
+        "suggested": "L'impossibilit\u00e9 de saisir pleinement l'alt\u00e9rit\u00e9 culturelle",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "380",
+        "author": "LOCKE",
+        "current": "Le Bien commun comme limite au pouvoir politique",
+        "suggested": "Le Bien commun comme limite au pouvoir politique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "381",
+        "author": "LOCKE",
+        "current": "Si l'\u00c9tat outrepasse sa fonction de garantie du Bien commun: droit de r\u00e9sistance",
+        "suggested": "La d\u00e9sob\u00e9issance et le droit de r\u00e9sistance \u00e0 l'\u00c9tat",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "382",
+        "author": "LOCKE",
+        "current": "L'Homme n'est pas naturellement dispos\u00e9 \u00e0 maltraiter les animaux",
+        "suggested": "L'homme face \u00e0 la souffrance animale",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "383",
+        "author": "LOCKE",
+        "current": "Locke (1632-1704) et le droit \u00ab sacr\u00e9 \u00bb de propri\u00e9t\u00e9",
+        "suggested": "Locke et le fondement du droit de propri\u00e9t\u00e9",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "384",
+        "author": "LOCKE",
+        "current": "L'identit\u00e9 et l'identit\u00e9 personnelle",
+        "suggested": "La propri\u00e9t\u00e9 de soi et de son propre corps",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "385",
+        "author": "LOCKE",
+        "current": "Langage et exp\u00e9rience sensible",
+        "suggested": "Le travail comme origine de la propri\u00e9t\u00e9 individuelle",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "386",
+        "author": "LUCR\u00c8CE",
+        "current": "Le clinamen comme justification du libre arbitre",
+        "suggested": "La monnaie comme d\u00e9passement des limites de la propri\u00e9t\u00e9",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "387",
+        "author": "MACHIAVEL",
+        "current": "\u00catre craint mais pas ha\u00ef",
+        "suggested": "\u00catre craint mais pas ha\u00ef",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "388",
+        "author": "MALHERBE",
+        "current": "L'OUTRE MON SEMBLABLE",
+        "suggested": "L'outre mon semblable",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "389",
+        "author": "MARX",
+        "current": "La puissance de l'argent",
+        "suggested": "La puissance de l'argent",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "390",
+        "author": "MARX",
+        "current": "En mani\u00e8re de conclusion",
+        "suggested": "En mani\u00e8re de conclusion",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "391",
+        "author": "MARX",
+        "current": "L'ali\u00e9nation de l'ouvrier par le travail",
+        "suggested": "L'ali\u00e9nation de l'activit\u00e9 productive du travailleur",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "392",
+        "author": "MARX",
+        "current": "L'ali\u00e9nation du travail",
+        "suggested": "Le travail ali\u00e9n\u00e9 comme n\u00e9gation de soi",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "393",
+        "author": "MARX",
+        "current": "Le travail \u00e9mancipateur",
+        "suggested": "L'ali\u00e9nation sociale et le travail sans utilit\u00e9 propre",
+        "reason": "Titre affin\u00e9 pour \u00eatre plus pr\u00e9cis ou harmonis\u00e9.",
+        "problem_type": 3
+    },
+    {
+        "id": "394",
+        "author": "MARX",
+        "current": "Se sentir appartenir au genre humain par la reconnaissance d'autrui",
+        "suggested": "Le travail comme reconnaissance humaine",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "395",
+        "author": "MAUSS",
+        "current": "Donner-recevoir-rendre : la cr\u00e9ation d'un \u00e9tat de d\u00e9pendance mutuelle permettant l'incessant renouvellement du lien social",
+        "suggested": "Le don, le contre-don et le lien social",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "396",
+        "author": "MEAD-Margareth",
+        "current": "Diff\u00e9rents conditionnements culturels cr\u00e9ent diff\u00e9rents types d'individus",
+        "suggested": "Conditionnement culturel et types d'individus",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "397",
+        "author": "MILL",
+        "current": "La recherche obstin\u00e9e du bonheur fait paradoxalement \u00e9cran au bonheur",
+        "suggested": "Le paradoxe de la recherche du bonheur",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "398",
+        "author": "MILL",
+        "current": "D\u00e9dicace de John Stuart Mill \u00e0 sa femme Harriet Taylor Mill",
+        "suggested": "D\u00e9dicace de John Stuart Mill \u00e0 sa femme Harriet Taylor Mill",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "399",
+        "author": "MILL",
+        "current": "Le jugement digne de confiance est conquis de haute lutte",
+        "suggested": "Le jugement digne de confiance est conquis de haute lutte",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "400",
+        "author": "MILL",
+        "current": "La justice sociale: faut-il donner plus \u00e0 ceux qui ont moins ? ou donner plus \u00e0 ceux qui travaillent plus ?",
+        "suggested": "La r\u00e9partition juste des richesses",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "401",
+        "author": "MILL",
+        "current": "Distinction entre la quantit\u00e9 et la qualit\u00e9 du plaisir",
+        "suggested": "Distinction entre la quantit\u00e9 et la qualit\u00e9 du plaisir",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "402",
+        "author": "MILL",
+        "current": "Distinction entre la satisfaction et le bonheur",
+        "suggested": "Distinction entre la satisfaction et le bonheur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "403",
+        "author": "MIRBEAU",
+        "current": "L'Artiste et les Honneurs",
+        "suggested": "L'Artiste et les Honneurs",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "404",
+        "author": "MONTAIGNE",
+        "current": "L'orgueil et la mauvaise foi avec lesquels l'Homme se proclame sup\u00e9rieur aux animaux, au sommet de la cr\u00e9ation",
+        "suggested": "L'orgueil de l'homme face aux animaux",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "405",
+        "author": "MONTAIGNE",
+        "current": "La v\u00e9rit\u00e9 du t\u00e9moignage",
+        "suggested": "La v\u00e9rit\u00e9 du t\u00e9moignage",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "406",
+        "author": "MONTESQUIEU",
+        "current": "Le doux commerce",
+        "suggested": "Le doux commerce",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "407",
+        "author": "MORICE-Juliette",
+        "current": "Du m\u00e9pris \u00e0 la haine de soi : tourisme et m\u00e9lancolie",
+        "suggested": "Du m\u00e9pris \u00e0 la haine de soi : tourisme et m\u00e9lancolie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "408",
+        "author": "MORICE-Juliette",
+        "current": "Dedans-dehors : apories de l'exotisme",
+        "suggested": "Dedans-dehors : apories de l'exotisme",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "409",
+        "author": "MOUY-Paul",
+        "current": "Qu'est-ce que d\u00e9montrer ?",
+        "suggested": "Qu'est-ce que d\u00e9montrer ?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "410",
+        "author": "NAGEL",
+        "current": "La justice sociale",
+        "suggested": "La justice sociale",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "411",
+        "author": "NAGEL",
+        "current": "Le probl\u00e8me du libre arbitre",
+        "suggested": "Le probl\u00e8me du libre arbitre",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "412",
+        "author": "NAGEL",
+        "current": "Le probl\u00e8me du libre arbitre",
+        "suggested": "Le probl\u00e8me du libre arbitre",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "413",
+        "author": "NEWTON",
+        "current": "Existence de Dieu: Preuve physico-th\u00e9ologique",
+        "suggested": "Existence de Dieu: Preuve physico-th\u00e9ologique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "414",
+        "author": "NIETZSCHE",
+        "current": "Les plus anciens juements moraux",
+        "suggested": "Les plus anciens juements moraux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "415",
+        "author": "NIETZSCHE",
+        "current": "105. \u00c9go\u00efsme apparent",
+        "suggested": "105. \u00c9go\u00efsme apparent",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "416",
+        "author": "NIETZSCHE",
+        "current": "Comment combattre la violence d'une pulsion ?",
+        "suggested": "Comment combattre la violence d'une pulsion ?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "417",
+        "author": "NIETZSCHE",
+        "current": "Le pr\u00e9tendu combat des motifs",
+        "suggested": "Le pr\u00e9tendu combat des motifs",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "418",
+        "author": "NIETZSCHE",
+        "current": "La consolation",
+        "suggested": "La consolation",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "419",
+        "author": "NIETZSCHE",
+        "current": "L'importance d'associer la sagesse et de l'\u00e9loquence",
+        "suggested": "L'importance d'associer la sagesse et de l'\u00e9loquence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "420",
+        "author": "NIETZSCHE",
+        "current": "La moralit\u00e9 des moeurs",
+        "suggested": "La moralit\u00e9 des moeurs",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "421",
+        "author": "NIETZSCHE",
+        "current": "Le martyr et la v\u00e9rit\u00e9",
+        "suggested": "Le martyr et la v\u00e9rit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "422",
+        "author": "NIETZSCHE",
+        "current": "La lutte contre les instincts comme d\u00e9cadence",
+        "suggested": "La lutte contre les instincts comme d\u00e9cadence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "423",
+        "author": "NIETZSCHE",
+        "current": "L'histoire n'est utile que dans la mesure o\u00f9 elle est utile \u00e0 la vie",
+        "suggested": "L'histoire n'est utile que dans la mesure o\u00f9 elle est utile \u00e0 la vie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "424",
+        "author": "NIETZSCHE",
+        "current": "Le bonheur dans l'oubli",
+        "suggested": "Le bonheur dans l'oubli",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "425",
+        "author": "NIETZSCHE",
+        "current": "Contre le conformisme moderne: assumer l'unicit\u00e9 de son existence",
+        "suggested": "Contre le conformisme moderne: assumer l'unicit\u00e9 de son existence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "426",
+        "author": "NIETZSCHE",
+        "current": "L'id\u00e9al asc\u00e9tique donne sens \u00e0 la souffrance",
+        "suggested": "L'id\u00e9al asc\u00e9tique donne sens \u00e0 la souffrance",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "427",
+        "author": "NIETZSCHE",
+        "current": "Les concepts de cause et d'effet : de simples descriptions qui appr\u00e9hendent bien peu le devenir du continuum r\u00e9el",
+        "suggested": "Les concepts de cause et d'effet comme descriptions",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "428",
+        "author": "NIETZSCHE",
+        "current": "L'annonce pr\u00e9coce des inconcevables cons\u00e9quences de la mort de Dieu",
+        "suggested": "Les cons\u00e9quences de la mort de Dieu",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "429",
+        "author": "NIETZSCHE",
+        "current": "Amor fati",
+        "suggested": "Amor fati",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "430",
+        "author": "NIETZSCHE",
+        "current": "Loisir et oisivet\u00e9",
+        "suggested": "Loisir et oisivet\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "431",
+        "author": "NIETZSCHE",
+        "current": "Apprendre \u00e0 aimer",
+        "suggested": "Apprendre \u00e0 aimer",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "432",
+        "author": "NIETZSCHE",
+        "current": "L'\u00e9ternel retour",
+        "suggested": "L'\u00e9ternel retour",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "433",
+        "author": "NIETZSCHE",
+        "current": "La croyance du savant",
+        "suggested": "La croyance du savant",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "434",
+        "author": "NIETZSCHE",
+        "current": "L'esprit libre embrasse l'incertitude",
+        "suggested": "L'esprit libre embrasse l'incertitude",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "435",
+        "author": "NIETZSCHE",
+        "current": "Motifs vrai et motifs agissant",
+        "suggested": "Motifs vrai et motifs agissant",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "436",
+        "author": "NIETZSCHE",
+        "current": "Nos \u00e9ruptions",
+        "suggested": "Nos \u00e9ruptions",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "437",
+        "author": "NIETZSCHE",
+        "current": "L'illusion de la libert\u00e9",
+        "suggested": "L'illusion de la libert\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "438",
+        "author": "NIETZSCHE",
+        "current": "Ph\u00e9nom\u00e8ne et chose en soi",
+        "suggested": "Ph\u00e9nom\u00e8ne et chose en soi",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "439",
+        "author": "NIETZSCHE",
+        "current": "Le culte du g\u00e9nie par vanit\u00e9",
+        "suggested": "Le culte du g\u00e9nie par vanit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "440",
+        "author": "NIETZSCHE",
+        "current": "Contre la croyance en un g\u00e9nie inn\u00e9, le g\u00e9nie comme horizon",
+        "suggested": "Contre la croyance en un g\u00e9nie inn\u00e9, le g\u00e9nie comme horizon",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "441",
+        "author": "NIETZSCHE",
+        "current": "L'esprit libre s'affranchit de la tradition - L'ESPRIT LIBRE, NOTION RELATIVE",
+        "suggested": "L'esprit libre s'affranchit de la tradition - L'ESPRIT LIBRE, NOTION RELATIVE",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "442",
+        "author": "NIETZSCHE",
+        "current": "APPR\u00c9CIATION TROP BASSE DE L'\u00c9DUCATION DU LYC\u00c9E",
+        "suggested": "Appr\u00e9ciation trop basse de l'\u00e9ducation du lyc\u00e9e",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "443",
+        "author": "NIETZSCHE",
+        "current": "UN QUART D'HEURE TROP T\u00d4T",
+        "suggested": "Un quart d'heure trop t\u00f4t",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "444",
+        "author": "NIETZSCHE",
+        "current": "IMPORTANCE DE LA MALADIE",
+        "suggested": "Importance de la maladie",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "445",
+        "author": "NIETZSCHE",
+        "current": "LE GRAND HOMME DE LA MASSE",
+        "suggested": "Le grand homme de la masse",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "446",
+        "author": "NIETZSCHE",
+        "current": "M\u00e9connaissance du r\u00eave",
+        "suggested": "M\u00e9connaissance du r\u00eave",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "447",
+        "author": "NIETZSCHE",
+        "current": "ENNUI ET JEU",
+        "suggested": "Ennui et jeu",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "448",
+        "author": "NIETZSCHE",
+        "current": "Limites de la philanthropie",
+        "suggested": "Limites de la philanthropie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "449",
+        "author": "NIETZSCHE",
+        "current": "Origine de la justice",
+        "suggested": "Origine de la justice",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "450",
+        "author": "NIETZSCHE",
+        "current": "Les trois phases de la moralit\u00e9 jusqu'\u00e0 nos jours",
+        "suggested": "Les trois phases de la moralit\u00e9 jusqu'\u00e0 nos jours",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "451",
+        "author": "NIETZSCHE",
+        "current": "Le plaisir dans la morale",
+        "suggested": "Le plaisir dans la morale",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "452",
+        "author": "NIETZSCHE",
+        "current": "Si tout est n\u00e9cessit\u00e9, tout est innocence",
+        "suggested": "Si tout est n\u00e9cessit\u00e9, tout est innocence",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "453",
+        "author": "NIETZSCHE",
+        "current": "Nietzsche, Humain, trop humain, Chapitre IV - \u00ab De l'\u00e2me des artistes et des \u00e9crivains \u00bb",
+        "suggested": "De l'\u00e2me des artistes et des \u00e9crivains",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "454",
+        "author": "NIETZSCHE",
+        "current": "De l'\u00e2me des artistes et \u00e9crivains",
+        "suggested": "De l'\u00e2me des artistes et \u00e9crivains",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "455",
+        "author": "NIETZSCHE",
+        "current": "L'homme dans la soci\u00e9t\u00e9",
+        "suggested": "L'homme dans la soci\u00e9t\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "456",
+        "author": "NIETZSCHE",
+        "current": "LE PHILOSOPHE DE L'OPULENCE",
+        "suggested": "Le philosophe de l'opulence",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "457",
+        "author": "NIETZSCHE",
+        "current": "PRINCIPE DE L'\u00c9QUILIBRE",
+        "suggested": "Principe de l'\u00e9quilibre",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "458",
+        "author": "NIETZSCHE",
+        "current": "R\u00c9ACTION CONTRE LA CIVILISATION DES MACHINES",
+        "suggested": "R\u00e9action contre la civilisation des machines",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "459",
+        "author": "NIETZSCHE",
+        "current": "LES PARTISANS DE LA DOCTRINE DU LIBRE ARBITRE ONT-ILS LE DROIT DE PUNIR?",
+        "suggested": "Les partisans de la doctrine du libre arbitre ont-ils le droit de punir?",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "460",
+        "author": "NIETZSCHE",
+        "current": "HABITUDE DES CONTRASTES",
+        "suggested": "Habitude des contrastes",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "461",
+        "author": "NIETZSCHE",
+        "current": "SI L'ON PEUT PARDONNER",
+        "suggested": "Si l'on peut pardonner",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "462",
+        "author": "NIETZSCHE",
+        "current": "HONTE HABITUELLE",
+        "suggested": "Honte habituelle",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "463",
+        "author": "NIETZSCHE",
+        "current": "Le sujet \u00ab je \u00bb est une simple fiction grammaticale",
+        "suggested": "Le sujet \u00ab je \u00bb est une simple fiction grammaticale",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "464",
+        "author": "NIETZSCHE",
+        "current": "Qu'est-ce, en fin de compte, qu'\u00eatre commun?",
+        "suggested": "Qu'est-ce, en fin de compte, qu'\u00eatre commun?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "465",
+        "author": "NIETZSCHE",
+        "current": "Le moment propice",
+        "suggested": "Le moment propice",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "466",
+        "author": "NIETZSCHE",
+        "current": "H\u00e9las, quelles dr\u00f4les de choses vous \u00eates, mes pens\u00e9es \u00e9crites et peintes !",
+        "suggested": "Les limites du langage face \u00e0 la pens\u00e9e",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "467",
+        "author": "NIETZSCHE",
+        "current": "Les m\u00e9prises des philosophes",
+        "suggested": "Les m\u00e9prises des philosophes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "468",
+        "author": "NIETZSCHE",
+        "current": "La morale comme fondement de la m\u00e9taphysique qui est suppos\u00e9e la fonder",
+        "suggested": "La morale comme fondement de la m\u00e9taphysique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "469",
+        "author": "NOZICK",
+        "current": "La \u00ab machine \u00e0 exp\u00e9rience \u00bb de Nozick",
+        "suggested": "La \u00ab machine \u00e0 exp\u00e9rience \u00bb de Nozick",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "470",
+        "author": "NUSSBAUM",
+        "current": "Cultiver une imagination d\u00e9mocratique",
+        "suggested": "Cultiver une imagination d\u00e9mocratique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "471",
+        "author": "OVIDE",
+        "current": "Narcisse",
+        "suggested": "Narcisse",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "472",
+        "author": "OVIDE",
+        "current": "Narcisse",
+        "suggested": "Narcisse",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "473",
+        "author": "PASCAL",
+        "current": "Tous les hommes recherchent le bonheur, jusqu'\u00e0 ceux qui vont se pendre",
+        "suggested": "La recherche universelle du bonheur",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "474",
+        "author": "PASCAL",
+        "current": "Demeurer en repos dans une chambre",
+        "suggested": "Demeurer en repos dans une chambre",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "475",
+        "author": "PASCAL",
+        "current": "Le pari de Pascal",
+        "suggested": "Le pari de Pascal",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "476",
+        "author": "PASCAL",
+        "current": "On n'aime jamais vraiment quelqu'un pour lui-m\u00eame",
+        "suggested": "On n'aime jamais vraiment quelqu'un pour lui-m\u00eame",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "477",
+        "author": "PESSOA",
+        "current": "L'impossible biographie: histoire sans vie d'une vie sans histoire",
+        "suggested": "L'impossible biographie chez Fernando Pessoa",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "478",
+        "author": "PESSOA",
+        "current": "R\u00eaver l'impossible",
+        "suggested": "R\u00eaver l'impossible",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "479",
+        "author": "PESSOA",
+        "current": "La vie r\u00eav\u00e9e",
+        "suggested": "La vie r\u00eav\u00e9e",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "480",
+        "author": "PESSOA",
+        "current": "Le petit matin",
+        "suggested": "Le petit matin",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "481",
+        "author": "PESSOA",
+        "current": "L'insomnie",
+        "suggested": "L'insomnie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "482",
+        "author": "PESSOA",
+        "current": "L'irr\u00e9ductible nouveaut\u00e9 de l'exp\u00e9rience",
+        "suggested": "L'irr\u00e9ductible nouveaut\u00e9 de l'exp\u00e9rience",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "483",
+        "author": "PESSOA",
+        "current": "\u00catre autre que soi",
+        "suggested": "\u00catre autre que soi",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "484",
+        "author": "PESSOA",
+        "current": "L'asphyxiante banalit\u00e9",
+        "suggested": "L'asphyxiante banalit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "485",
+        "author": "PESSOA",
+        "current": "Les autres n'existent pas",
+        "suggested": "Les autres n'existent pas",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "486",
+        "author": "PESSOA",
+        "current": "La force de r\u00e9miniscence de l'odorat",
+        "suggested": "La force de r\u00e9miniscence de l'odorat",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "487",
+        "author": "PESSOA",
+        "current": "L'impossibilit\u00e9 de trancher le noeud gordien",
+        "suggested": "L'impossibilit\u00e9 de trancher le noeud gordien",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "488",
+        "author": "PESSOA",
+        "current": "L'\u00e9veil comme fin du r\u00eave, donc de la vie",
+        "suggested": "L'\u00e9veil comme fin du r\u00eave, donc de la vie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "489",
+        "author": "PESSOA",
+        "current": "N'\u00eatre personne",
+        "suggested": "N'\u00eatre personne",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "490",
+        "author": "PESSOA",
+        "current": "De l'inconnu au connu: jouer \u00e0 \u00eatre heureux",
+        "suggested": "De l'inconnu au connu: jouer \u00e0 \u00eatre heureux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "491",
+        "author": "PESSOA",
+        "current": "La vie n'est-elle qu'un r\u00eave?",
+        "suggested": "La vie n'est-elle qu'un r\u00eave?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "492",
+        "author": "PESSOA",
+        "current": "L'orage / Apr\u00e8s la pluie",
+        "suggested": "L'orage \u2013 Apr\u00e8s la pluie",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "493",
+        "author": "PIGNOCCHI",
+        "current": "Petit trait\u00e9 d'\u00e9cologie sauvage",
+        "suggested": "Petit trait\u00e9 d'\u00e9cologie sauvage",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "494",
+        "author": "PIGNOCCHI",
+        "current": "BOIS-LE-ROI",
+        "suggested": "Bois-le-roi",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "495",
+        "author": "PIGNOCCHI",
+        "current": "TOTEM",
+        "suggested": "Totem",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "496",
+        "author": "PIGNOCCHI",
+        "current": "INITIATION",
+        "suggested": "Initiation",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "497",
+        "author": "PLATON",
+        "current": "Le mythe de l'androgyne",
+        "suggested": "Le mythe de l'androgyne",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "498",
+        "author": "PLATON",
+        "current": "L'all\u00e9gorie de l'anneau de Gyg\u00e8s",
+        "suggested": "L'all\u00e9gorie de l'anneau de Gyg\u00e8s",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "499",
+        "author": "PLATON",
+        "current": "Le bonheur ne peut \u00eatre assimil\u00e9 \u00e0 une vie de plaisir au cours de laquelle des d\u00e9sirs toujours plus nombreux et diversifi\u00e9s sont fr\u00e9n\u00e9tiquement assouvis",
+        "suggested": "Le bonheur contre l'assouvissement des d\u00e9sirs",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "500",
+        "author": "PLATON",
+        "current": "Connais-toi toi-m\u00eame [Gnothi seauton]",
+        "suggested": "Connais-toi toi-m\u00eame [Gnothi seauton]",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "501",
+        "author": "PLATON",
+        "current": "Le tonneau des Dana\u00efdes",
+        "suggested": "Le tonneau des Dana\u00efdes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "502",
+        "author": "PLATON",
+        "current": "Mythe eschatologique pr\u00e9sent\u00e9 par Socrate avant sa mort",
+        "suggested": "Mythe eschatologique pr\u00e9sent\u00e9 par Socrate avant sa mort",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "503",
+        "author": "PLATON",
+        "current": "L'\u00e9ducation des gardiens",
+        "suggested": "L'\u00e9ducation des gardiens",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "504",
+        "author": "PLATON",
+        "current": "Le mythe de l'attelage ail\u00e9",
+        "suggested": "Le mythe de l'attelage ail\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "505",
+        "author": "PLATON",
+        "current": "Le noble mensonge",
+        "suggested": "Le noble mensonge",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "506",
+        "author": "PLATON",
+        "current": "La nature, le hasard et la technique. Critique platonicienne des cons\u00e9quences \u00e9thiques et juridiques du mat\u00e9rialisme et de l'ath\u00e9isme",
+        "suggested": "Critique platonicienne du mat\u00e9rialisme",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "507",
+        "author": "PLATON",
+        "current": "L'origine de la cit\u00e9 et la sp\u00e9cialisation des t\u00e2ches",
+        "suggested": "L'origine de la cit\u00e9 et la sp\u00e9cialisation des t\u00e2ches",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "508",
+        "author": "PLATON",
+        "current": "H\u00e9siode / Platon",
+        "suggested": "H\u00e9siode \u2013 Platon",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "509",
+        "author": "PLATON",
+        "current": "Rh\u00e9torique et conviction",
+        "suggested": "Rh\u00e9torique et conviction",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "510",
+        "author": "PLATON",
+        "current": "Richesse et bonheur",
+        "suggested": "Richesse et bonheur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "511",
+        "author": "PLATON",
+        "current": "Avoir la science de son inscience",
+        "suggested": "Avoir la science de son inscience",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "512",
+        "author": "PLINE L'ANCIEN",
+        "current": "Les raisins de Zeuxis",
+        "suggested": "Les raisins de Zeuxis",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "513",
+        "author": "POPPER",
+        "current": "La science proc\u00e8de par rejet d'hypoth\u00e8ses",
+        "suggested": "La science proc\u00e8de par rejet d'hypoth\u00e8ses",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "514",
+        "author": "PR\u00c9VOST",
+        "current": "L'art d'enseigner",
+        "suggested": "L'art d'enseigner",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "515",
+        "author": "PR\u00c9VOST",
+        "current": "L'art d'\u00eatre enseign\u00e9",
+        "suggested": "L'art d'\u00eatre enseign\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "516",
+        "author": "PROUST",
+        "current": "Les trois arbres de Hudimesnil",
+        "suggested": "Les trois arbres de Hudimesnil",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "517",
+        "author": "PROUST",
+        "current": "L'entre-soi",
+        "suggested": "L'entre-soi",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "518",
+        "author": "PROUST",
+        "current": "Longtemps, je me suis couch\u00e9 de bonne heure",
+        "suggested": "Longtemps, je me suis couch\u00e9 de bonne heure",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "519",
+        "author": "PROUST",
+        "current": "L'\u00c9bri\u00e9t\u00e9",
+        "suggested": "L'\u00c9bri\u00e9t\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "520",
+        "author": "PROUST",
+        "current": "Le marquis de Saint-Loup",
+        "suggested": "Le marquis de Saint-Loup",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "521",
+        "author": "PROUST",
+        "current": "Le marquis de Saint-Loup",
+        "suggested": "Le marquis de Saint-Loup",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "522",
+        "author": "PROUST",
+        "current": "Le pav\u00e9 de l'h\u00f4tel de Guermantes",
+        "suggested": "Le pav\u00e9 de l'h\u00f4tel de Guermantes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "523",
+        "author": "PUTNAM",
+        "current": "Combien d'objets y a-t-il dans cette pi\u00e8ce ?",
+        "suggested": "Combien d'objets y a-t-il dans cette pi\u00e8ce ?",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "524",
+        "author": "Religion",
+        "current": "La religion - Textes compl\u00e9mentaires",
+        "suggested": "Textes compl\u00e9mentaires",
+        "reason": "Retrait du nom d'auteur redondant au d\u00e9but du titre.",
+        "problem_type": 3
+    },
+    {
+        "id": "525",
+        "author": "ROSENBERG",
+        "current": "Se confronter au contenu des arguments remettre en cause les pr\u00e9misses",
+        "suggested": "Se confronter au contenu des arguments remettre en cause les pr\u00e9misses",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "526",
+        "author": "ROSENBERG",
+        "current": "La rencontre philosophique comme collision de deux visions du monde",
+        "suggested": "La rencontre de deux visions du monde",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "527",
+        "author": "ROUSSEAU",
+        "current": "Le bonheur est dans la promesse du d\u00e9sir plus que dans sa satisfaction",
+        "suggested": "Le bonheur dans la promesse du d\u00e9sir",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "528",
+        "author": "ROUSSEAU",
+        "current": "Le bonheur est dans la promesse du d\u00e9sir plus que dans sa satisfaction",
+        "suggested": "Le bonheur dans la promesse du d\u00e9sir",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "529",
+        "author": "ROUSSEAU",
+        "current": "La construction des diff\u00e9rences entre les hommes",
+        "suggested": "La construction des diff\u00e9rences entre les hommes",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "530",
+        "author": "ROUSSEAU",
+        "current": "L'homme Sauvage et l'homme Civil",
+        "suggested": "L'homme Sauvage et l'homme Civil",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "531",
+        "author": "ROUSSEAU",
+        "current": "L'homme et l'animal",
+        "suggested": "L'homme et l'animal",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "532",
+        "author": "ROUSSEAU",
+        "current": "Diff\u00e9rence anthropologique: la perfectibilit\u00e9",
+        "suggested": "Diff\u00e9rence anthropologique: la perfectibilit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "533",
+        "author": "ROUSSEAU",
+        "current": "L'origine du langage",
+        "suggested": "L'origine du langage",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "534",
+        "author": "ROUSSEAU",
+        "current": "La piti\u00e9 comme sentiment naturel",
+        "suggested": "La piti\u00e9 comme sentiment naturel",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "535",
+        "author": "ROUSSEAU",
+        "current": "L'appropriation de la terre comme point de basculement d\u00e9cisif dans l'histoire de l'humanit\u00e9",
+        "suggested": "L'appropriation de la terre comme point de basculement d\u00e9cisif dans l'histoire de l'humanit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "536",
+        "author": "ROUSSEAU",
+        "current": "De la s\u00e9dentarisation \u00e0 la rivalit\u00e9",
+        "suggested": "De la s\u00e9dentarisation \u00e0 la rivalit\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "537",
+        "author": "ROUSSEAU",
+        "current": "Le resserrement des liens sociaux",
+        "suggested": "Le resserrement des liens sociaux",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "538",
+        "author": "ROUSSEAU",
+        "current": "Le basculement de l'humanit\u00e9: l'apparition de la propri\u00e9t\u00e9",
+        "suggested": "Le basculement de l'humanit\u00e9: l'apparition de la propri\u00e9t\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "539",
+        "author": "ROUSSEAU",
+        "current": "La chute",
+        "suggested": "La chute",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "540",
+        "author": "ROUSSEAU",
+        "current": "L'incapacit\u00e9 \u00e0 enrayer la chute; la l\u00e9gitimation des in\u00e9galit\u00e9s par les lois",
+        "suggested": "L'incapacit\u00e9 \u00e0 enrayer la chute \u2013 La l\u00e9gitimation des in\u00e9galit\u00e9s par les lois",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "541",
+        "author": "ROUSSEAU",
+        "current": "Le citoyen corrompu par l'institution qui avait pour r\u00f4le de le lib\u00e9rer",
+        "suggested": "Le citoyen corrompu par l'institution qui avait pour r\u00f4le de le lib\u00e9rer",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "542",
+        "author": "ROUSSEAU",
+        "current": "Le dernier terme de l'in\u00e9galit\u00e9: despotisme, tyrannie",
+        "suggested": "Le dernier terme de l'in\u00e9galit\u00e9: despotisme, tyrannie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "543",
+        "author": "ROUSSEAU",
+        "current": "Bilan comparatif : l'homme de la nature (le Sauvage) n'a rien \u00e0 envier \u00e0 l'homme de l'homme (l'homme polic\u00e9) dont la nature est corrompue",
+        "suggested": "Bilan comparatif : l'homme de la nature (le Sauvage) n'a rien \u00e0 envier \u00e0 l'homme de l'homme (l'homme polic\u00e9) dont la nature est corrompue",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "544",
+        "author": "ROUSSEAU",
+        "current": "Le coeur corrompu de l'homme civil par opposition \u00e0 celui de l'homme de la nature",
+        "suggested": "Le coeur corrompu de l'homme civil par opposition \u00e0 celui de l'homme de la nature",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "545",
+        "author": "ROUSSEAU",
+        "current": "Non pertinence de la hi\u00e9rarchisation entre les soci\u00e9t\u00e9s << civilis\u00e9es >> et les soci\u00e9t\u00e9s \u00ab sauvages \u00bb",
+        "suggested": "L'\u00e9galit\u00e9 entre les soci\u00e9t\u00e9s dites sauvages",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "546",
+        "author": "ROUSSEAU",
+        "current": "Curiosit\u00e9 naturelle et non naturelle",
+        "suggested": "Curiosit\u00e9 naturelle et non naturelle",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "547",
+        "author": "ROUSSEAU",
+        "current": "Le d\u00e9veloppement des facult\u00e9s intellectuelles de l'enfant par la pratique plut\u00f4t que par la th\u00e9orie dans le Livre III de l'\u00c9mile de Rousseau",
+        "suggested": "L'apprentissage pratique par l'exp\u00e9rience",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "548",
+        "author": "ROUSSEAU",
+        "current": "\u00c9mile et le canard",
+        "suggested": "\u00c9mile et le canard",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "549",
+        "author": "ROUSSEAU",
+        "current": "Apprentissage du magn\u00e9tisme par la pratique",
+        "suggested": "Apprentissage du magn\u00e9tisme par la pratique",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "550",
+        "author": "ROUSSEAU",
+        "current": "\u00c0 la table du financier",
+        "suggested": "\u00c0 la table du financier",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "551",
+        "author": "ROUSSEAU",
+        "current": "Contre les rentiers, le devoir de travailler",
+        "suggested": "Contre les rentiers, le devoir de travailler",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "552",
+        "author": "ROUSSEAU",
+        "current": "Les sensations et le jugement sur les sensations",
+        "suggested": "Les sensations et le jugement sur les sensations",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "553",
+        "author": "ROUSSEAU",
+        "current": "L'importance d'apprendre sans se reposer sur l'autorit\u00e9 d'autrui",
+        "suggested": "Apprendre par soi-m\u00eame sans autorit\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "554",
+        "author": "ROUSSEAU",
+        "current": "Bonheur et apparence de bonheur",
+        "suggested": "Bonheur et apparence de bonheur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "555",
+        "author": "ROUSSEAU",
+        "current": "L'histoire, r\u00e9cit des \u00e9v\u00e8nements pass\u00e9s, n'est qu'une interpr\u00e9tation",
+        "suggested": "L'histoire comme interpr\u00e9tation",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "556",
+        "author": "ROUSSEAU",
+        "current": "La religion naturelle",
+        "suggested": "La religion naturelle",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "557",
+        "author": "ROUSSEAU",
+        "current": "Rousseau, \u00c9mile ou De l'\u00e9ducation (1762) Extraits du Livre V",
+        "suggested": "Rousseau, \u00c9mile ou De l'\u00e9ducation (1762) Extraits du Livre V",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "558",
+        "author": "ROUSSEAU",
+        "current": "De la libert\u00e9 naturelle \u00e0 la libert\u00e9 civile",
+        "suggested": "De la libert\u00e9 naturelle \u00e0 la libert\u00e9 civile",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "559",
+        "author": "RUSSELL",
+        "current": "Extraits de l'\u00c9loge de l'oisivet\u00e9",
+        "suggested": "Extraits de l'\u00c9loge de l'oisivet\u00e9",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "560",
+        "author": "SARTRE",
+        "current": "La mort comme n\u00e9antisation toujours possible de mes possibles",
+        "suggested": "La mort comme n\u00e9gation de nos possibles",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "561",
+        "author": "SCHOPENHAUER",
+        "current": "Strat\u00e9gie argumentative: Prouver les pr\u00e9misses avant de faire appara\u00eetre la conclusion",
+        "suggested": "La strat\u00e9gie de la d\u00e9monstration logique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "562",
+        "author": "SCHOPENHAUER",
+        "current": "L'art d'avoir toujours raison",
+        "suggested": "L'art d'avoir toujours raison",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "563",
+        "author": "SCHOPENHAUER",
+        "current": "Extraits du chapitre 1 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "suggested": "La personnalit\u00e9 comme source principale du bonheur",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "564",
+        "author": "SCHOPENHAUER",
+        "current": "Extraits du chapitre 2 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "suggested": "Extraits du chapitre 2 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "565",
+        "author": "SCHOPENHAUER",
+        "current": "Extraits du chapitre 2 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "suggested": "Extraits du chapitre 2 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "566",
+        "author": "SCHOPENHAUER",
+        "current": "Extraits du chapitre 3 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "suggested": "Extraits du chapitre 3 des <<< Aphorismes sur la sagesse dans la vie >>>",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "567",
+        "author": "SCHOPENHAUER",
+        "current": "Ne pas \u00eatre prisonnier du regard d'autrui",
+        "suggested": "Ne pas \u00eatre prisonnier du regard d'autrui",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "568",
+        "author": "SCHOPENHAUER",
+        "current": "De la diff\u00e9rence des \u00e2ges de la vie",
+        "suggested": "De la diff\u00e9rence des \u00e2ges de la vie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "569",
+        "author": "SCHOPENHAUER",
+        "current": "Le jeu pour tuer l'ennui",
+        "suggested": "Le jeu pour tuer l'ennui",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "570",
+        "author": "SCHOPENHAUER",
+        "current": "La th\u00e9orie du rire",
+        "suggested": "La th\u00e9orie du rire",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "571",
+        "author": "SCHOPENHAUER",
+        "current": "La vie oscille comme un pendule de la souffrance \u00e0 l'ennui",
+        "suggested": "La vie oscille comme un pendule de la souffrance \u00e0 l'ennui",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "572",
+        "author": "SCHOPENHAUER",
+        "current": "L'inaccessibilit\u00e9, pour l'immense majorit\u00e9 des gens, d'un authentique rapport contemplatif au monde",
+        "suggested": "L'inaccessibilit\u00e9 de la contemplation pour la foule",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "573",
+        "author": "SCHOPENHAUER",
+        "current": "Le nihilisme schopenhauerien: un impossible bonheur",
+        "suggested": "Le nihilisme schopenhauerien: un impossible bonheur",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "574",
+        "author": "SCHOPENHAUER",
+        "current": "Hamlet par Schopenhauer",
+        "suggested": "Hamlet par Schopenhauer",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "575",
+        "author": "SCHOPENHAUER",
+        "current": "La parabole des porcs-\u00e9pics: la politesse et les bonnes mani\u00e8res",
+        "suggested": "La parabole des porcs-\u00e9pics : distance et politesse",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "576",
+        "author": "SEN",
+        "current": "La conversion des ressources en capabilit\u00e9s",
+        "suggested": "La conversion des ressources en capabilit\u00e9s",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "577",
+        "author": "SEP",
+        "current": "Voluntary Euthanasia",
+        "suggested": "Voluntary Euthanasia",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "578",
+        "author": "SERRES",
+        "current": "La parasite et le symbiote",
+        "suggested": "La parasite et le symbiote",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "579",
+        "author": "SEXTUS",
+        "current": "Les modes d'Agrippa",
+        "suggested": "Les modes d'Agrippa",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "580",
+        "author": "SEXTUS",
+        "current": "Les modes d'Enesid\u00e8me",
+        "suggested": "Les modes d'Enesid\u00e8me",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "581",
+        "author": "SMITH",
+        "current": "Le fondement \u00e9conomique du lien social : l'\u00e9go\u00efsme au fondement des \u00e9changes",
+        "suggested": "L'int\u00e9r\u00eat personnel au fondement des \u00e9changes",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "582",
+        "author": "SMITH",
+        "current": "Division du travail, manufacture d'\u00e9pingles, veste de laine",
+        "suggested": "Division du travail \u2013 Manufacture d'\u00e9pingles \u2013 Veste de laine",
+        "reason": "Formatage de la liste avec s\u00e9parateur ' \u2013 '.",
+        "problem_type": 3
+    },
+    {
+        "id": "583",
+        "author": "SMITH",
+        "current": "Les avantages productifs de la division du travail : accroissement de l'habilet\u00e9, optimisation du temps, facilitation du travail",
+        "suggested": "Les facteurs de productivit\u00e9 de la division du travail",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "584",
+        "author": "SMITH",
+        "current": "La veste de laine",
+        "suggested": "La veste de laine",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "585",
+        "author": "SMITH",
+        "current": "La tendance naturelle de l'homme \u00e0 \u00e9changer",
+        "suggested": "La tendance naturelle de l'homme \u00e0 \u00e9changer",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "586",
+        "author": "SPINOZA",
+        "current": "D\u00c9FINITIONS DES AFFECTIONS",
+        "suggested": "D\u00e9finitions des affections",
+        "reason": "Conversion de MAJUSCULE en minuscules (respect de la casse).",
+        "problem_type": 5
+    },
+    {
+        "id": "587",
+        "author": "SPINOZA",
+        "current": "Des affects",
+        "suggested": "Des affects",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "588",
+        "author": "SPINOZA",
+        "current": "L'importance de croire en soi",
+        "suggested": "L'importance de croire en soi",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "589",
+        "author": "SPINOZA",
+        "current": "L'illusion du libre arbitre",
+        "suggested": "L'illusion du libre arbitre",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "590",
+        "author": "TESTART",
+        "current": "La n\u00e9cessit\u00e9 pour le chercheur de s'autolimiter",
+        "suggested": "La n\u00e9cessit\u00e9 pour le chercheur de s'autolimiter",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "591",
+        "author": "THOREAU",
+        "current": "Incipit: le gouvernement n'est pas une fin mais un simple moyen",
+        "suggested": "L'\u00c9tat comme simple moyen au service de la libert\u00e9",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "592",
+        "author": "THOREAU",
+        "current": "Les v\u00eatements et la mode",
+        "suggested": "Les v\u00eatements et la mode",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "593",
+        "author": "TOCQUEVILLE",
+        "current": "La menace du despotisme en d\u00e9mocratie",
+        "suggested": "La menace du despotisme en d\u00e9mocratie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "594",
+        "author": "TOURNIER",
+        "current": "Autrui, pi\u00e8ce ma\u00eetresse de mon univers",
+        "suggested": "Autrui, pi\u00e8ce ma\u00eetresse de mon univers",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "595",
+        "author": "VAL\u00c9RY",
+        "current": "La vitalit\u00e9 de l'id\u00e9e de la mort",
+        "suggested": "La vitalit\u00e9 de l'id\u00e9e de la mort",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "596",
+        "author": "VOLTAIRE",
+        "current": "Folie",
+        "suggested": "Folie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "597",
+        "author": "WEIL",
+        "current": "Deuxi\u00e8me bo\u00eete, du jeudi 11 avril au mardi 7 mai, Carnaud, Forges de Basse-Indre, rue du Vieux-Pont de S\u00e8vres, Boulogne-Billancourt",
+        "suggested": "La cadence et la fatigue de l'ouvri\u00e8re en usine",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "598",
+        "author": "YOURCENAR",
+        "current": "L'insaisissable idiosyncrasie",
+        "suggested": "L'insaisissable idiosyncrasie",
+        "reason": "Titre d'origine jug\u00e9 adapt\u00e9.",
+        "problem_type": 4
+    },
+    {
+        "id": "599",
+        "author": "ZAMIATINE",
+        "current": "Sans libert\u00e9, pas de crime ; La d\u00e9couverte de soi comme un autre ; Le droit de subir des ch\u00e2timents ; L'imagination comme imperfection ; Apr\u00e8s la grande op\u00e9ration",
+        "suggested": "La n\u00e9gation de la libert\u00e9 dans l'\u00c9tat totalitaire",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    },
+    {
+        "id": "600",
+        "author": "ZENITER",
+        "current": "L'inqui\u00e9tante influence du recours aux affects comme \u00e9l\u00e9ment central de la politique",
+        "suggested": "Le recours aux affects et la manipulation en politique",
+        "reason": "Titre trop long (> 60 caract\u00e8res), raccourci pour plus de clart\u00e9.",
+        "problem_type": 1
+    }
+];
+        
+        let initialData = [];
+        let currentTab = 0;
+        
+        // 1. Load data from localStorage or fallback to defaults
+        try {
+            const saved = localStorage.getItem(localStorageKey);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length === defaultRawData.length) {
+                    initialData = parsed;
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load from localStorage", e);
+        }
+        
+        // If no valid data in localStorage, initialize defaults
+        if (initialData.length === 0) {
+            initialData = defaultRawData;
+            // Checks by default only if problem_type is 5 (ALL CAPS)
+            initialData.forEach(item => {
+                if (item.problem_type === 5) {
+                    item.checked = true;
+                } else {
+                    item.checked = false;
+                }
+            });
+            saveStateQuietly();
+        }
+        
+        function saveStateQuietly() {
+            try {
+                localStorage.setItem(localStorageKey, JSON.stringify(initialData));
+            } catch (e) {
+                console.error("Failed to save to localStorage", e);
+            }
+        }
+        
+        function triggerAutoSave() {
+            saveStateQuietly();
+            updateStats();
+            
+            const banner = document.getElementById('save-banner');
+            banner.style.backgroundColor = '#dcfce7';
+            setTimeout(() => {
+                banner.style.backgroundColor = '#f0fdf4';
+            }, 5000);
+        }
+        
+        // Populate DOM
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            let filtered = filterList(initialData);
+            
+            filtered.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.id = `row-${row.id}`;
+                
+                // Problem class / display tag
+                let problemTag = '';
+                let titleDecoration = '';
+                if (row.problem_type === 1) {
+                    problemTag = '<span class="reason-tag">1. Trop long</span>';
+                    titleDecoration = 'text-decoration: line-through;';
+                } else if (row.problem_type === 2) {
+                    problemTag = '<span class="reason-tag" style="background-color: #fef3c7; color: #92400e;">2. Non représentatif</span>';
+                    titleDecoration = 'text-decoration: line-through;';
+                } else if (row.problem_type === 3) {
+                    problemTag = '<span class="reason-tag" style="background-color: #ecfdf5; color: #065f46;">3. À affiner</span>';
+                    titleDecoration = 'text-decoration: line-through;';
+                } else if (row.problem_type === 5) {
+                    problemTag = '<span class="reason-tag" style="background-color: #dbeafe; color: #1e40af;">5. En majuscules</span>';
+                    titleDecoration = 'text-decoration: line-through; font-family: monospace; text-transform: uppercase;';
+                } else {
+                    problemTag = '<span class="reason-tag" style="background-color: #f1f5f9; color: #475569;">4. Sans modification</span>';
+                    titleDecoration = '';
+                }
+                
+                tr.innerHTML = `
+                    <td class="col-check">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="check-${row.id}" ${row.checked ? 'checked' : ''} onchange="updateRowState('${row.id}')">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="col-id">${row.id}</td>
+                    <td class="col-author">${row.author}</td>
+                    <td>
+                        <div class="title-original" style="${titleDecoration}">${escapeHtml(row.current)}</div>
+                        <input type="text" class="title-proposed-input" id="suggested-${row.id}" value="${escapeHtml(row.suggested)}" oninput="updateProposedText('${row.id}')">
+                        ${problemTag}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Raison: ${escapeHtml(row.reason)}</div>
+                    </td>
+                    <td>
+                        <textarea class="comment-input" id="comment-${row.id}" style="height: 60px;" placeholder="Écrire un commentaire..." oninput="updateCommentText('${row.id}')">${escapeHtml(row.comment || '')}</textarea>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            updateStats();
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function filterList(list) {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            return list.filter(item => {
+                // Tab filter
+                if (currentTab !== 0 && item.problem_type !== currentTab) return false;
+                
+                // Search filter
+                if (search) {
+                    const matchSearch = item.author.toLowerCase().includes(search) ||
+                                        item.current.toLowerCase().includes(search) ||
+                                        item.suggested.toLowerCase().includes(search) ||
+                                        item.id.includes(search);
+                    if (!matchSearch) return false;
+                }
+                return true;
+            });
+        }
+        
+        function switchTab(tabId) {
+            currentTab = tabId;
+            // Update active btn styling
+            for (let i = 0; i <= 5; i++) {
+                const btn = document.getElementById(`tab-${i}`);
+                if (btn) btn.classList.remove('active');
+            }
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            renderTable();
+        }
+        
+        function filterData() {
+            renderTable();
+        }
+        
+        function updateRowState(id) {
+            const checkbox = document.getElementById(`check-${id}`);
+            const index = initialData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                initialData[index].checked = checkbox.checked;
+            }
+            triggerAutoSave();
+        }
+        
+        function updateProposedText(id) {
+            const input = document.getElementById(`suggested-${id}`);
+            const index = initialData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                initialData[index].suggested = input.value;
+                // Auto check if changed
+                if (input.value !== initialData[index].current) {
+                    initialData[index].checked = true;
+                    const checkbox = document.getElementById(`check-${id}`);
+                    if (checkbox) checkbox.checked = true;
+                }
+            }
+            triggerAutoSave();
+        }
+
+        function updateCommentText(id) {
+            const input = document.getElementById(`comment-${id}`);
+            const index = initialData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                initialData[index].comment = input.value;
+            }
+            triggerAutoSave();
+        }
+        
+        function toggleAll(check) {
+            let visible = filterList(initialData);
+            visible.forEach(row => {
+                row.checked = check;
+                const checkbox = document.getElementById(`check-${row.id}`);
+                if (checkbox) checkbox.checked = check;
+            });
+            triggerAutoSave();
+        }
+        
+        function updateStats() {
+            document.getElementById('stat-total').textContent = `Total base : ${initialData.length}`;
+            
+            const tabTotal = filterList(initialData).length;
+            document.getElementById('stat-tab-total').textContent = `Dans cet onglet : ${tabTotal}`;
+            
+            const approved = initialData.filter(item => item.checked).length;
+            document.getElementById('stat-approved').textContent = `Modifications cochées : ${approved}`;
+        }
+        
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(initialData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "sauvegarde_revis_titres.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Sauvegarde téléchargée !");
+        }
+
+        function uploadBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const uploadedData = JSON.parse(e.target.result);
+                    if (Array.isArray(uploadedData) && uploadedData.length === defaultRawData.length) {
+                        initialData = uploadedData;
+                        saveStateQuietly();
+                        renderTable();
+                        showToast("Sauvegarde importée avec succès !");
+                    } else {
+                        alert("Le format de fichier est incorrect ou ne correspond pas aux 502 lignes de la base.");
+                    }
+                } catch (err) {
+                    alert("Erreur lors de la lecture du fichier de sauvegarde.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetState() {
+            if (confirm("Voulez-vous vraiment réinitialiser l'état et perdre toutes vos modifications locales ?")) {
+                localStorage.removeItem(localStorageKey);
+                window.location.reload();
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+        
+        function exportData() {
+            const results = {
+                approved: [],
+                disapproved: []
+            };
+            
+            initialData.forEach(item => {
+                const hasComment = item.comment && item.comment.trim() !== "";
+                const isCustomized = item.suggested !== item.current;
+                
+                if (item.checked || isCustomized || hasComment) {
+                    results.approved.push({
+                        id: item.id,
+                        suggested: item.suggested,
+                        comment: item.comment || "",
+                        checked: item.checked
+                    });
+                }
+            });
+            
+            const outputText = JSON.stringify(results, null, 2);
+            document.getElementById('export-output').value = outputText;
+            document.getElementById('export-modal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('export-modal').style.display = 'none';
+        }
+        
+        function copyOutputText() {
+            const textarea = document.getElementById('export-output');
+            textarea.select();
+            document.execCommand('copy');
+            showToast("Copié dans le presse-papiers !");
+        }
+        
+        // Count numbers in tabs
+        const countAll = initialData.length;
+        const count1 = initialData.filter(x => x.problem_type === 1).length;
+        const count2 = initialData.filter(x => x.problem_type === 2).length;
+        const count3 = initialData.filter(x => x.problem_type === 3).length;
+        const count4 = initialData.filter(x => x.problem_type === 4).length;
+        const count5 = initialData.filter(x => x.problem_type === 5).length;
+        
+        document.getElementById('tab-0').textContent = `Tous (${countAll})`;
+        document.getElementById('tab-1').textContent = `1. Trop longs (${count1})`;
+        document.getElementById('tab-2').textContent = `2. Non représentatifs (${count2})`;
+        document.getElementById('tab-3').textContent = `3. À affiner (${count3})`;
+        document.getElementById('tab-5').textContent = `5. En majuscules (${count5})`;
+        document.getElementById('tab-4').textContent = `4. Sans modification (${count4})`;
+        
+        renderTable();
+    </script>
+</body>
+</html>
