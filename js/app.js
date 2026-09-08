@@ -820,17 +820,14 @@ function parseTSV(tsvText) {
         
         // ID-specific or filename-specific overrides
         const ID_AUTHOR_OVERRIDES = {
-            383: "BIBLE – LOCKE – DDHC 1789",
-            395: "BIBLE – LOCKE – DDHC 1789",
-            508: "HÉSIODE – PLATON",
-            516: "HÉSIODE – PLATON"
+            520: "HÉSIODE-PLATON"
         };
         
         let authorClean;
         if (filename.startsWith('LOCKE_BIBLE_DDHC')) {
             authorClean = "BIBLE – LOCKE – DDHC 1789";
-        } else if (filename.startsWith('PLATON_HÉSIODE') || filename.startsWith('PLATON_HESIODE')) {
-            authorClean = "HÉSIODE – PLATON";
+        } else if (filename.startsWith('PLATON_HÉSIODE') || filename.startsWith('PLATON_HESIODE') || filename === 'PLATON_Prométhée') {
+            authorClean = "HÉSIODE-PLATON";
         } else if (ID_AUTHOR_OVERRIDES[number]) {
             authorClean = ID_AUTHOR_OVERRIDES[number];
         } else {
