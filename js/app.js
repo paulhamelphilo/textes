@@ -706,10 +706,10 @@ async function fetchDatabase() {
             DOM.searchInput.focus();
         }
     } catch (error) {
-        console.error("Erreur d'initialisation:", error);
+        console.error("Erreur d’initialisation:", error);
         DOM.cardsGrid.innerHTML = `
             <div class="loading-spinner" style="color: #e74c3c;">
-                <p>⚠️ Erreur lors du chargement des données. Veuillez lancer le script d'extraction Python en premier.</p>
+                <p>⚠️ Erreur lors du chargement des données. Veuillez lancer le script d’extraction Python en premier.</p>
                 <code style="background: rgba(0,0,0,0.05); padding: 8px 12px; border-radius: 4px; font-size: 13px;">${error.message}</code>
             </div>
         `;
@@ -766,6 +766,7 @@ function parseTSV(tsvText) {
         const AUTHOR_MAPPING = {
             "ALIZAHRA": "Zahra ALI",
             "CHOLLET": "Mona CHOLLET",
+            "CICERON": "CICÉRON",
             "CLEMENTE": "Élisabeth CLÉMENT",
             "COHEN": "Albert COHEN",
             "CRAWFORD": "CRAWFORD",
@@ -775,6 +776,7 @@ function parseTSV(tsvText) {
             "DEMONTAIGNE": "Tania DE MONTAIGNE",
             "DEFUNES": "Julia DE FUNÈS",
             "DURAS": "Marguerite DURAS",
+            "ECCLESIASTE": "ECCLÉSIASTE",
             "FAYEGAEL": "Gaël FAYE",
             "FILLIOZAT": "Isabelle FILLIOZAT",
             "FRAISSE": "Paul FRAISSE",
@@ -995,8 +997,8 @@ function applyFilters() {
 
     // Score and sort results based on official notions matched in the query
     const OFFICIAL_NOTIONS = [
-        "L'art", "Le bonheur", "La conscience", "Le devoir", "L'État", 
-        "L'inconscient", "La justice", "Le langage", "La liberté", "La nature", 
+        "L’art", "Le bonheur", "La conscience", "Le devoir", "L’État", 
+        "L’inconscient", "La justice", "Le langage", "La liberté", "La nature", 
         "La raison", "La religion", "La science", "La technique", "Le temps", 
         "Le travail", "La vérité"
     ];
@@ -1147,7 +1149,7 @@ function openText(id) {
                     <a href="pdf/${textData.filename}.pdf" target="_blank" class="notice-link" title="Ouvrir le PDF">
                         <span class="notice-icon">📂</span>
                     </a>
-                    <p><a href="pdf/${textData.filename}.pdf" target="_blank" class="notice-text-link">Ce texte est à consulter directement sur le document PDF d'origine.</a></p>
+                    <p><a href="pdf/${textData.filename}.pdf" target="_blank" class="notice-text-link">Ce texte est à consulter directement sur le document PDF d’origine.</a></p>
                 </div>
             `;
         });
@@ -1271,7 +1273,7 @@ function setupEventListeners() {
                     DOM.searchInput.value = '';
                     applyFilters(); // Reset search input state
                 } else {
-                    alert(`Le texte N° ${num} n'existe pas dans la base.`);
+                    alert(`Le texte N° ${num} n’existe pas dans la base.`);
                 }
             } else {
                 // If not a number, but there is exactly 1 match

@@ -79,8 +79,8 @@ def get_next_available_id():
 
 # Official Philosophy Curriculum Notions Whitelist
 OFFICIAL_NOTIONS = [
-    "L'art", "Le bonheur", "La conscience", "Le devoir", "L'État", 
-    "L'inconscient", "La justice", "Le langage", "La liberté", "La nature", 
+    "L’art", "Le bonheur", "La conscience", "Le devoir", "L’État", 
+    "L’inconscient", "La justice", "Le langage", "La liberté", "La nature", 
     "La raison", "La religion", "La science", "La technique", "Le temps", 
     "Le travail", "La vérité"
 ]
@@ -337,24 +337,16 @@ def update_database(text_id, filename_no_ext, title, thesis, summary, notions_li
                         if line.strip():
                             rows.append(line.split("\t"))
         
-        # Clean col 3 values
+        # Clean col 3 values and normalize apostrophes to ’
+        filename_no_ext = filename_no_ext.replace("'", "’")
         analysis_col = f"Titre: {title}. Thèse: {thesis}. Résumé: {summary}."
         analysis_col = re.sub(r'\.+', '.', analysis_col)
         analysis_col = re.sub(r'\s+', ' ', analysis_col)
+        analysis_col = analysis_col.replace("'", "’")
         
         # Limit notions to 5 maximum
-        notions_list = notions_list[:5]
+        notions_list = [n.replace("'", "’") for n in notions_list[:5]]
         
-        # Fallback check: if notions_list contains "La technique" but "technique" does not appear in the filename, title, or summary,
-        # and we have other notions, remove "La technique"
-        if "La technique" in notions_list and len(notions_list) > 1:
-            tech_norm = normalize_text_for_match("La technique")
-            in_filename = tech_norm in normalize_text_for_match(filename_no_ext)
-            in_title = tech_norm in normalize_text_for_match(title)
-            in_summary = tech_norm in normalize_text_for_match(summary)
-            if not (in_filename or in_title or in_summary):
-                notions_list.remove("La technique")
-                
         # If still empty, infer from filename
         if not notions_list:
             for official in OFFICIAL_NOTIONS:
